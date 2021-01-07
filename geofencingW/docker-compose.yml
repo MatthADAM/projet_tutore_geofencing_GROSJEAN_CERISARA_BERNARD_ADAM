@@ -11,7 +11,7 @@ services:
     db:
         image: mysql
         environment:
-            MYSQL_DATABASE: atelier
+            MYSQL_DATABASE: geofencing
             MYSQL_USER: user
             MYSQL_PASSWORD: user
             MYSQL_ROOT_PASSWORD: root
