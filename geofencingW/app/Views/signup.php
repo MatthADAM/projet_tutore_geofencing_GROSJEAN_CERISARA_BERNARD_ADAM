@@ -14,9 +14,6 @@
             <form action="verification.php" method="POST">
                 <h1>Créer un compte</h1>
                 
-                <label><b>Nom d'utilisateur</b></label>
-                <input type="text" placeholder="Entrer le nom d'utilisateur" name="username" required>
-                
                 <label><b>Adresse Mail</b></label>
                 <input type="text" placeholder="Entrer l'adresse mail" name="mail" required>
 
