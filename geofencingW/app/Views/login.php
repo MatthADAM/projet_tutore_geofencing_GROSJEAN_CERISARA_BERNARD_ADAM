@@ -5,7 +5,7 @@
 	<title>Login</title>
 	<meta name="description" content="The small framework with powerful features">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/login.css" />
+    <link rel="stylesheet" href="public/css/login.css" />
 </head>
     <body>
         <div id="container">
