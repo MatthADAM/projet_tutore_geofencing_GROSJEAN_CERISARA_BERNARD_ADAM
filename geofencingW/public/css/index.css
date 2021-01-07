@@ -1,0 +1,293 @@
+.container {
+  flex-wrap: wrap;
+}
+
+.card {
+  border: none;
+  border-radius: 10px;
+  background-color: #4270C8;
+  width: 530px;
+  margin-top: -60px;
+}
+
+p.mb-1 {
+  font-size: 25px;
+  color: #9FB7FD;
+}
+
+.btn-primary {
+  border: none;
+  background: #506CCF;
+  margin-bottom: 60px;
+}
+
+.btn-primary small {
+  color: #9FB7FD;
+}
+
+.btn-primary span {
+  font-size: 13px;
+}
+
+.card.two {
+  border-top-right-radius: 60px;
+  border-top-left-radius: 0;
+}
+
+.form-group {
+  position: relative;
+  margin-bottom: 2rem;
+}
+
+.form-control {
+  border: none;
+  border-radius: 0;
+  outline: 0;
+  border-bottom: 1.5px solid #E6EBEE;
+}
+
+.form-control:focus {
+  box-shadow: none;
+  border-radius: 0;
+  border-bottom: 2px solid #8A97A8;
+}
+
+.form-control-placeholder {
+  position: absolute;
+  top: 15px;
+  left: 10px;
+  transition: all 200ms;
+  opacity: 0.5;
+  font-size: 80%;
+}
+
+.form-control:focus + .form-control-placeholder,
+.form-control:valid + .form-control-placeholder {
+  font-size: 80%;
+  transform: translate3d(0, -90%, 0);
+  opacity: 1;
+  top: 10px;
+  color: #8B92AC;
+}
+
+.btn-block {
+  border: none;
+  border-radius: 8px;
+  background-color: #506CCF;
+  padding: 10px 0 12px;
+}
+
+.btn-block:focus {
+  box-shadow: none;
+}
+
+.btn-block span {
+  font-size: 15px;
+  color: #D0E6FF;
+}
+
+.btnn {
+  background-color: #506CCF;
+  border-radius: 5px;
+  color: white;
+}
+
+.btnn-a {
+  text-decoration: none;
+  padding: 5px;
+}
+
+.btnnD {
+  background-color: #506CCF;
+  border-radius: 5px;
+  color: white;
+  display: block;
+  width: 100%;
+}
+
+.btnnD-a {
+  text-decoration: none;
+  padding: 5px;
+  text-align: center;
+}
+
+.radio {
+  margin-left: 5%;
+  margin-right: 5%;
+}
+
+.connect, .inscrip {
+  color: #4270C8;
+}
+
+.grp {
+  display: inline-block;
+  margin-right: 2%;
+}
+
+.btnGrp {
+  display: inline-block;
+}
+
+ul, li {
+  list-style: none;
+}
+
+.photo, .content {
+  margin-right: 1%;
+  margin-bottom: 1%;
+  display: inline-block;
+  vertical-align: top;
+  border: solid black;
+  border-radius: 5px;
+  width: fit-content;
+  background-color: #4270C8;
+  scroll-snap-align: start;
+}
+
+img {
+  height: 150px;
+  width: auto;
+}
+
+a {
+  color: white;
+}
+
+.slide {
+  overflow-x: scroll;
+  display: flex;
+  flex-direction: row;
+  scroll-snap-type: x mandatory;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #4270C8;
+}
+
+::-webkit-scrollbar {
+  height: 6px;
+  background-color: #3cb5ec;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #3cb5ec;
+  border-radius: 3px;
+}
+
+body {
+  background-color: #EBEAEF;
+  font-family: Arial;
+}
+
+.btnn {
+  background-color: #506CCF;
+  border-radius: 5px;
+  color: white;
+}
+
+.btnn-a {
+  text-decoration: none;
+  padding: 5px;
+}
+
+.navi ul {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  padding: 0px;
+  width: 100%;
+  background-color: #4270C8;
+  border: none;
+  border-radius: 10px;
+}
+
+.navi li {
+  padding-top: 2em;
+  padding-bottom: 2em;
+  text-align: center;
+  border-bottom: grey solid 1px;
+}
+
+.navi a {
+  color: white;
+  text-decoration: none;
+}
+
+.navi button {
+  font: bold 15px Arial;
+  background: #4270C8;
+  color: #fff;
+  border-radius: 2px;
+  border: none;
+}
+
+.navi button:hover {
+  background-color: #c40909;
+  color: white;
+  -webkit-transition: all 0.4s;
+  -moz-transition: all 0.4s;
+  transition: all 0.4s;
+}
+
+@media (min-width: 812px) {
+  .navi ul {
+    justify-content: flex-start;
+    flex-direction: row;
+  }
+
+  .navi li {
+    width: 7em;
+    border-bottom: none;
+  }
+}
+.cardPhoto {
+  margin-top: 1%;
+  display: inline-block;
+  vertical-align: top;
+  border: solid black;
+  border-radius: 5px;
+  width: fit-content;
+  background-color: #4270C8;
+  flex-wrap: wrap;
+}
+
+#taille {
+  width: max-content;
+}
+
+.usersCom {
+  font-style: italic;
+  font-family: monospace;
+  margin-bottom: -10px;
+}
+
+.contentMsg {
+  background-color: whitesmoke;
+  border-radius: 3px;
+  margin-bottom: 2px;
+}
+
+#delCom {
+  background-color: whitesmoke;
+  font-family: monospace;
+  border: none;
+}
+
+@media only screen and (min-width: 800px) {
+  .cardPhoto {
+    height: 600px;
+  }
+
+  #photoGrand {
+    height: 450px;
+    width: auto;
+  }
+
+  #comment {
+    overflow-y: scroll;
+    height: 480px;
+  }
+}
+
+/*# sourceMappingURL=index.css.map */

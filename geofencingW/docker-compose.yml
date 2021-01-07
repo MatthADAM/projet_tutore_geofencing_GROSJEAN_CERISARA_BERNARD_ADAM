@@ -1,0 +1,30 @@
+version: "3"
+services:
+    www:
+        build: .
+        ports:
+            - "8001:80"
+        volumes:
+            - .:/var/www/html/
+        networks:
+            - default
+    db:
+        image: mysql
+        environment:
+            MYSQL_DATABASE: atelier
+            MYSQL_USER: user
+            MYSQL_PASSWORD: user
+            MYSQL_ROOT_PASSWORD: root
+        volumes:
+            - ./doc/:/home/
+        working_dir: /home/
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin
+        links:
+            - db:db
+        ports:
+            - 8000:80
+        environment:
+            MYSQL_USER: user
+            MYSQL_PASSWORD: user
+            MYSQL_ROOT_PASSWORD: root

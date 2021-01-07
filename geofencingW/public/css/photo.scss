@@ -1,0 +1,48 @@
+$couleurPhoto:#4270C8;
+
+.cardPhoto {
+    margin-top: 1%;
+    display: inline-block;
+    vertical-align: top;
+    border: solid black;
+    border-radius: 5px;
+    width: fit-content;
+    background-color:$couleurPhoto;
+    flex-wrap: wrap;
+}
+
+#taille {
+    width: max-content;
+}
+
+.usersCom {
+    font-style: italic;
+    font-family: monospace;
+    margin-bottom: -10px;
+}
+
+.contentMsg {
+    background-color: whitesmoke;
+    border-radius: 3px;
+    margin-bottom: 2px;
+}
+
+#delCom {
+    background-color: whitesmoke;
+    font-family: monospace;
+    border: none;
+}
+
+@media only screen and (min-width:800px){
+    .cardPhoto {
+        height: 600px;
+    }
+    #photoGrand {
+        height:450px;
+        width:auto;
+    }
+    #comment {
+        overflow-y: scroll;
+        height: 480px;
+    }
+}

@@ -1,0 +1,47 @@
+$couleurPhoto:#4270C8;
+
+ul, li {
+    list-style: none;
+}
+
+.photo, .content {
+    margin-right: 1%;
+    margin-bottom: 1%;
+    display: inline-block;
+    vertical-align: top;
+    border: solid black;
+    border-radius: 5px;
+    width:fit-content;
+    background-color:$couleurPhoto;
+    scroll-snap-align: start;
+}
+
+img {
+    height:150px;
+    width:auto;
+}
+
+a {
+    color: white;
+}
+
+.slide {
+    overflow-x: scroll;
+    display: flex;
+    flex-direction: row;
+    scroll-snap-type: x mandatory;
+}
+
+::-webkit-scrollbar-track {
+    background-color: $couleurPhoto;
+}
+
+::-webkit-scrollbar {
+    height: 6px;
+    background-color: #3cb5ec;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #3cb5ec;
+    border-radius: 3px;
+}

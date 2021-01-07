@@ -1,45 +1,97 @@
 <?php
+declare(strict_types=1);
 
-// Valid PHP Version?
-$minPHPVersion = '7.2';
-if (phpversion() < $minPHPVersion)
-{
-	die("Your PHP version must be {$minPHPVersion} or higher to run CodeIgniter. Current version: " . phpversion());
+require __DIR__ . '/../vendor/autoload.php';
+
+session_start();
+
+use App\Application\Handlers\HttpErrorHandler;
+use App\Application\Handlers\ShutdownHandler;
+use App\Application\ResponseEmitter\ResponseEmitter;
+use DI\ContainerBuilder;
+use Slim\Factory\AppFactory;
+use Slim\Factory\ServerRequestCreatorFactory;
+use Illuminate\Database\Capsule\Manager as DB;
+use Slim\Views\Twig;
+use Slim\Views\TwigMiddleware;
+
+date_default_timezone_set ('Europe/Paris');
+
+// Instantiate PHP-DI ContainerBuilder
+$containerBuilder = new ContainerBuilder();
+
+if (false) { // Should be set to true in production
+    $containerBuilder->enableCompilation(__DIR__ . '/../var/cache');
 }
-unset($minPHPVersion);
 
-// Path to the front controller (this file)
-define('FCPATH', __DIR__ . DIRECTORY_SEPARATOR);
+// Set up settings
+$settings = require __DIR__ . '/../app/settings.php';
+$settings($containerBuilder);
 
-// Location of the Paths config file.
-// This is the line that might need to be changed, depending on your folder structure.
-$pathsPath = realpath(FCPATH . '../app/Config/Paths.php');
-// ^^^ Change this if you move your application folder
+// Set up dependencies
+$dependencies = require __DIR__ . '/../app/dependencies.php';
+$dependencies($containerBuilder);
 
-/*
- *---------------------------------------------------------------
- * BOOTSTRAP THE APPLICATION
- *---------------------------------------------------------------
- * This process sets up the path constants, loads and registers
- * our autoloader, along with Composer's, loads our constants
- * and fires up an environment-specific bootstrapping.
- */
+// Set up repositories
+$repositories = require __DIR__ . '/../app/repositories.php';
+$repositories($containerBuilder);
 
-// Ensure the current directory is pointing to the front controller's directory
-chdir(__DIR__);
+// Build PHP-DI Container instance
+$container = $containerBuilder->build();
 
-// Load our paths config file
-require $pathsPath;
-$paths = new Config\Paths();
+// Instantiate BDD
+$bddsets = $container->get('settings');
+$db = new DB();
+$db->addConnection($bddsets['db']);
+$db->setAsGlobal();
+$db->bootEloquent();
 
-// Location of the framework bootstrap file.
-$app = require rtrim($paths->systemDirectory, '/ ') . '/bootstrap.php';
+// Instantiate Twig
+$settings = $container->get('settings');
+$twigSettings = $settings['twig'];
 
-/*
- *---------------------------------------------------------------
- * LAUNCH THE APPLICATION
- *---------------------------------------------------------------
- * Now that everything is setup, it's time to actually fire
- * up the engines and make this app do its thang.
- */
-$app->run();
+$options = $twigSettings['options'];
+$options['cache'] = $options['cache_enabled'] ? $options['cache_path'] : false;
+
+$twig = Twig::create($twigSettings['paths'], $options);
+
+// Instantiate the app
+AppFactory::setContainer($container);
+$app = AppFactory::create();
+$callableResolver = $app->getCallableResolver();
+
+// Register middleware
+$middleware = require __DIR__ . '/../app/middleware.php';
+$middleware($app);
+$app->add(TwigMiddleware::create($app, $twig));
+
+// Register routes
+$routes = require __DIR__ . '/../app/routes.php';
+$routes($app);
+
+/** @var bool $displayErrorDetails */
+$displayErrorDetails = $container->get('settings')['displayErrorDetails'];
+
+// Create Request object from globals
+$serverRequestCreator = ServerRequestCreatorFactory::create();
+$request = $serverRequestCreator->createServerRequestFromGlobals();
+
+// Create Error Handler
+$responseFactory = $app->getResponseFactory();
+$errorHandler = new HttpErrorHandler($callableResolver, $responseFactory);
+
+// Create Shutdown Handler
+$shutdownHandler = new ShutdownHandler($request, $errorHandler, $displayErrorDetails);
+register_shutdown_function($shutdownHandler);
+
+// Add Routing Middleware
+$app->addRoutingMiddleware();
+
+// Add Error Middleware
+$errorMiddleware = $app->addErrorMiddleware($displayErrorDetails, false, false);
+$errorMiddleware->setDefaultErrorHandler($errorHandler);
+
+// Run App & Emit Response
+$response = $app->handle($request);
+$responseEmitter = new ResponseEmitter();
+$responseEmitter->emit($response);

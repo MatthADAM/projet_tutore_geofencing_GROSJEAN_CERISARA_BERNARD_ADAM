@@ -1,0 +1,87 @@
+Scenario affichage d'une galerie par un utilisateur anonyme
+
+1) L'utilisateur ouvre le site
+2) Le site affiche la page d'accueil avec des galeries publiques choisies au hasard
+3) L'utilisateur fait une recherche par mots-clés
+4) Le site affiche les galeries publiques correspondantes
+5) L'utilisateur clique sur une galerie
+6) Le site affiche la galerie
+7) L'utilisateur navigue dans la galerie
+
+
+
+
+
+Scenario affichage d'une galerie par un utilisateur connecté
+
+1) L'utilisateur ouvre le site
+2) Le site affiche la page d'accueil avec des galeries publiques choisies au hasard
+3) L'utilisateur clique sur le bouton de connection
+4) Le site affiche la page de connection
+5) L'utilisateur se connecte
+6) Le site affiche la page d'accueil avec les galeries sur lesquelles l'utilisateur est autorisé ainsi que des galeries publiques choisies au hasard
+7) L'utilisateur clique sur une galerie
+8) Le site affiche le contenu de la galerie
+9) L'utilisateur navigue dans la galerie
+
+
+
+
+
+
+Scenario affichage d'une image par un utilisateur anonyme
+
+1) L'utilisateur ouvre le site
+2) Le site affiche la page d'accueil avec des galeries publiques choisies au hasard
+3) L'utilisateur fait une recherche par mots-clés
+4) Le site affiche les galeries publiques correspondantes
+5) L'utilisateur clique sur une galerie
+6) Le site affiche la galerie
+7) L'utilisateur navigue dans la galerie
+8) L'utilisateur clique sur une image
+9) Le site affiche l'image
+
+
+
+
+
+
+Scenario affichage d'une image par un utilisateur connecté
+
+1) L'utilisateur ouvre le site
+2) Le site affiche la page d'accueil avec des galeries publiques choisies au hasard
+3) L'utilisateur clique sur le bouton de connection
+4) Le site affiche la page de connection
+5) L'utilisateur se connecte
+6) Le site affiche la page d'accueil avec les galeries sur lesquelles l'utilisateur est autorisé ainsi que des galeries publiques choisies au hasard
+7) L'utilisateur clique sur une galerie
+8) Le site affiche le contenu de la galerie
+9) L'utilisateur navigue dans la galerie
+10) L'utilisateur clique sur une image
+11) Le site affiche l'image
+
+
+
+
+
+
+Scenario creation de galerie et ajout d'images
+
+1) L'utilisateur ouvre le site
+2) Le site affiche la page d'accueil avec des galeries publiques choisies au hasard
+3) L'utilisateur clique sur le bouton de connection
+4) Le site affiche la page de connection
+5) L'utilisateur se connecte
+6) Le site affiche la page d'accueil avec les galeries sur lesquelles l'utilisateur est autorisé ainsi que des galeries publiques choisies au hasard
+7) L'utilisateur clique sur le bouton de création de galeries
+8) Le site affiche la page de création de galeries
+9) L'utilisateur choisit le nom de la galerie 
+10) L'utilisateur remplit la description de la galerie
+11) L'utilisateur choisit les mots-clés de la galerie
+12) L'utilisateur choisit le niveau d'accès de la galerie
+13) L'utilisateur clique sur le bouton d'ajout d'images
+14) Le site ouvre une page lui demandant de sélectionner l'image à importer
+15) L'utilisateur choisit l'image et l'importe
+16) L'utilisateur choisit le titre, les mots-clés et les données techniques de l'image
+17) L'utilisateur clique sur sauvegarder
+

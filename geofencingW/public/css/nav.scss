@@ -1,0 +1,66 @@
+$couleurNav:#4270C8;
+$couleurBtn:#506CCF;
+
+body {
+    background-color: #EBEAEF;
+    font-family: Arial;
+}
+.btnn{
+    background-color: $couleurBtn;
+    border-radius: 5px;
+    color: white;
+}
+.btnn-a{
+    text-decoration: none;
+    padding: 5px;
+}
+.navi ul{
+    display: flex;
+    flex-direction: column;
+    list-style:none;
+    padding: 0px;
+    width: 100%;
+    background-color: $couleurNav;
+    border: none;
+    border-radius: 10px;
+    
+}
+.navi li{
+    padding-top: 2em;
+    padding-bottom: 2em;
+    text-align: center;
+    border-bottom: grey solid 1px;
+}
+.navi a{
+    color: white;
+    text-decoration: none;
+}
+
+.navi button {
+    font:bold 15px Arial;
+    background: $couleurNav;
+    color:#fff;
+    border-radius:2px;
+    border:none;
+}
+
+.navi button:hover {
+    background-color: rgb(196, 9, 9);
+    color: white;
+    -webkit-transition: all 0.4s;
+    -moz-transition: all 0.4s;
+    transition: all 0.4s;
+}
+
+@media (min-width: 812px) {
+    .navi ul{
+        justify-content: flex-start;
+        flex-direction: row;
+    }
+    .navi li{
+        width: 7em;
+        
+        border-bottom: none;
+    }
+}
+

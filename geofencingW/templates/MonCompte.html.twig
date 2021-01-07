@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Mon Compte</title>
+    <link href="../css/index.css" rel="stylesheet" type="text/css">
+    
+</head>
+<body>
+    <div class="navi">
+        <nav>
+            <ul>
+                {% for url in nav %}
+                {% if url.method == "GET" %}
+                <li><a href="{{url.route}}">{{url.name}}</a></li>
+                {% elseif url.method == "POST" %}
+                <li>
+                    <form method="POST" action="{{url.route}}">
+                        <button type="submit">{{url.name}}</button>
+                    </form>
+                </li>
+                {% endif %}
+                {% endfor %}
+            </ul>
+        </nav>
+    </div>
+    <div>
+        {% if accountUser == email %}
+        <a class="btnn btnn-a" href="{{url.getUpdateUser}}">Modifier mon profil</a>
+        {% endif %}
+        <div>
+            <p>nom d'utilisateur : {{ name }}</p>
+            <p>adresse email : {{ email }}</p>
+            <p>mes infos : {{ infos }}</p>
+        </div>
+    </div>
+    <div>
+        <a class="btnn btnn-a" href="{{ url.getCreerGroup }}">Creer groupe</a>
+        <p>Mes groupes: </p>
+        {% for g in groupes %}
+        <div>
+            <a class="connect grp" href="{{ url.getGroup }}/{{ g.id_group }}">{{ g.nom_group }}</a>
+            <a class="btnn btnn-a btnGrp" href="{{url.getDeleteGroup}}/{{g.id_group}}">supprimer</a>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
