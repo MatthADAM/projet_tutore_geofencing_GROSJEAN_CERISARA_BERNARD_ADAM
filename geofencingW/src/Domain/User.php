@@ -11,10 +11,9 @@ class User extends Model
     protected $primaryKey = 'id_user';
     public $timestamps = false ;
 
-    public static function create($nom, $email, $password){
+    public static function create($email, $password){
         // Variables
         $user = new User();
-        $user->nom = $nom;
         $user->email = $email;
         $user->password = $password;
         // enregistrement dans la table

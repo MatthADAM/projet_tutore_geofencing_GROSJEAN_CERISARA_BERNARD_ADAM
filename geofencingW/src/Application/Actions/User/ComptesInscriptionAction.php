@@ -24,17 +24,15 @@ class ComptesInscriptionAction
                 return $view->render($response, 'Inscription.html.twig', $data);
             } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-                $nom = htmlentities($_POST['nom']);
                 $email = htmlentities($_POST['email']);
                 $password = htmlentities($_POST['password']);
                 $confpassword = htmlentities($_POST['confpassword']);
 
                 if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
                     $compteEmail = User::where('email', '=', $email)->first();
-                    $compteNom = User::where('nom', '=', $nom)->first();
-                    if (is_null($compteEmail) && is_null($compteNom)) {
+                    if (is_null($compteEmail)) {
                         if ($confpassword == $password) {
-                            User::create($nom, $email, password_hash($password, PASSWORD_DEFAULT));
+                            User::create($email, password_hash($password, PASSWORD_DEFAULT));
                             header('Location: ./connexion');
                             exit;
                         } else {

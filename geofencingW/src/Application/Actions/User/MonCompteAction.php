@@ -44,13 +44,8 @@ class MonCompteAction
                     $data['email'] = $user->email;
                     $data['infos'] = $user->infos;
 
-                    $groupes = Groupe::where("id_admin","=",$id)->get();
-                    foreach ($groupes as $g) {
-                        $data['groupe'][] = ['name' => $g->nom_group, 'id_group' => $g->id_group];
-                    }
-                    $data['groupes'] = $groupes;
-
                     return $view->render($response, 'MonCompte.html.twig', $data);
+                    // echo json_encode($data);
                 } else {
                     header('Location: /');
                     exit();
