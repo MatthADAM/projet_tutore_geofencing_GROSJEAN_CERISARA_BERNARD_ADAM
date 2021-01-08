@@ -10,14 +10,14 @@ services:
             - default
     db:
         image: mysql
+        restart: always
         environment:
             MYSQL_DATABASE: geofencing
             MYSQL_USER: user
             MYSQL_PASSWORD: user
             MYSQL_ROOT_PASSWORD: root
         volumes:
-            - ./doc/:/home/
-        working_dir: /home/
+            - ./script:/docker-entrypoint-initdb.d
     phpmyadmin:
         image: phpmyadmin/phpmyadmin
         links:
