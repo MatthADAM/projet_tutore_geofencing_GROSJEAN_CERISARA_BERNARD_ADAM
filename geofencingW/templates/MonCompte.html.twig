@@ -34,15 +34,5 @@
             <p>mes infos : {{ infos }}</p>
         </div>
     </div>
-    <div>
-        <a class="btnn btnn-a" href="{{ url.getCreerGroup }}">Creer groupe</a>
-        <p>Mes groupes: </p>
-        {% for g in groupes %}
-        <div>
-            <a class="connect grp" href="{{ url.getGroup }}/{{ g.id_group }}">{{ g.nom_group }}</a>
-            <a class="btnn btnn-a btnGrp" href="{{url.getDeleteGroup}}/{{g.id_group}}">supprimer</a>
-        </div>
-        {% endfor %}
-    </div>
 </body>
 </html>
