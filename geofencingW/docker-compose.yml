@@ -1,4 +1,9 @@
 version: "3"
+
+volumes:
+    logs:
+        driver: local
+
 services:
     www:
         build: .
