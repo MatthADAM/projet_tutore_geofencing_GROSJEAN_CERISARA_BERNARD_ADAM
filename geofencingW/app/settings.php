@@ -28,7 +28,7 @@ return function (ContainerBuilder $containerBuilder) {
             'db' => [
                 'driver' => 'mysql',
                 'host' => 'db',
-                'database' => 'atelier',
+                'database' => 'geofencing',
                 'username' => 'root',
                 'password' => 'root',
                 'charset'   => 'utf8',

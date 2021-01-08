@@ -20,13 +20,13 @@ class AccueilAction
             $url['getAccueil'] = ['route' => '/', 'name' => 'Accueil', 'method' => 'GET'];
             if(!isset($_SESSION['user']) || is_null($_SESSION['user'])) {
 
-                $url['getGalerieList'] = ['route' => './galeries', 'name' => 'Galerie', 'method' => 'GET'];
+                // $url['getGalerieList'] = ['route' => './galeries', 'name' => 'Galerie', 'method' => 'GET'];
                 $url['inscriptionGet'] = ['route' => './inscription', 'name' => 'Inscription', 'method' => 'GET'];
                 $url['connexionGet'] = ['route' => './connexion', 'name' => 'Connexion', 'method' => 'GET'];
                 $data['connecte'] = 'false';
 
             } else {
-                $url['getGalerieList'] = ['route' => './galeries', 'name' => 'Galerie', 'method' => 'GET'];
+                // $url['getGalerieList'] = ['route' => './galeries', 'name' => 'Galerie', 'method' => 'GET'];
                 $user = User::where('email', '=', $_SESSION['user'])->first();
                 $id_user = $user->id_user;
 				$url['getMonCompte'] = ['route' => "../monCompte/$id_user", 'name' => 'mon compte', 'method' => 'GET'];
