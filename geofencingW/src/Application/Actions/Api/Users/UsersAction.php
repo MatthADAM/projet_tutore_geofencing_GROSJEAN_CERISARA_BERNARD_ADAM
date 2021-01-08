@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Application\Actions\Api;
+namespace App\Application\Actions\Api\Users;
 
 use App\Domain\User;
 use App\Application\Actions\Action;

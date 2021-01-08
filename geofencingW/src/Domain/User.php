@@ -21,13 +21,4 @@ class User extends Model
         // retourne le tuple créé
         return User::Where("email", "=", $email)->first();
     }
-    public function galeries() {
-
-        return $this->hasManyThrough('\App\Domain\Galerie', '\App\Domain\User2galerie', 'id_user', 'id_galerie', 'id_user', 'id_galerie');
-    }
-    public function user2galerie()
-    {
-        return $this->hasMany('\App\Domain\User2galerie', 'id_user', 'id_user');
-    }
-
 }

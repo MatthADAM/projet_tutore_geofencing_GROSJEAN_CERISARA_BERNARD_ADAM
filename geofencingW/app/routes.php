@@ -8,8 +8,8 @@ use \App\Application\Actions\User\ComptesInscriptionAction as ComptesInscription
 use \App\Application\Actions\User\MonCompteAction as MonCompteAction;
 use \App\Application\Actions\User\ModifierInfosUtilisateurAction as ModifierInfosUtilisateurAction;
 use \App\Application\Actions\MapAction as MapAction;
-use \App\Application\Actions\Api\ListUsersAction;
-use \App\Application\Actions\Api\GetUsersAction;
+use \App\Application\Actions\Api\Users\ListUsersAction;
+use \App\Application\Actions\Api\Users\GetUsersAction;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\App;
