@@ -5,6 +5,7 @@ use \App\Application\Actions\AccueilAction as AccueilAction;
 use \App\Application\Actions\User\ComptesConnexionAction as ComptesConnexionAction;
 use \App\Application\Actions\User\ComptesDeconnexionAction as ComptesDeconnexionAction;
 use \App\Application\Actions\User\ComptesInscriptionAction as ComptesInscriptionAction;
+use \App\Application\Actions\Api\ListUsersAction as ListUsersAction;
 use \App\Application\Actions\User\MonCompteAction as MonCompteAction;
 use \App\Application\Actions\User\ModifierInfosUtilisateurAction as ModifierInfosUtilisateurAction;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -37,4 +38,6 @@ return function (App $app) {
     //voir son compte
     $app->get('/monCompte/{id}',MonCompteAction::class)->setName("getMonCompte");
     $app->post('/monCompte/{id}',MonCompteAction::class)->setName("postMonCompte");
+
+    $app->get('/api',ListUsersAction::class)->setName("getUsers");
 };
