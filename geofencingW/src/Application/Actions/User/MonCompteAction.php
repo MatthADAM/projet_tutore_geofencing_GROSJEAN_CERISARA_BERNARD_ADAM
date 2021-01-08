@@ -22,8 +22,7 @@ class MonCompteAction
 		$id = intval($args['id']);
         $view = Twig::fromRequest($request);
         $url['getAccueil'] = ['route' => '/', 'name' => 'Accueil', 'method' => 'GET'];
-        $url['getGalerieList'] = ['route' => '../galeries', 'name' => 'Galerie', 'method' => 'GET'];
-        
+
         if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             if(isset($_SESSION['user']) && !is_null($_SESSION['user'])) {
                 $url['getMonCompte'] = ['route' => "../monCompte/$id", 'name' => 'mon compte', 'method' => 'GET'];
@@ -33,11 +32,8 @@ class MonCompteAction
                 $user = User::where("id_user", "=", $id)->first();
                 if ($user->email == $_SESSION['user']) {
                     $url['getUpdateUser'] = "../updateUser/{$id}";
-                    $url['getCreerGroup'] = "../creerGroup/{$id}";
-                    $url['getGroup'] = "../group";
-                    $url['getDeleteGroup'] = "../supprimerGroupe";
                     $data['url'] = $url;
-                    
+
                     $data['accountUser'] = $_SESSION['user'];
 
                     $data['name'] = $user->nom;

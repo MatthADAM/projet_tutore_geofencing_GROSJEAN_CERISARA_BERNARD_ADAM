@@ -15,7 +15,6 @@ class ModifierInfosUtilisateurAction
         $id = intval($args['id']);
         $view = Twig::fromRequest($request);
         $url['getAccueil'] = ['route' => '/', 'name' => 'Accueil', 'method' => 'GET'];
-        $url['getGalerieList'] = ['route' => '../galeries', 'name' => 'Galerie', 'method' => 'GET'];
         if(isset($_SESSION['user']) && !is_null($_SESSION['user'])) {
             $url['getMonCompte'] = ['route' => "../monCompte/$id", 'name' => 'mon compte', 'method' => 'GET'];
             $url['deconnexionPost'] = ['route' => '../deconnexion', 'name' => 'Deconnexion', 'method' => 'POST'];
@@ -31,29 +30,19 @@ class ModifierInfosUtilisateurAction
 
                     $data['name'] = $user->nom;
                     $data['email'] = $user->email;
-                    $data['infos'] = $user->infos;
 
                     return $view->render($response, 'ModifierInfosUtilisateur.html.twig', $data);
                 } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $user = User::find($id);
-                    $nom = htmlentities($_POST['nom']);
                     $email = htmlentities($_POST['email']);
-                    $infos = htmlentities($_POST['infos']);
                     $password = htmlentities($_POST['password']);
                     $confpassword = htmlentities($_POST['confpassword']);
 
-                
-                    if($_POST['nom']!=''){
-                        $user->nom = $nom;
-                    }
                     if($_POST['email']!=''){
                         if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
                             $user->email = $email;
                             $_SESSION['user'] = $email;
                         }
-                    }
-                    if($_POST['infos']!=''){
-                        $user->infos = $infos;
                     }
                     if($_POST['password']!=''){
                         if ($confpassword == $password) {
