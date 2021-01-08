@@ -19,7 +19,7 @@ class AccueilAction
             $view = Twig::fromRequest($request);
             $url['getAccueil'] = ['route' => '/', 'name' => 'Accueil', 'method' => 'GET'];
             if(!isset($_SESSION['user']) || is_null($_SESSION['user'])) {
-
+                $url['getMap'] = ['route' => './map', 'name' => 'Map', 'method' => 'GET'];
                 $url['inscriptionGet'] = ['route' => './inscription', 'name' => 'Inscription', 'method' => 'GET'];
                 $url['connexionGet'] = ['route' => './connexion', 'name' => 'Connexion', 'method' => 'GET'];
                 $data['connecte'] = 'false';
@@ -27,8 +27,9 @@ class AccueilAction
             } else {
                 $user = User::where('email', '=', $_SESSION['user'])->first();
                 $id_user = $user->id_user;
+                $url['getMap'] = ['route' => './map', 'name' => 'Map', 'method' => 'GET'];
 				$url['getMonCompte'] = ['route' => "../monCompte/$id_user", 'name' => 'mon compte', 'method' => 'GET'];
-				$url['deconnexionPost'] = ['route' => './deconnexion', 'name' => 'Deconnexion', 'method' => 'POST'];
+                $url['deconnexionPost'] = ['route' => './deconnexion', 'name' => 'Deconnexion', 'method' => 'POST'];
                 $data['connecte'] = 'true';
             }
             $data['nav'] = $url;

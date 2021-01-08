@@ -16,6 +16,7 @@ class ModifierInfosUtilisateurAction
         $view = Twig::fromRequest($request);
         $url['getAccueil'] = ['route' => '/', 'name' => 'Accueil', 'method' => 'GET'];
         if(isset($_SESSION['user']) && !is_null($_SESSION['user'])) {
+            $url['getMap'] = ['route' => '../map', 'name' => 'Map', 'method' => 'GET'];
             $url['getMonCompte'] = ['route' => "../monCompte/$id", 'name' => 'mon compte', 'method' => 'GET'];
             $url['deconnexionPost'] = ['route' => '../deconnexion', 'name' => 'Deconnexion', 'method' => 'POST'];
             $data['nav'] = $url;
@@ -24,6 +25,7 @@ class ModifierInfosUtilisateurAction
             if ($user->email == $_SESSION['user']) {
                 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                     $view = Twig::fromRequest($request);
+                    $url['getMap'] = ['route' => './map', 'name' => 'Map', 'method' => 'GET'];
                     $url['connexionGet'] = './connexion';
                     $url['inscriptionPost'] = './inscription';
                     $data['urls'] = $url;

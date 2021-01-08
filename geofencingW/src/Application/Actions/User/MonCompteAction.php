@@ -25,6 +25,7 @@ class MonCompteAction
 
         if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             if(isset($_SESSION['user']) && !is_null($_SESSION['user'])) {
+                $url['getMap'] = ['route' => '../map', 'name' => 'Map', 'method' => 'GET'];
                 $url['getMonCompte'] = ['route' => "../monCompte/$id", 'name' => 'mon compte', 'method' => 'GET'];
                 $url['deconnexionPost'] = ['route' => '../deconnexion', 'name' => 'Deconnexion', 'method' => 'POST'];
                 $data['nav'] = $url;
