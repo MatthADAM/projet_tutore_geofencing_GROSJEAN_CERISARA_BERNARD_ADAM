@@ -12,10 +12,12 @@ use \App\Application\Actions\MapAction as MapAction;
 use \App\Application\Actions\Api\Users\ListUsersAction;
 use \App\Application\Actions\Api\Users\GetUsersAction;
 use \App\Application\Actions\Api\Users\NewUsersAction;
+use \App\Application\Actions\Api\Users\DeleteUsersAction;
 
 use \App\Application\Actions\Api\Points\ListPointAction;
 use \App\Application\Actions\Api\Points\GetPointAction;
 use \App\Application\Actions\Api\Points\NewPointAction;
+use \App\Application\Actions\Api\Points\DeletePointAction;
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -55,11 +57,13 @@ return function (App $app) {
     $group->get('',ListUsersAction::class);
     $group->get('/{id}', GetUsersAction::class);
     $group->post('',NewUsersAction::class);
+    $group->delete('/{id}',DeleteUsersAction::class);
     });
 
     $app->group('/api/points', function (Group $group) {
         $group->get('',ListPointAction::class);
         $group->get('/{id}', GetPointAction::class);
         $group->post('',NewPointAction::class);
+        $group->delete('/{id}',DeletePointAction::class);
         });
 };
