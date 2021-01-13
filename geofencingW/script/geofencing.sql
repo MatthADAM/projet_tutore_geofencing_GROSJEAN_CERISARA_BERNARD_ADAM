@@ -68,6 +68,18 @@ CREATE TABLE `zone` (
   `description` varchar(300) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `informations`
+--
+
+CREATE TABLE `informations` (
+  `id_zone` int(10) NOT NULL,
+  `type` varchar(100) NOT NULL,
+  `contenu` varchar(300) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 --
 -- Index pour les tables déchargées
 --
