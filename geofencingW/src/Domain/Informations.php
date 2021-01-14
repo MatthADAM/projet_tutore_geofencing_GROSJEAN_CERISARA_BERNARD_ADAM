@@ -7,16 +7,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class Informations extends Model
 {
-    protected $table = 'zone';
-    protected $primaryKey = 'id_zone';
+    protected $table = 'informations';
+    protected $primaryKey = 'id_info';
     public $timestamps = false ;
 
-    public static function create($nom, $description){
+    public static function create($id_zone, $type, $contenu){
         // Variables
-        $zone = new Zone();
-        $zone->nom = $nom;
-        $zone->description = $description;
+        $infos = new Informations();
+        $infos->id_zone = $id_zone;
+        $infos->type = $type;
+        $infos->contenu = $contenu;
         // enregistrement dans la table
-        $zone->save();
+        $infos->save();
     }
 }

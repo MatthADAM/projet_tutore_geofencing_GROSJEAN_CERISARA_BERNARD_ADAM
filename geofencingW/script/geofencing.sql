@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.2
+-- version 5.0.4
 -- https://www.phpmyadmin.net/
 --
--- Hôte : 127.0.0.1
--- Généré le : jeu. 07 jan. 2021 à 14:51
--- Version du serveur :  10.4.14-MariaDB
--- Version de PHP : 7.4.10
+-- Hôte : db
+-- Généré le : jeu. 14 jan. 2021 à 16:22
+-- Version du serveur :  8.0.22
+-- Version de PHP : 7.4.13
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,14 +24,27 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `informations`
+--
+
+CREATE TABLE `informations` (
+  `id_info` int NOT NULL,
+  `id_zone` int NOT NULL,
+  `type` int NOT NULL,
+  `contenu` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `point`
 --
 
 CREATE TABLE `point` (
-  `id_point` int(10) NOT NULL,
+  `id_point` int NOT NULL,
   `x` float(12,10) NOT NULL,
   `y` float(12,10) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -40,9 +53,9 @@ CREATE TABLE `point` (
 --
 
 CREATE TABLE `point_2_zone` (
-  `id_point` int(10) NOT NULL,
-  `id_zone` int(10) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `id_point` int NOT NULL,
+  `id_zone` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -51,10 +64,10 @@ CREATE TABLE `point_2_zone` (
 --
 
 CREATE TABLE `user` (
-  `id_user` int(10) NOT NULL,
+  `id_user` int NOT NULL,
   `email` varchar(100) NOT NULL,
   `password` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -63,26 +76,21 @@ CREATE TABLE `user` (
 --
 
 CREATE TABLE `zone` (
-  `id_zone` int(10) NOT NULL,
+  `id_zone` int NOT NULL,
   `nom` varchar(100) NOT NULL,
   `description` varchar(300) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `informations`
---
-
-CREATE TABLE `informations` (
-  `id_zone` int(10) NOT NULL,
-  `type` varchar(100) NOT NULL,
-  `contenu` varchar(300) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Index pour les tables déchargées
 --
+
+--
+-- Index pour la table `informations`
+--
+ALTER TABLE `informations`
+  ADD PRIMARY KEY (`id_info`),
+  ADD KEY `FK_id_zone` (`id_zone`) USING BTREE;
 
 --
 -- Index pour la table `point`
@@ -114,22 +122,28 @@ ALTER TABLE `zone`
 --
 
 --
+-- AUTO_INCREMENT pour la table `informations`
+--
+ALTER TABLE `informations`
+  MODIFY `id_info` int NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT pour la table `point`
 --
 ALTER TABLE `point`
-  MODIFY `id_point` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_point` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT pour la table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id_user` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_user` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT pour la table `zone`
 --
 ALTER TABLE `zone`
-  MODIFY `id_zone` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_zone` int NOT NULL AUTO_INCREMENT;
 
 --
 -- Contraintes pour les tables déchargées
