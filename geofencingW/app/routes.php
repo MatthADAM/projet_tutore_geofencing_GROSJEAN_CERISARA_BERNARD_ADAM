@@ -9,17 +9,26 @@ use \App\Application\Actions\User\MonCompteAction as MonCompteAction;
 use \App\Application\Actions\User\ModifierInfosUtilisateurAction as ModifierInfosUtilisateurAction;
 use \App\Application\Actions\MapAction as MapAction;
 
+// Import for users
 use \App\Application\Actions\Api\Users\ListUsersAction;
 use \App\Application\Actions\Api\Users\GetUsersAction;
 use \App\Application\Actions\Api\Users\NewUsersAction;
 use \App\Application\Actions\Api\Users\PutUsersAction;
 use \App\Application\Actions\Api\Users\DeleteUsersAction;
 
+// Import for points
 use \App\Application\Actions\Api\Points\ListPointAction;
 use \App\Application\Actions\Api\Points\GetPointAction;
 use \App\Application\Actions\Api\Points\NewPointAction;
 use \App\Application\Actions\Api\Points\PutPointAction;
 use \App\Application\Actions\Api\Points\DeletePointAction;
+
+// Import for zones
+use \App\Application\Actions\Api\Zone\ListZoneAction;
+use \App\Application\Actions\Api\Zone\GetZoneAction;
+use \App\Application\Actions\Api\Zone\NewZoneAction;
+use \App\Application\Actions\Api\Zone\PutZoneAction;
+use \App\Application\Actions\Api\Zone\DeleteZoneAction;
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -56,18 +65,26 @@ return function (App $app) {
     $app->get('/map',MapAction::class)->setName("getMap");
     
     $app->group('/api/users', function (Group $group) {
-    $group->get('',ListUsersAction::class);
-    $group->get('/{id}', GetUsersAction::class);
-    $group->post('',NewUsersAction::class);
-    $group->post('/{id}',PutUsersAction::class);
-    $group->delete('/{id}',DeleteUsersAction::class);
+        $group->get('',ListUsersAction::class);
+        $group->get('/{id}', GetUsersAction::class);
+        $group->post('',NewUsersAction::class);
+        $group->post('/{id}',PutUsersAction::class);
+        $group->delete('/{id}',DeleteUsersAction::class);
     });
-
+    
     $app->group('/api/points', function (Group $group) {
         $group->get('',ListPointAction::class);
         $group->get('/{id}', GetPointAction::class);
         $group->post('',NewPointAction::class);
         $group->post('/{id}',PutPointAction::class);
         $group->delete('/{id}',DeletePointAction::class);
-        });
+    });
+
+    $app->group('/api/zone', function (Group $group) {
+        $group->get('',ListZoneAction::class);
+        $group->get('/{id}', GetZoneAction::class);
+        $group->post('',NewZoneAction::class);
+        $group->post('/{id}',PutZoneAction::class);
+        $group->delete('/{id}',DeleteZoneAction::class);
+    });
 };
