@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : db
--- Généré le : jeu. 14 jan. 2021 à 16:22
+-- Généré le : jeu. 14 jan. 2021 à 16:33
 -- Version du serveur :  8.0.22
 -- Version de PHP : 7.4.13
 
@@ -30,8 +30,8 @@ SET time_zone = "+00:00";
 CREATE TABLE `informations` (
   `id_info` int NOT NULL,
   `id_zone` int NOT NULL,
-  `type` int NOT NULL,
-  `contenu` int NOT NULL
+  `type` varchar(255) NOT NULL,
+  `contenu` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
@@ -89,8 +89,7 @@ CREATE TABLE `zone` (
 -- Index pour la table `informations`
 --
 ALTER TABLE `informations`
-  ADD PRIMARY KEY (`id_info`),
-  ADD KEY `FK_id_zone` (`id_zone`) USING BTREE;
+  ADD PRIMARY KEY (`id_info`);
 
 --
 -- Index pour la table `point`
@@ -125,7 +124,7 @@ ALTER TABLE `zone`
 -- AUTO_INCREMENT pour la table `informations`
 --
 ALTER TABLE `informations`
-  MODIFY `id_info` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id_info` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT pour la table `point`
@@ -143,7 +142,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT pour la table `zone`
 --
 ALTER TABLE `zone`
-  MODIFY `id_zone` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id_zone` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Contraintes pour les tables déchargées
