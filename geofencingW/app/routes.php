@@ -30,6 +30,13 @@ use \App\Application\Actions\Api\Zone\NewZoneAction;
 use \App\Application\Actions\Api\Zone\PutZoneAction;
 use \App\Application\Actions\Api\Zone\DeleteZoneAction;
 
+// Import for informations
+use \App\Application\Actions\Api\Infos\ListInfosAction;
+use \App\Application\Actions\Api\Infos\GetInfosAction;
+use \App\Application\Actions\Api\Infos\NewInfosAction;
+use \App\Application\Actions\Api\Infos\PutInfosAction;
+use \App\Application\Actions\Api\Infos\DeleteInfosAction;
+
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\App;
@@ -64,6 +71,7 @@ return function (App $app) {
     //afficher la carte
     $app->get('/map',MapAction::class)->setName("getMap");
     
+    // Routes users
     $app->group('/api/users', function (Group $group) {
         $group->get('',ListUsersAction::class);
         $group->get('/{id}', GetUsersAction::class);
@@ -72,6 +80,7 @@ return function (App $app) {
         $group->delete('/{id}',DeleteUsersAction::class);
     });
     
+    // Routes points
     $app->group('/api/points', function (Group $group) {
         $group->get('',ListPointAction::class);
         $group->get('/{id}', GetPointAction::class);
@@ -80,11 +89,21 @@ return function (App $app) {
         $group->delete('/{id}',DeletePointAction::class);
     });
 
+    // Routes zones
     $app->group('/api/zone', function (Group $group) {
         $group->get('',ListZoneAction::class);
         $group->get('/{id}', GetZoneAction::class);
         $group->post('',NewZoneAction::class);
         $group->post('/{id}',PutZoneAction::class);
         $group->delete('/{id}',DeleteZoneAction::class);
+    });
+
+    // Routes informations
+    $app->group('/api/infos', function (Group $group) {
+        $group->get('',ListInfosAction::class);
+        $group->get('/{id}', GetInfosAction::class);
+        $group->post('',NewInfosAction::class);
+        $group->post('/{id}',PutInfosAction::class);
+        $group->delete('/{id}',DeleteInfosAction::class);
     });
 };
