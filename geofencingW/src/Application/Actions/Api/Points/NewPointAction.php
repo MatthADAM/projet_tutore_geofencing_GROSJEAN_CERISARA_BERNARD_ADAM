@@ -12,11 +12,11 @@ class NewPointAction extends PointsAction
     protected function action(): Response
     {
         $data = $this->request->getParsedBody();
-        $user = new Point;
-        $user->x = $data["x"];
-        $user->y = $data["y"];
-        $user->save();
-        return $this->respondWithData($user);
+        $point = new Point;
+        $point->x = $data["x"];
+        $point->y = $data["y"];
+        $point->save();
+        return $this->respondWithData($point);
     }
 }
 
