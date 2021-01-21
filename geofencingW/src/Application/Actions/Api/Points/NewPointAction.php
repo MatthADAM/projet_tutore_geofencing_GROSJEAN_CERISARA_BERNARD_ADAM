@@ -13,6 +13,7 @@ class NewPointAction extends PointsAction
     {
         $data = $this->request->getParsedBody();
         $point = new Point;
+        $point->id_zone = $data["id_zone"];
         $point->x = $data["x"];
         $point->y = $data["y"];
         $point->save();
