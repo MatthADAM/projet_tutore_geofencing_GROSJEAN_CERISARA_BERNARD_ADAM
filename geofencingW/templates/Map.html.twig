@@ -44,11 +44,19 @@
 
         var popup = L.popup();
 
+        var index = 0;
+        var tabPts = [];
+
         function onMapClick(e) {
-            popup
-                .setLatLng(e.latlng)
-                .setContent("You clicked the map at " + e.latlng.toString())
-                .openOn(map);
+            if (index < 3) {
+                tabPts[index] = [e.latlng.lat,e.latlng.lng];
+                index++;
+                if (index == 3) {
+                    var polygon = L.polygon(tabPts, {color: 'red'}).addTo(map);
+                    index = 0;
+                    tabPts = [];
+                }
+            }
         }
 
 	    map.on('click', onMapClick);
