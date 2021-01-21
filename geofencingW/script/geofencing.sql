@@ -42,19 +42,9 @@ CREATE TABLE `informations` (
 
 CREATE TABLE `point` (
   `id_point` int NOT NULL,
+  `id_zone` int NOT NULL,
   `x` float(12,10) NOT NULL,
   `y` float(12,10) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `point_2_zone`
---
-
-CREATE TABLE `point_2_zone` (
-  `id_point` int NOT NULL,
-  `id_zone` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
@@ -96,13 +86,6 @@ ALTER TABLE `informations`
 --
 ALTER TABLE `point`
   ADD PRIMARY KEY (`id_point`);
-
---
--- Index pour la table `point_2_zone`
---
-ALTER TABLE `point_2_zone`
-  ADD PRIMARY KEY (`id_point`,`id_zone`),
-  ADD KEY `FK_id_zone` (`id_zone`);
 
 --
 -- Index pour la table `user`
@@ -149,11 +132,17 @@ ALTER TABLE `zone`
 --
 
 --
--- Contraintes pour la table `point_2_zone`
+-- Contraintes pour la table `point`
 --
-ALTER TABLE `point_2_zone`
-  ADD CONSTRAINT `FK_id_point` FOREIGN KEY (`id_point`) REFERENCES `point` (`id_point`),
+ALTER TABLE `point`
   ADD CONSTRAINT `FK_id_zone` FOREIGN KEY (`id_zone`) REFERENCES `zone` (`id_zone`);
+COMMIT;
+
+--
+-- Contraintes pour la table `informations`
+--
+ALTER TABLE `informations`
+  ADD CONSTRAINT `FK_id_zoneInfo` FOREIGN KEY (`id_zone`) REFERENCES `zone` (`id_zone`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
