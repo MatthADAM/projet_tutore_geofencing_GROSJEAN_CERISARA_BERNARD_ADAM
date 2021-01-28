@@ -18,7 +18,7 @@ class _HomePageState extends State<HomePage> {
           children: [
             Text(
               "Geofencing",
-              style: TextStyle(fontFamily: 'Knewave', fontSize: 40),
+              style: TextStyle(fontFamily: 'Minecraft', fontSize: 40),
             )
           ],
         ),
@@ -27,7 +27,10 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text("Bienvenue à la mine de Neuves-Maisons"),
+            Text(
+              "Bienvenue à la mine de Neuves-Maisons",
+              style: TextStyle(fontFamily: 'Minecraft'),
+            ),
           ],
         ),
       ),

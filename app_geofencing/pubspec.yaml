@@ -50,9 +50,9 @@ flutter:
   assets: 
     - assets/images/logo.png
   fonts:
-    - family: Knewave
+    - family: Minecraft
       fonts:
-        - asset: assets/fonts/Knewave-Regular.ttf
+        - asset: assets/fonts/minecraft_font.ttf
 
   # To add assets to your application, add an assets section, like this:
   # assets:
