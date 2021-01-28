@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import './MainPage.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key}) : super(key: key);
@@ -30,6 +31,7 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
+      backgroundColor: Colors.orangeAccent[100],
     );
   }
 }
