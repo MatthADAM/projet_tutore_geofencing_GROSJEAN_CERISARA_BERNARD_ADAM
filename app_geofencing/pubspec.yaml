@@ -1,5 +1,5 @@
 name: app_geofencing
-description: A new Flutter project.
+description: Projet tutoré
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
@@ -34,6 +34,8 @@ dev_dependencies:
     sdk: flutter
   integration_test:
     sdk: flutter
+  flutter_native_splash: ^0.2.9
+  flutter_launcher_icons: ^0.8.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -45,6 +47,12 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+  assets: 
+    - assets/images/logo.png
+  fonts:
+    - family: Knewave
+      fonts:
+        - asset: assets/fonts/Knewave-Regular.ttf
 
   # To add assets to your application, add an assets section, like this:
   # assets:
@@ -76,3 +84,13 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+#splash screen
+flutter_native_splash:
+  image: assets/images/logo.png
+  color: "F4B412"
+#custom lauch icon
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/icons/icon.png"
