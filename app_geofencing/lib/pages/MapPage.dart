@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import "package:latlong/latlong.dart";
-import './MainPage.dart';
 
 class MapPage extends StatefulWidget {
   MapPage({Key key}) : super(key: key);
@@ -18,7 +17,7 @@ class _MapPageState extends State<MapPage> {
         child: new FlutterMap(
           options: new MapOptions(
             center: new LatLng(48.6309538, 6.1067854),
-            zoom: 15.0,
+            zoom: 16.0,
           ),
           layers: [
             new TileLayerOptions(
