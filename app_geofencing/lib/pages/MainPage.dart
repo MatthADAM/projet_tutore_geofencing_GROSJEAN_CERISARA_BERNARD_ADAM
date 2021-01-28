@@ -25,8 +25,7 @@ class _MainPageState extends State<MainPage> {
           constraints: BoxConstraints.expand(),
           decoration: BoxDecoration(
               image: DecorationImage(
-                  image: NetworkImage(
-                      "https://cdn.wallpapersafari.com/23/22/27PZTj.jpg"),
+                  image: AssetImage('assets/images/bgMine.jpg'),
                   fit: BoxFit.cover)),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
