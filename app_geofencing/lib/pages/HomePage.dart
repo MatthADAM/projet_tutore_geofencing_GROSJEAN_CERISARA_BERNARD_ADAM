@@ -14,27 +14,50 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Text(
-              "Geofencing",
-              style: TextStyle(fontFamily: 'Minecraft', fontSize: 40),
-            )
+            Text("⛏"),
           ],
         ),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              "Bienvenue à la mine de Neuves-Maisons",
-              style: TextStyle(fontFamily: 'Minecraft'),
-            ),
-          ],
+        child: Container(
+          constraints: BoxConstraints.expand(),
+          decoration: BoxDecoration(
+              image: DecorationImage(
+                  image: NetworkImage(
+                      "https://cdn.wallpapersafari.com/23/22/27PZTj.jpg"),
+                  fit: BoxFit.cover)),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                "Projet Tutore",
+                style: TextStyle(
+                    fontFamily: 'Minecraft', fontSize: 30, color: Colors.white),
+              ),
+              Text(
+                "Geofencing",
+                style: TextStyle(
+                    fontFamily: 'Minecraft', fontSize: 30, color: Colors.white),
+              ),
+              Text(
+                "Bienvenue à la mine de Neuves-Maisons",
+                style: TextStyle(fontFamily: 'Minecraft', color: Colors.white),
+              ),
+              ElevatedButton(
+                child: Text('Entrer'),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => MainPage()),
+                  );
+                },
+              ),
+            ],
+          ),
         ),
       ),
-      backgroundColor: Colors.orangeAccent[100],
     );
   }
 }
