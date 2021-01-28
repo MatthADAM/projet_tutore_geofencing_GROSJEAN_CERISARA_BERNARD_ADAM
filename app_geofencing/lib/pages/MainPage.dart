@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import './MapPage.dart';
 
 class MainPage extends StatefulWidget {
   MainPage({Key key}) : super(key: key);
@@ -34,6 +35,7 @@ class _MainPageState extends State<MainPage> {
                 "Page principale",
                 style: TextStyle(fontFamily: 'Minecraft', color: Colors.white),
               ),
+              MapPage(),
             ],
           ),
         ),
