@@ -1,9 +1,9 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import './MainPage.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({Key key}) : super(key: key);
-
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -16,9 +16,32 @@ class _HomePageState extends State<HomePage> {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Text("⛏"),
+            Text("⛏ - Accueil"),
           ],
         ),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.copyright),
+            onPressed: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Row(
+                    children: <Widget>[
+                      Icon(
+                        Icons.copyright_outlined,
+                        color: Colors.white,
+                      ),
+                      Text("Copyright : "),
+                      Text(
+                          'ADAM Matthieu \nBERNARD Romain \nCERISARA Theo \nGROSJEAN Hervé'),
+                    ],
+                  ),
+                  duration: Duration(seconds: 20),
+                ),
+              );
+            },
+          ),
+        ],
       ),
       body: Center(
         child: Container(

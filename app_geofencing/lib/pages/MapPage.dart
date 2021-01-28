@@ -3,8 +3,6 @@ import 'package:flutter_map/flutter_map.dart';
 import "package:latlong/latlong.dart";
 
 class MapPage extends StatefulWidget {
-  MapPage({Key key}) : super(key: key);
-
   @override
   _MapPageState createState() => _MapPageState();
 }

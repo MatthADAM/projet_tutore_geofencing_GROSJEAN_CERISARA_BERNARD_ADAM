@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import './MapPage.dart';
 
 class MainPage extends StatefulWidget {
-  MainPage({Key key}) : super(key: key);
-
   @override
   _MainPageState createState() => _MainPageState();
 }
@@ -16,7 +14,7 @@ class _MainPageState extends State<MainPage> {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Text("⛏"),
+            Text("⛏ - Carte"),
           ],
         ),
       ),
