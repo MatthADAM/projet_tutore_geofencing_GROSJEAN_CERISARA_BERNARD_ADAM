@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import './MainPage.dart';
+import './test.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -64,7 +65,7 @@ class _HomePageState extends State<HomePage> {
                     fontFamily: 'Minecraft', fontSize: 30, color: Colors.white),
               ),
               Text(
-                "Bienvenue à la mine de Neuves-Maisons",
+                "Bienvenue a la mine de Neuves-Maisons",
                 style: TextStyle(fontFamily: 'Minecraft', color: Colors.white),
               ),
               ElevatedButton(

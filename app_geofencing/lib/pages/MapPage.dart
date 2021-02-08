@@ -11,7 +11,7 @@ class _MapPageState extends State<MapPage> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 500,
+      height: 400,
       child: new FlutterMap(
         options: new MapOptions(
           center: new LatLng(48.6309538, 6.1067854),
