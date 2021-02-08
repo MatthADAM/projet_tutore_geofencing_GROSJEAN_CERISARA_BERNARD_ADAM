@@ -20,10 +20,10 @@ function initialize() {
             let id = e.id_zone
             let nom = e.nom;
             let desc = e.description;
-            let info = `
+            let info = `<p>
             idZone: ${id}</br>  
             Nom: ${nom}</br>
-            Description: ${desc}</br></br>`;
+            Description: ${desc}</br></br></p>`;
             document.getElementById("listZone").innerHTML += info;
                 $.get("http://localhost:8001/api/points").then((results) => {
                     results.data.forEach(el => {

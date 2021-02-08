@@ -1,8 +1,15 @@
+#container{
+    display: grid;
+    grid-template-columns: repeat(6,1fr);
+}
 #map {
-    width : 800px;
+    grid-column: span 4;
     height: 600px;
 }
-
-#info {
-    display          : inline-block;
+#listZone{
+    grid-column: span 1;
+    margin-left: 10%;
+}
+#formulaire{
+    grid-column: span 1;
 }
