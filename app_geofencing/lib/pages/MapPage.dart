@@ -43,7 +43,8 @@ class _MapPageState extends State<MapPage> {
       height: 400,
       child: new FlutterMap(
         options: new MapOptions(
-          center: new LatLng(48.6309538, 6.1067854),
+          center: new LatLng(/* 48.6309538, 6.1067854 */ _location.latitude,
+              _location.longitude),
           zoom: 16.0,
         ),
         layers: [
@@ -53,11 +54,11 @@ class _MapPageState extends State<MapPage> {
           ),
           MarkerLayerOptions(markers: [
             Marker(
-              width: 10,
-              height: 10,
+              width: 20,
+              height: 20,
               point: LatLng(_location.latitude, _location.longitude),
               builder: (ctx) => Container(
-                child: FlutterLogo(),
+                child: Image(image: new AssetImage("assets/images/user.png")),
               ),
             )
           ]),
