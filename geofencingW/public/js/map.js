@@ -10,38 +10,46 @@ function initialize() {
     map.addLayer(osmLayer);
 
     var popup = L.popup();
-
-    var index = 0;
     var tabPts = [];
+    var tabPts2 = [];
     var zoneId;
     var zone = false;
     var mapMarkers = [];
     $.get("http://localhost:8001/api/zone").then((result) => {
         result.data.forEach(e => {
-            $.get("http://localhost:8001/api/points").then((results) => {
-                results.data.forEach(el => {
-                    if (e.id_zone == el.id_zone) {
-                        tabPts.push([el.x, el.y]);
+            let id = e.id_zone
+            let nom = e.nom;
+            let desc = e.description;
+            let info = `
+            idZone: ${id}</br>  
+            Nom: ${nom}</br>
+            Description: ${desc}</br></br>`;
+            document.getElementById("listZone").innerHTML += info;
+                $.get("http://localhost:8001/api/points").then((results) => {
+                    results.data.forEach(el => {
+                        if (e.id_zone == el.id_zone) {
+                            tabPts2.push([el.x, el.y]);
+                        }
+                    });
+                    if (tabPts2.length > 2) {
+                        L.polygon(tabPts2, { color: 'red' }).addTo(map);
                     }
+                    tabPts2 = [];
                 });
-                if (tabPts.length > 2) {
-                    L.polygon(tabPts, { color: 'red' }).addTo(map);
-                }
-                tabPts = [];
-            });
         })
-
+        tabPts2 = [];
     });
 
     function addZone() {
-        if (!zone) {
-            $.post("http://localhost:8001/api/zone", { nom: "ZONE TEST", description: "ZONE TEST" })
+        if (!zone && document.getElementById("nom").value != "" && document.getElementById("description").value != "") {
+            let nom = document.getElementById("nom").value;
+            let desc = document.getElementById("description").value;
+            $.post("http://localhost:8001/api/zone", { nom: nom, description: desc })
                 .done(function (data) {
                     zoneId = data.data.id_zone;
-                    index = 0;
                     tabPts = [];
                     zone = true;
-                    console.log("Zone créer" + zone);
+                    console.log("Zone créer " + zone);
 
                 });
         }
@@ -53,17 +61,20 @@ function initialize() {
             for (let i = 0; i < mapMarkers.length; i++) {
                 map.removeLayer(mapMarkers[i]);
             }
+            console.log(tabPts)
+            tabPts = [];
             zone = false;
         }
     }
     function onMapClick(e) {
         if (zone) {
             console.log("New Point")
-            tabPts.push([e.latlng.lat, e.latlng.lng]);
-            index++;
+            let x = e.latlng.lat;
+            let y = e.latlng.lng;
+            $.post("http://localhost:8001/api/points", { id_zone: zoneId, x: x, y: y });
+            tabPts.push([x, y]);
             var marker = L.marker(tabPts[tabPts.length - 1]).addTo(map);
             mapMarkers.push(marker);
-            $.post("http://localhost:8001/api/points", { id_zone: zoneId, x: e.latlng.lat, y: e.latlng.lng });
         }
     }
 
