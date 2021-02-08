@@ -44,7 +44,9 @@ class _ListenLocationState extends State<ListenLocationWidget> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          'Listen location: ' + (_error ?? '${_location ?? "unknown"}'),
+          (_error ?? '${_location.latitude ?? "unknown"}') +
+              ',' +
+              (_error ?? '${_location.longitude ?? "unknown"}'),
           style: TextStyle(color: Colors.white),
         ),
       ],
