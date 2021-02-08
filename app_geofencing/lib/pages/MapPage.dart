@@ -45,13 +45,14 @@ class _MapPageState extends State<MapPage> {
         options: new MapOptions(
           center: new LatLng(/* 48.6309538, 6.1067854 */ _location.latitude,
               _location.longitude),
-          zoom: 16.0,
+          zoom: 19,
         ),
         layers: [
           new TileLayerOptions(
-            urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-            subdomains: ['a', 'b', 'c'],
-          ),
+              urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+              subdomains: ['a', 'b', 'c'],
+              maxZoom: 19,
+              maxNativeZoom: 19),
           MarkerLayerOptions(markers: [
             Marker(
               width: 20,
