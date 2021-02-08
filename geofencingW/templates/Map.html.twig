@@ -29,49 +29,8 @@
         </nav>
     </div>
     <div id="map"></div>
+    <input id="submit" type="submit" value="créer zone">
+    <input id="submit2" type="submit" value="fin zone">
+    <script src="js/map.js"></script>
 </body>
 </html>
-<script type="text/javascript">
-    function initialize() {
-        var map = L.map('map').setView([48.6309538, 6.1067854], 16); // LIGNE 18
-        
-        var osmLayer = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', { // LIGNE 20
-            attribution: '© OpenStreetMap contributors',
-            maxZoom: 19
-        });
-        
-        map.addLayer(osmLayer);
-        
-        var popup = L.popup();
-        
-        var index = 0;
-        var tabPts = [];
-        var zoneId;
-        
-        function onMapClick(e) {
-            
-            if(index == 0) {
-                $.post( "http://localhost:8001/api/zone", { nom: "ZONE TEST", description: "ZONE TEST" })
-                .done(function(data) {
-                    zoneId = data.data.id_zone;
-                    console.log(zoneId + " zone");
-                    index++;
-                });
-                if (1 < index < 4) {
-                    tabPts[index] = [e.latlng.lat,e.latlng.lng];
-                    index++;
-                    console.log(zoneId + " point");
-                    $.post( "http://localhost:8001/api/points", {id_zone: zoneId, x: e.latlng.lat, y: e.latlng.lng } );
-                    
-                    if (index == 3) {
-                        var polygon = L.polygon(tabPts, {color: 'red'}).addTo(map);
-                        index = 0;
-                        tabPts = [];
-                    }
-                }
-            }
-        }
-        
-        map.on('click', onMapClick);
-    }
-</script> 
