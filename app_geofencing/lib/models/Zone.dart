@@ -4,6 +4,8 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
+// List<Zone> tset;
+
 List<Zone> parseZones(String responseBody) {
   final parsed = jsonDecode(responseBody).cast<Map<String, dynamic>>();
 
@@ -12,8 +14,9 @@ List<Zone> parseZones(String responseBody) {
 
 Future<List<Zone>> fetchZones(http.Client client) async {
   final response =
-      await client.get('https://jsonplaceholder.typicode.com/Zones');
+      await client.get('https://projet-tutore-ciasie.herokuapp.com/api/zone');
 
+  jsonDecode(response.body);
   return parseZones(response.body);
 }
 

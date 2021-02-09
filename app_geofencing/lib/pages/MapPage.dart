@@ -57,8 +57,9 @@ class _MapPageState extends State<MapPage> {
   @override
   Widget build(BuildContext context) {
     _listenLocation();
-    fetchZones(http.Client()).then((value) => {print(value[0])});
+    fetchZones(http.Client());
     print("kakakakak");
+    // print(tset);
     return SizedBox(
       height: 400,
       child: new FlutterMap(
