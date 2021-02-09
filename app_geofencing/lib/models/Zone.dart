@@ -4,19 +4,17 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
-Future<List<Zone>> fetchZones(http.Client client) async {
-  final response =
-      await client.get('https://projet-tutore-ciasie.herokuapp.com/api/zone');
-
-  // Use the compute function to run parseZones in a separate isolate.
-  return compute(parseZones, response.body);
-}
-
-// A function that converts a response body into a List<Zone>.
 List<Zone> parseZones(String responseBody) {
   final parsed = jsonDecode(responseBody).cast<Map<String, dynamic>>();
 
   return parsed.map<Zone>((json) => Zone.fromJson(json)).toList();
+}
+
+Future<List<Zone>> fetchZones(http.Client client) async {
+  final response =
+      await client.get('https://jsonplaceholder.typicode.com/Zones');
+
+  return parseZones(response.body);
 }
 
 class Zone {
