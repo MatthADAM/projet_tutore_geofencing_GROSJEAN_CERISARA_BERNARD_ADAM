@@ -22,6 +22,13 @@ class _MapPageState extends State<MapPage> {
     LatLng(48.687084198, 5.8719787598)
   ];
 
+  List<LatLng> points1 = [
+    LatLng(48.6591262817, 6.1935234070),
+    LatLng(48.6591491699, 6.1936411858),
+    LatLng(48.6590843201, 6.1936759949),
+    LatLng(48.6590423584, 6.1935606003)
+  ];
+
   Future<void> _listenLocation() async {
     _locationSubscription =
         location.onLocationChanged.handleError((dynamic err) {
@@ -74,6 +81,7 @@ class _MapPageState extends State<MapPage> {
           PolygonLayerOptions(
             polygons: [
               Polygon(points: points),
+              Polygon(points: points1),
             ],
           ),
         ],
