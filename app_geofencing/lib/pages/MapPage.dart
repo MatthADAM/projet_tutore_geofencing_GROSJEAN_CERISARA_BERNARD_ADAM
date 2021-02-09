@@ -15,6 +15,12 @@ class _MapPageState extends State<MapPage> {
   LocationData _location;
   StreamSubscription<LocationData> _locationSubscription;
   String _error;
+  List<LatLng> points = [
+    LatLng(48.6871871948, 5.8719520569),
+    LatLng(48.6872024536, 5.8720889091),
+    LatLng(48.6870880127, 5.8721261024),
+    LatLng(48.687084198, 5.8719787598)
+  ];
 
   Future<void> _listenLocation() async {
     _locationSubscription =
@@ -53,16 +59,23 @@ class _MapPageState extends State<MapPage> {
               subdomains: ['a', 'b', 'c'],
               maxZoom: 19,
               maxNativeZoom: 19),
-          MarkerLayerOptions(markers: [
-            Marker(
-              width: 20,
-              height: 20,
-              point: LatLng(_location.latitude, _location.longitude),
-              builder: (ctx) => Container(
-                child: Image(image: new AssetImage("assets/images/user.png")),
-              ),
-            )
-          ]),
+          MarkerLayerOptions(
+            markers: [
+              Marker(
+                width: 20,
+                height: 20,
+                point: LatLng(_location.latitude, _location.longitude),
+                builder: (ctx) => Container(
+                  child: Image(image: new AssetImage("assets/images/user.png")),
+                ),
+              )
+            ],
+          ),
+          PolygonLayerOptions(
+            polygons: [
+              Polygon(points: points),
+            ],
+          ),
         ],
       ),
     );
