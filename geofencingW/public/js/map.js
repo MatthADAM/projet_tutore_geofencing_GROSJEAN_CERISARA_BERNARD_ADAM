@@ -26,7 +26,7 @@ function initialize() {
             let desc = e.description;
             let res = affiListZone(nom, desc);
             document.getElementById("listZone").innerHTML += res;
-            $.get(api + "/api/points").then((results) => {
+            $.get(api + "/api/points/zone/" + id).then((results) => {
                 results.data.forEach(el => {
                     if (e.id_zone == el.id_zone) {
                         tabPts2.push([el.x, el.y]);
@@ -61,10 +61,37 @@ function initialize() {
             let res = affiListZone(nom, desc);
             res += editZone();
             document.getElementById("listZone").innerHTML = res;
-            document.getElementById("submit3").addEventListener("click", test);
+            document.getElementById("submit3").addEventListener("click", modifZone);
+            document.getElementById("submit4").addEventListener("click", deleteZone);
         });
     };
-    function test(){
+    function deleteZone() {
+        let index = 0;
+        $.get(api + "/api/points/zone/" + idZ).then((results) => {
+            results.data.forEach(el => {
+                $.ajax({
+                    url: api + "/api/points/" + el.id_point,
+                    type: 'DELETE',
+                    success: function (result) {
+                        index++;
+                        if (index==results.data.length) {
+                            $.ajax({
+                                url: api + "/api/zone/" + idZ,
+                                type: 'DELETE',
+                                success: function (result) {
+                                    console.log("Delete Zone");
+                                }
+                            });
+                        }
+                        console.log("Delete points");
+                    }
+                });
+
+            });
+            console.log(results.data.length);
+        });
+    }
+    function modifZone() {
         let nom = document.getElementById("nom2").value;
         let desc = document.getElementById("description2").value;
         $.post(api + "/api/zone/" + idZ, { nom: nom, description: desc })
@@ -87,7 +114,9 @@ function initialize() {
                     <input type="text" id="description2" placeholder="Description..." required>
                 </div>
                 <input id="submit3" type="submit" value="modifier zone">
-                </form>`;
+                </form>
+                <input id="submit4" type="submit" value="supprimer zone">`
+            ;
         return res;
     }
     function clickable() {
@@ -140,5 +169,5 @@ function initialize() {
     map.on('click', onMapClick);
     document.getElementById("submit").addEventListener("click", addZone);
     document.getElementById("submit2").addEventListener("click", endZone);
-    
+
 }
