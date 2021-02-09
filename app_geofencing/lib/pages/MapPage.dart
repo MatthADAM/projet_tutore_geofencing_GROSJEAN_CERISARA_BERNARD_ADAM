@@ -14,7 +14,7 @@ class _MapPageState extends State<MapPage> {
 
   LocationData _location;
   StreamSubscription<LocationData> _locationSubscription;
-  String _error;
+  String error;
   List<LatLng> points = [
     LatLng(48.6871871948, 5.8719520569),
     LatLng(48.6872024536, 5.8720889091),
@@ -26,19 +26,19 @@ class _MapPageState extends State<MapPage> {
     _locationSubscription =
         location.onLocationChanged.handleError((dynamic err) {
       setState(() {
-        _error = err.code;
+        error = err.code;
       });
       _locationSubscription.cancel();
     }).listen((LocationData currentLocation) {
       setState(() {
-        _error = null;
+        error = null;
 
         _location = currentLocation;
       });
     });
   }
 
-  Future<void> _stopListen() async {
+  Future<void> stopListen() async {
     _locationSubscription.cancel();
   }
 
