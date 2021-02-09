@@ -6,7 +6,7 @@ import 'dart:async';
 import 'package:http/http.dart' as http;
 
 import '../models/Point.dart' as PoinT;
-import '../models/Zone.dart' as Zone;
+import '../models/Zone.dart';
 
 class MapPage extends StatefulWidget {
   @override
@@ -19,8 +19,7 @@ class _MapPageState extends State<MapPage> {
   LocationData _location;
   StreamSubscription<LocationData> _locationSubscription;
   String error;
-  List<String> zn;
-  int i;
+
   List<LatLng> points = [
     LatLng(48.6871871948, 5.8719520569),
     LatLng(48.6872024536, 5.8720889091),
@@ -58,15 +57,8 @@ class _MapPageState extends State<MapPage> {
   @override
   Widget build(BuildContext context) {
     _listenLocation();
-    Zone.fetchZones(http.Client()).then((value) => {
-          i = 0,
-          value.forEach((element) {
-            zn[i] = element.name;
-            i++;
-          })
-        });
+    fetchZones(http.Client()).then((value) => {print(value[0])});
     print("kakakakak");
-    print(zn);
     return SizedBox(
       height: 400,
       child: new FlutterMap(
