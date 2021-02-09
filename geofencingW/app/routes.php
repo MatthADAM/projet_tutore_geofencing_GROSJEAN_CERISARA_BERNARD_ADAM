@@ -22,6 +22,7 @@ use \App\Application\Actions\Api\Points\GetPointAction;
 use \App\Application\Actions\Api\Points\NewPointAction;
 use \App\Application\Actions\Api\Points\PutPointAction;
 use \App\Application\Actions\Api\Points\DeletePointAction;
+use \App\Application\Actions\Api\Points\GetPointZoneAction;
 
 // Import for zones
 use \App\Application\Actions\Api\Zone\ListZoneAction;
@@ -84,6 +85,7 @@ return function (App $app) {
     $app->group('/api/points', function (Group $group) {
         $group->get('', ListPointAction::class);
         $group->get('/{id}', GetPointAction::class);
+        $group->get('/zone/{id}', GetPointZoneAction::class);
         $group->post('', NewPointAction::class);
         $group->post('/{id}', PutPointAction::class);
         $group->delete('/{id}', DeletePointAction::class);

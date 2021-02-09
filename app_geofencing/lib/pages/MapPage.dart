@@ -3,6 +3,10 @@ import 'package:flutter_map/flutter_map.dart';
 import "package:latlong/latlong.dart";
 import 'package:location/location.dart';
 import 'dart:async';
+import 'package:http/http.dart' as http;
+
+import '../models/Point.dart' as PoinT;
+import '../models/Zone.dart' as Zone;
 
 class MapPage extends StatefulWidget {
   @override
@@ -14,31 +18,55 @@ class _MapPageState extends State<MapPage> {
 
   LocationData _location;
   StreamSubscription<LocationData> _locationSubscription;
-  String _error;
+  String error;
+  List<String> zn;
+  int i;
+  List<LatLng> points = [
+    LatLng(48.6871871948, 5.8719520569),
+    LatLng(48.6872024536, 5.8720889091),
+    LatLng(48.6870880127, 5.8721261024),
+    LatLng(48.687084198, 5.8719787598)
+  ];
+
+  List<LatLng> points1 = [
+    LatLng(48.6591262817, 6.1935234070),
+    LatLng(48.6591491699, 6.1936411858),
+    LatLng(48.6590843201, 6.1936759949),
+    LatLng(48.6590423584, 6.1935606003)
+  ];
 
   Future<void> _listenLocation() async {
     _locationSubscription =
         location.onLocationChanged.handleError((dynamic err) {
       setState(() {
-        _error = err.code;
+        error = err.code;
       });
       _locationSubscription.cancel();
     }).listen((LocationData currentLocation) {
       setState(() {
-        _error = null;
+        error = null;
 
         _location = currentLocation;
       });
     });
   }
 
-  Future<void> _stopListen() async {
+  Future<void> stopListen() async {
     _locationSubscription.cancel();
   }
 
   @override
   Widget build(BuildContext context) {
     _listenLocation();
+    Zone.fetchZones(http.Client()).then((value) => {
+          i = 0,
+          value.forEach((element) {
+            zn[i] = element.name;
+            i++;
+          })
+        });
+    print("kakakakak");
+    print(zn);
     return SizedBox(
       height: 400,
       child: new FlutterMap(
@@ -53,16 +81,24 @@ class _MapPageState extends State<MapPage> {
               subdomains: ['a', 'b', 'c'],
               maxZoom: 19,
               maxNativeZoom: 19),
-          MarkerLayerOptions(markers: [
-            Marker(
-              width: 20,
-              height: 20,
-              point: LatLng(_location.latitude, _location.longitude),
-              builder: (ctx) => Container(
-                child: Image(image: new AssetImage("assets/images/user.png")),
-              ),
-            )
-          ]),
+          MarkerLayerOptions(
+            markers: [
+              Marker(
+                width: 20,
+                height: 20,
+                point: LatLng(_location.latitude, _location.longitude),
+                builder: (ctx) => Container(
+                  child: Image(image: new AssetImage("assets/images/user.png")),
+                ),
+              )
+            ],
+          ),
+          PolygonLayerOptions(
+            polygons: [
+              Polygon(points: points),
+              Polygon(points: points1),
+            ],
+          ),
         ],
       ),
     );

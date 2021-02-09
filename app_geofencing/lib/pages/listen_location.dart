@@ -33,7 +33,7 @@ class _ListenLocationState extends State<ListenLocationWidget> {
     });
   }
 
-  Future<void> _stopListen() async {
+  Future<void> stopListen() async {
     _locationSubscription.cancel();
   }
 
