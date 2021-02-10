@@ -19,51 +19,73 @@ function initialize() {
     let polyg;
     let zone = false;
     let finish = false;
-    $.get(api + "/api/zone").then((result) => {
-        result.data.forEach(e => {
-            let id = e.id_zone
-            let nom = e.nom;
-            let desc = e.description;
-            let res = affiListZone(nom, desc);
-            document.getElementById("listZone").innerHTML += res;
-            $.get(api + "/api/points/zone/" + id).then((results) => {
-                results.data.forEach(el => {
-                    if (e.id_zone == el.id_zone) {
-                        tabPts2.push([el.x, el.y]);
+
+    function affiAllZone() {
+        $.get(api + "/api/zone").then((result) => {
+            document.getElementById("listZone").innerHTML="";
+            result.data.forEach(e => {
+                let id = e.id_zone
+                let nom = e.nom;
+                let desc = e.description;
+                let res = affiListZone(nom, desc);
+                document.getElementById("listZone").innerHTML += res;
+                $.get(api + "/api/points/zone/" + id).then((results) => {
+                    results.data.forEach(el => {
+                        if (e.id_zone == el.id_zone) {
+                            tabPts2.push([el.x, el.y]);
+                        }
+                    });
+                    if (tabPts2.length > 2) {
+                        polyg = L.polygon(tabPts2, { color: 'red', id: id });
+                        polyg.addTo(map);
+                        polygon.push(polyg)
                     }
+                    tabPts2 = [];
                 });
-                if (tabPts2.length > 2) {
-                    polyg = L.polygon(tabPts2, { color: 'red', id: id });
-                    polyg.addTo(map);
-                    polygon.push(polyg)
-                }
-                tabPts2 = [];
-            });
-        })
-        finish = true;
-        tabPts2 = [];
-    });
+            })
+            finish = true;
+            tabPts2 = [];
+        });
+    }
     var idZ;
     var onPolyClick = function (event) {
         console.log("Clicked");
-        idZ = event.target.options.id;
-        polygon.forEach(element => {
-            element.setStyle({
-                color: "red"
+        polyg = event.target;
+        if (polyg.options.color == "blue") {
+            polygon.forEach(element => {
+                element.setStyle({
+                    color: "red"
+                })
+            });
+            affiAllZone();
+        } else {
+            idZ = event.target.options.id;
+            polygon.forEach(element => {
+                element.setStyle({
+                    color: "red"
+                })
+            });
+            event.target.setStyle({
+                color: "blue"
             })
-        });
-        event.target.setStyle({
-            color: "blue"
-        })
-        $.get(api + "/api/zone/" + idZ).then((e) => {
-            let nom = e.data.nom;
-            let desc = e.data.description;
-            let res = affiListZone(nom, desc);
-            res += editZone();
-            document.getElementById("listZone").innerHTML = res;
-            document.getElementById("submit3").addEventListener("click", modifZone);
-            document.getElementById("submit4").addEventListener("click", deleteZone);
-        });
+            $.get(api + "/api/zone/" + idZ).then((e) => {
+                let nom = e.data.nom;
+                let desc = e.data.description;
+                let res = affiListZone(nom, desc);
+                $.get(api + "/api/infos/zone/" + idZ).then((results) => {
+                    results.data.forEach(el => {
+                        res += affiInfoZone(el.contenu);
+                    })
+                    res += "</div>";
+                    res += editZone();
+                    res += AddInfoZone();
+                    document.getElementById("listZone").innerHTML = res;
+                    document.getElementById("submit3").addEventListener("click", modifZone);
+                    document.getElementById("submit4").addEventListener("click", deleteZone);
+                    document.getElementById("submit5").addEventListener("click", updateInfoZone);
+                });
+            });
+        }
     };
     function deleteZone() {
         let index = 0;
@@ -74,12 +96,13 @@ function initialize() {
                     type: 'DELETE',
                     success: function (result) {
                         index++;
-                        if (index==results.data.length) {
+                        if (index == results.data.length) {
                             $.ajax({
                                 url: api + "/api/zone/" + idZ,
                                 type: 'DELETE',
                                 success: function (result) {
                                     console.log("Delete Zone");
+                                    map.removeLayer(polyg);
                                 }
                             });
                         }
@@ -96,12 +119,26 @@ function initialize() {
         let desc = document.getElementById("description2").value;
         $.post(api + "/api/zone/" + idZ, { nom: nom, description: desc })
         res = affiListZone(nom, desc);
-        document.getElementById("listZone").innerHTML = res;
+        document.getElementById("info").innerHTML = res;
+    }
+    function updateInfoZone() {
+        let info = document.getElementById("contenu").value;
+        document.getElementById("contenu").value = "";
+        $.post(api + "/api/infos", { id_zone: idZ, type: "text", contenu: info })
+        res = affiInfoZone(info);
+        document.getElementById("informationZone").innerHTML += res;
     }
     function affiListZone(nom, desc) {
-        let res = `<p>
+        let res = `<div id="info"><p>
         Nom: ${nom}</br>
-        Description: ${desc}</br></br></p>`;
+        Description: ${desc}</br></br></p></div>
+        <div id="informationZone">`;
+        return res;
+    }
+    function affiInfoZone(info) {
+        let res = `<p>
+        Information: ${info}
+        </br></p>`;
         return res;
     }
     function editZone() {
@@ -116,6 +153,17 @@ function initialize() {
                 <input id="submit3" type="submit" value="modifier zone">
                 </form>
                 <input id="submit4" type="submit" value="supprimer zone">`
+            ;
+        return res;
+    }
+    function AddInfoZone() {
+        let res = `
+        <form onsubmit="return false">
+                <div>
+                    <input type="text" id="contenu" placeholder="Information..." required>
+                </div>
+                <input id="submit5" type="submit" value="Ajouter information">
+                </form>`
             ;
         return res;
     }
@@ -167,6 +215,7 @@ function initialize() {
     }
 
     map.on('click', onMapClick);
+    affiAllZone();
     document.getElementById("submit").addEventListener("click", addZone);
     document.getElementById("submit2").addEventListener("click", endZone);
 

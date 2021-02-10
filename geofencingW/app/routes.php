@@ -37,6 +37,7 @@ use \App\Application\Actions\Api\Infos\GetInfosAction;
 use \App\Application\Actions\Api\Infos\NewInfosAction;
 use \App\Application\Actions\Api\Infos\PutInfosAction;
 use \App\Application\Actions\Api\Infos\DeleteInfosAction;
+use \App\Application\Actions\Api\Infos\GetInfosZoneAction;
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -104,6 +105,7 @@ return function (App $app) {
     $app->group('/api/infos', function (Group $group) {
         $group->get('', ListInfosAction::class);
         $group->get('/{id}', GetInfosAction::class);
+        $group->get('/zone/{id}', GetInfosZoneAction::class);
         $group->post('', NewInfosAction::class);
         $group->post('/{id}', PutInfosAction::class);
         $group->delete('/{id}', DeleteInfosAction::class);
