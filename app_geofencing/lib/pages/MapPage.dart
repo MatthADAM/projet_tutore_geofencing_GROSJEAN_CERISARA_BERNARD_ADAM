@@ -19,6 +19,7 @@ class _MapPageState extends State<MapPage> {
   LocationData _location;
   StreamSubscription<LocationData> _locationSubscription;
   String error;
+  List<Zone> tset = [];
 
   List<LatLng> points = [
     LatLng(48.6871871948, 5.8719520569),
@@ -57,9 +58,9 @@ class _MapPageState extends State<MapPage> {
   @override
   Widget build(BuildContext context) {
     _listenLocation();
-    fetchZones(http.Client());
-    print("kakakakak");
-    // print(tset);
+    fetchZones(http.Client()).then((value) => tset = value);
+    print(tset);
+    print("CA MARCHE");
     return SizedBox(
       height: 400,
       child: new FlutterMap(
