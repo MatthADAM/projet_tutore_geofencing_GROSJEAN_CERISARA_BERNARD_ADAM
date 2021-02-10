@@ -114,25 +114,62 @@ class _MapPageState extends State<MapPage> {
           (zoneFE) {
             fetchPoints(http.Client(), zoneFE.id).then(
               (lPoint) => {
+                print("  YYY "),
+                res.forEach((element) {
+                  print(element.points);
+                }),
+                pts = [],
+                listePoint = [],
+                print("List cleared"),
                 lPoint.forEach(
                   (pointApi) {
                     listePoint.add(pointApi);
                   },
                 ),
+                print("  YYY2 "),
+                res.forEach((element) {
+                  print(element.points);
+                }),
                 print(listePoint.length),
-                pts.clear(),
+                print("  "),
+                print("  "),
+                listePoint.forEach((element) {
+                  print("idzone: ");
+                  print(element.idZone);
+                  print("id pts : ");
+                  print(element.idPoint);
+                  print("  ");
+                }),
+                print("  YYY3"),
+                res.forEach((element) {
+                  print(element.points);
+                }),
+                print("  "),
+                print("  "),
+                print("RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR"),
+                print("  "),
+                print("  "),
                 listePoint.forEach(
                   (pointFE) {
+                    print("pointFE id");
+                    print(pointFE.idPoint);
                     pts.add(LatLng(pointFE.lat, pointFE.lon));
                   },
                 ),
-                res.add(Polygon(points: pts)),
-                listePoint.clear(),
-                print("List cleared"),
+                print("  "),
+                print("  XXX "),
+                res.forEach((element) {
+                  print(element.points);
+                }),
+                res.add(new Polygon(points: pts)),
+                print("res element.points"),
+                res.forEach((element) {
+                  print(element.points);
+                }),
+                print("  "),
+                print("  "),
               },
             );
-            listePoint.clear();
-            print("List cleared2");
           },
         ),
       },
