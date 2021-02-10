@@ -104,24 +104,24 @@ class _MapPageState extends State<MapPage> {
   void initState() {
     super.initState();
     fetchZones(http.Client()).then(
-      (value) => {
-        value.forEach(
-          (element) {
-            listeZone.add(element);
+      (lZone) => {
+        lZone.forEach(
+          (zoneApi) {
+            listeZone.add(zoneApi);
           },
         ),
         listeZone.forEach(
-          (element) {
-            fetchPoints(http.Client(), element.id).then(
-              (value) => {
-                value.forEach(
-                  (element) {
-                    listePoint.add(element);
+          (zoneFE) {
+            fetchPoints(http.Client(), zoneFE.id).then(
+              (lPoint) => {
+                lPoint.forEach(
+                  (pointApi) {
+                    listePoint.add(pointApi);
                   },
                 ),
                 listePoint.forEach(
-                  (element2) {
-                    pts.add(LatLng(element2.lat, element2.lon));
+                  (pointFE) {
+                    pts.add(LatLng(pointFE.lat, pointFE.lon));
                   },
                 ),
                 res.add(Polygon(points: pts)),
