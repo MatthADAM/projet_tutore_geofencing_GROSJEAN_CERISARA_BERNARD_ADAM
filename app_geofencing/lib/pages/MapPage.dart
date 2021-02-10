@@ -5,7 +5,7 @@ import 'package:location/location.dart';
 import 'dart:async';
 import 'package:http/http.dart' as http;
 
-import '../models/Point.dart' as PoinT;
+import '../models/Point.dart';
 import '../models/Zone.dart';
 
 class MapPage extends StatefulWidget {
@@ -19,7 +19,10 @@ class _MapPageState extends State<MapPage> {
   LocationData _location;
   StreamSubscription<LocationData> _locationSubscription;
   String error;
-  List<Zone> tset = [];
+  List<Zone> listeZone = [];
+  List<Point> listePoint = [];
+  List<Polygon> res = [];
+  List<LatLng> pts = [];
 
   List<LatLng> points = [
     LatLng(48.6871871948, 5.8719520569),
@@ -86,6 +89,73 @@ class _MapPageState extends State<MapPage> {
     _locationSubscription.cancel();
   }
 
+  void createPolygons() {
+    listeZone.forEach((element) {
+      fetchPoints(http.Client(), element.id)
+          .then((value) => listePoint = value);
+      listePoint.forEach((element2) {
+        pts.add(LatLng(element2.lat, element2.lon));
+      });
+      res.add(Polygon(points: pts));
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetchZones(http.Client()).then(
+      (value) => {
+        value.forEach(
+          (element) {
+            listeZone.add(element);
+          },
+        ),
+        listeZone.forEach(
+          (element) {
+            fetchPoints(http.Client(), element.id).then(
+              (value) => {
+                value.forEach(
+                  (element) {
+                    listePoint.add(element);
+                  },
+                ),
+                listePoint.forEach(
+                  (element2) {
+                    pts.add(LatLng(element2.lat, element2.lon));
+                  },
+                ),
+                res.add(Polygon(points: pts)),
+                listePoint.clear(),
+              },
+            );
+            listePoint.clear();
+          },
+        ),
+      },
+    );
+    // createPolygons();
+
+    /* listeZone.forEach(
+      (element) {
+        fetchPoints(http.Client(), element.id).then(
+          (value) => {
+            value.forEach(
+              (element) {
+                listePoint.add(element);
+              },
+            ),
+          },
+        );
+        listePoint.forEach(
+          (element2) {
+            pts.add(LatLng(element2.lat, element2.lon));
+          },
+        );
+        res.add(Polygon(points: pts));
+      },
+    ); */
+  }
+
   @override
   Widget build(BuildContext context) {
     _listenLocation();
@@ -103,42 +173,60 @@ class _MapPageState extends State<MapPage> {
       print("  ");
       print("  ");
     }
-    fetchZones(http.Client()).then((value) => tset = value);
-    print(tset);
-    print("CA MARCHE");
-    return SizedBox(
-      height: 400,
-      child: new FlutterMap(
-        options: new MapOptions(
-          center: new LatLng(/* 48.6309538, 6.1067854 */ _location.latitude,
-              _location.longitude),
-          zoom: 19,
+    if (res.length > 0) {
+      return SizedBox(
+        height: 400,
+        child: new FlutterMap(
+          options: new MapOptions(
+            center: new LatLng(/* 48.6309538, 6.1067854 */ _location.latitude,
+                _location.longitude),
+            zoom: 19,
+          ),
+          layers: [
+            new TileLayerOptions(
+                urlTemplate:
+                    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                subdomains: ['a', 'b', 'c'],
+                maxZoom: 19,
+                maxNativeZoom: 19),
+            MarkerLayerOptions(
+              markers: [
+                Marker(
+                  width: 20,
+                  height: 20,
+                  point: LatLng(_location.latitude, _location.longitude),
+                  builder: (ctx) => Container(
+                    child:
+                        Image(image: new AssetImage("assets/images/user.png")),
+                  ),
+                )
+              ],
+            ),
+            PolygonLayerOptions(
+              polygons:
+                  /* [
+                Polygon(points: points),
+                Polygon(points: points1),
+              ], */
+                  res,
+            ),
+          ],
         ),
-        layers: [
-          new TileLayerOptions(
-              urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-              subdomains: ['a', 'b', 'c'],
-              maxZoom: 19,
-              maxNativeZoom: 19),
-          MarkerLayerOptions(
-            markers: [
-              Marker(
-                width: 20,
-                height: 20,
-                point: LatLng(_location.latitude, _location.longitude),
-                builder: (ctx) => Container(
-                  child: Image(image: new AssetImage("assets/images/user.png")),
-                ),
-              )
-            ],
-          ),
-          PolygonLayerOptions(
-            polygons: [
-              Polygon(points: points),
-              Polygon(points: points1),
-            ],
-          ),
-        ],
+      );
+    }
+
+    // return CircularProgressIndicator();
+    return Center(
+      child: Container(
+        child: Column(
+          children: <Widget>[
+            CircularProgressIndicator(),
+            Text(
+              "Carte en cours de chargement",
+              style: TextStyle(color: Colors.white, fontFamily: 'Minceraft'),
+            ),
+          ],
+        ),
       ),
     );
   }
