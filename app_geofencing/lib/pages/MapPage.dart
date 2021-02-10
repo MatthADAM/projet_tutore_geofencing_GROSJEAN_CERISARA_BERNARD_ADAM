@@ -174,6 +174,14 @@ class _MapPageState extends State<MapPage> {
       print("  ");
     }
     if (res.length > 0) {
+      print(res[0].points);
+      print("----------1----------");
+      print(res[1].points);
+      print("----------2----------");
+      print(res[2].points);
+      print("----------3----------");
+      print(res[3].points);
+      print("----------4----------");
       return SizedBox(
         height: 400,
         child: new FlutterMap(
