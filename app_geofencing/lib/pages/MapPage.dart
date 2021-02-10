@@ -119,6 +119,8 @@ class _MapPageState extends State<MapPage> {
                     listePoint.add(pointApi);
                   },
                 ),
+                print(listePoint.length),
+                pts.clear(),
                 listePoint.forEach(
                   (pointFE) {
                     pts.add(LatLng(pointFE.lat, pointFE.lon));
@@ -126,9 +128,11 @@ class _MapPageState extends State<MapPage> {
                 ),
                 res.add(Polygon(points: pts)),
                 listePoint.clear(),
+                print("List cleared"),
               },
             );
             listePoint.clear();
+            print("List cleared2");
           },
         ),
       },
@@ -182,6 +186,7 @@ class _MapPageState extends State<MapPage> {
       print("----------3----------");
       print(res[3].points);
       print("----------4----------");
+      print(listePoint.length);
       return SizedBox(
         height: 400,
         child: new FlutterMap(
