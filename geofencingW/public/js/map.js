@@ -144,10 +144,10 @@ function initialize() {
         let res = `
         <form onsubmit="return false">
                 <div>
-                    <input type="text" id="nom2" placeholder="Nom..." required>
+                    <input type="text" id="nom2" placeholder="Nom...">
                 </div>
                 <div>
-                    <input type="text" id="description2" placeholder="Description..." required>
+                    <input type="text" id="description2" placeholder="Description...">
                 </div>
                 <input id="submit3" type="submit" value="modifier zone">
                 </form>
