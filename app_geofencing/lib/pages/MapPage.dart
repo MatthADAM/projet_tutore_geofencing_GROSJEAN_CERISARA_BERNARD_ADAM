@@ -114,87 +114,26 @@ class _MapPageState extends State<MapPage> {
           (zoneFE) {
             fetchPoints(http.Client(), zoneFE.id).then(
               (lPoint) => {
-                print("  YYY "),
-                res.forEach((element) {
-                  print(element.points);
-                }),
+                res.forEach((element) {}),
                 pts = [],
                 listePoint = [],
-                print("List cleared"),
                 lPoint.forEach(
                   (pointApi) {
                     listePoint.add(pointApi);
                   },
                 ),
-                print("  YYY2 "),
-                res.forEach((element) {
-                  print(element.points);
-                }),
-                print(listePoint.length),
-                print("  "),
-                print("  "),
-                listePoint.forEach((element) {
-                  print("idzone: ");
-                  print(element.idZone);
-                  print("id pts : ");
-                  print(element.idPoint);
-                  print("  ");
-                }),
-                print("  YYY3"),
-                res.forEach((element) {
-                  print(element.points);
-                }),
-                print("  "),
-                print("  "),
-                print("RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR"),
-                print("  "),
-                print("  "),
                 listePoint.forEach(
                   (pointFE) {
-                    print("pointFE id");
-                    print(pointFE.idPoint);
                     pts.add(LatLng(pointFE.lat, pointFE.lon));
                   },
                 ),
-                print("  "),
-                print("  XXX "),
-                res.forEach((element) {
-                  print(element.points);
-                }),
                 res.add(new Polygon(points: pts)),
-                print("res element.points"),
-                res.forEach((element) {
-                  print(element.points);
-                }),
-                print("  "),
-                print("  "),
               },
             );
           },
         ),
       },
     );
-    // createPolygons();
-
-    /* listeZone.forEach(
-      (element) {
-        fetchPoints(http.Client(), element.id).then(
-          (value) => {
-            value.forEach(
-              (element) {
-                listePoint.add(element);
-              },
-            ),
-          },
-        );
-        listePoint.forEach(
-          (element2) {
-            pts.add(LatLng(element2.lat, element2.lon));
-          },
-        );
-        res.add(Polygon(points: pts));
-      },
-    ); */
   }
 
   @override
@@ -215,15 +154,6 @@ class _MapPageState extends State<MapPage> {
       print("  ");
     }
     if (res.length > 0) {
-      print(res[0].points);
-      print("----------1----------");
-      print(res[1].points);
-      print("----------2----------");
-      print(res[2].points);
-      print("----------3----------");
-      print(res[3].points);
-      print("----------4----------");
-      print(listePoint.length);
       return SizedBox(
         height: 400,
         child: new FlutterMap(
