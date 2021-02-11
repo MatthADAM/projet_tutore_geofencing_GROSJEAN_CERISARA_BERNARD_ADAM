@@ -169,6 +169,14 @@ class _MapPageState extends State<MapPage> {
                 subdomains: ['a', 'b', 'c'],
                 maxZoom: 19,
                 maxNativeZoom: 19),
+            PolygonLayerOptions(
+              polygons:
+                  /* [
+                Polygon(points: points),
+                Polygon(points: points1),
+              ], */
+                  res,
+            ),
             MarkerLayerOptions(
               markers: [
                 Marker(
@@ -181,14 +189,6 @@ class _MapPageState extends State<MapPage> {
                   ),
                 )
               ],
-            ),
-            PolygonLayerOptions(
-              polygons:
-                  /* [
-                Polygon(points: points),
-                Polygon(points: points1),
-              ], */
-                  res,
             ),
           ],
         ),
