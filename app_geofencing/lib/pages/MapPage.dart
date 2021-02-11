@@ -155,7 +155,7 @@ class _MapPageState extends State<MapPage> {
     }
     if (res.length > 0) {
       return SizedBox(
-        height: 400,
+        height: 500,
         child: new FlutterMap(
           options: new MapOptions(
             center: new LatLng(/* 48.6309538, 6.1067854 */ _location.latitude,
@@ -200,10 +200,16 @@ class _MapPageState extends State<MapPage> {
       child: Container(
         child: Column(
           children: <Widget>[
-            CircularProgressIndicator(),
+            Image(
+              image: AssetImage('assets/images/loader.gif'),
+              width: 70,
+              height: 70,
+              color: Colors.white,
+            ),
             Text(
               "Carte en cours de chargement",
-              style: TextStyle(color: Colors.white, fontFamily: 'Minceraft'),
+              style: TextStyle(
+                  color: Colors.white, fontFamily: 'Minecraft', fontSize: 15),
             ),
           ],
         ),

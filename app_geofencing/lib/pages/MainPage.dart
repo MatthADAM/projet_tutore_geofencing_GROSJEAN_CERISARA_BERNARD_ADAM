@@ -29,12 +29,7 @@ class _MainPageState extends State<MainPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text(
-                "Page principale",
-                style: TextStyle(fontFamily: 'Minecraft', color: Colors.white),
-              ),
               MapPage(),
-              ListenLocationWidget(),
             ],
           ),
         ),
