@@ -56,20 +56,6 @@ class _MapPageState extends State<MapPage> {
         payload: 'test oayload');
   }
 
-  List<LatLng> points = [
-    LatLng(48.6871871948, 5.8719520569),
-    LatLng(48.6872024536, 5.8720889091),
-    LatLng(48.6870880127, 5.8721261024),
-    LatLng(48.687084198, 5.8719787598)
-  ];
-
-  List<LatLng> points1 = [
-    LatLng(48.6591262817, 6.1935234070),
-    LatLng(48.6591491699, 6.1936411858),
-    LatLng(48.6590843201, 6.1936759949),
-    LatLng(48.6590423584, 6.1935606003)
-  ];
-
   bool _checkIfValidMarker(LatLng tap, List<LatLng> vertices) {
     int intersectCount = 0;
     for (int j = 0; j < vertices.length - 1; j++) {
@@ -78,7 +64,7 @@ class _MapPageState extends State<MapPage> {
       }
     }
 
-    return ((intersectCount % 2) == 1); // odd = inside, even = outside;
+    return ((intersectCount % 2) == 1);
   }
 
   bool rayCastIntersect(LatLng tap, LatLng vertA, LatLng vertB) {
@@ -90,13 +76,12 @@ class _MapPageState extends State<MapPage> {
     double pX = tap.longitude;
 
     if ((aY > pY && bY > pY) || (aY < pY && bY < pY) || (aX < pX && bX < pX)) {
-      return false; // a and b can't both be above or below pt.y, and a or
-      // b must be east of pt.x
+      return false;
     }
 
-    double m = (aY - bY) / (aX - bX); // Rise over run
-    double bee = (-aX) * m + aY; // y = mx + b
-    double x = (pY - bee) / m; // algebra is neat!
+    double m = (aY - bY) / (aX - bX);
+    double bee = (-aX) * m + aY;
+    double x = (pY - bee) / m;
 
     return x > pX;
   }
@@ -138,6 +123,23 @@ class _MapPageState extends State<MapPage> {
 
           if (check && !estDansZone) {
             _showNotification();
+            showDialog(
+              context: context,
+              builder: (BuildContext context) => CupertinoAlertDialog(
+                title: Text("Test"),
+                content: Text(
+                    "Vous entrez dans la zone " + nomZone[indexCurrentZone]),
+                actions: <Widget>[
+                  CupertinoDialogAction(
+                    isDefaultAction: true,
+                    child: Text('Ok'),
+                    onPressed: () async {
+                      Navigator.of(context, rootNavigator: true).pop();
+                    },
+                  )
+                ],
+              ),
+            );
             print("  ");
             print(check);
             print("  ");
@@ -153,6 +155,23 @@ class _MapPageState extends State<MapPage> {
 
           if (!check && estDansZone) {
             _showNotification();
+            showDialog(
+              context: context,
+              builder: (BuildContext context) => CupertinoAlertDialog(
+                title: Text("Test"),
+                content:
+                    Text("Vous sortez de la zone " + nomZone[indexCurrentZone]),
+                actions: <Widget>[
+                  CupertinoDialogAction(
+                    isDefaultAction: true,
+                    child: Text('Ok'),
+                    onPressed: () async {
+                      Navigator.of(context, rootNavigator: true).pop();
+                    },
+                  )
+                ],
+              ),
+            );
             print("  ");
             print(check);
             print("  ");
@@ -173,47 +192,47 @@ class _MapPageState extends State<MapPage> {
     _locationSubscription.cancel();
   }
 
+  Future onSelectNotification(String payload) async {
+    if (payload != null) {
+      debugPrint('Notification payload: $payload');
+    }
+    await print('clicked');
+  }
+
+  Future onDidReceiveLocalNotification(
+      int id, String title, String body, String payload) async {
+    await showDialog(
+        context: context,
+        builder: (BuildContext context) => CupertinoAlertDialog(
+              title: Text(title),
+              content: Text(body),
+              actions: <Widget>[
+                CupertinoDialogAction(
+                  isDefaultAction: true,
+                  child: Text('Ok'),
+                  onPressed: () async {
+                    Navigator.of(context, rootNavigator: true).pop();
+                  },
+                )
+              ],
+            ));
+  }
+
   @override
   void initState() {
     super.initState();
 
-    //   const AndroidInitializationSettings initializationSettingsAndroid =
-    //       AndroidInitializationSettings("@mipmap/ic_launcher");
-    //   final IOSInitializationSettings initializationSettingsIOS =
-    //       IOSInitializationSettings(
-    //           onDidReceiveLocalNotification: onDidReceiveLocalNotification);
-    //   final InitializationSettings initializationSettings =
-    //       InitializationSettings(
-    //           android: initializationSettingsAndroid,
-    //           iOS: initializationSettingsIOS);
-    //   flutterLocalNotificationsPlugin.initialize(initializationSettings,
-    //       onSelectNotification: onSelectNotification);
-    // }
-
-    // Future onSelectNotification(String payload) async {
-    //   if (payload != null) {
-    //     debugPrint('Notification payload: $payload');
-    //   }
-    //   await print('clicked');
-    // }
-
-    // Future onDidReceiveLocalNotification(
-    //     int id, String title, String body, String payload) async {
-    //   await showDialog(
-    //       context: context,
-    //       builder: (BuildContext context) => CupertinoAlertDialog(
-    //             title: Text(title),
-    //             content: Text(body),
-    //             actions: <Widget>[
-    //               CupertinoDialogAction(
-    //                 isDefaultAction: true,
-    //                 child: Text('Ok'),
-    //                 onPressed: () async {
-    //                   Navigator.of(context, rootNavigator: true).pop();
-    //                 },
-    //               )
-    //             ],
-    //           ));
+    const AndroidInitializationSettings initializationSettingsAndroid =
+        AndroidInitializationSettings("@mipmap/ic_launcher");
+    final IOSInitializationSettings initializationSettingsIOS =
+        IOSInitializationSettings(
+            onDidReceiveLocalNotification: onDidReceiveLocalNotification);
+    final InitializationSettings initializationSettings =
+        InitializationSettings(
+            android: initializationSettingsAndroid,
+            iOS: initializationSettingsIOS);
+    flutterLocalNotificationsPlugin.initialize(initializationSettings,
+        onSelectNotification: onSelectNotification);
 
     fetchZones(http.Client()).then(
       (lZone) => {
@@ -245,23 +264,9 @@ class _MapPageState extends State<MapPage> {
   @override
   Widget build(BuildContext context) {
     _listenLocation();
-    // LatLng latlng = LatLng(48.659114, 6.193596);
-    // if (_checkIfValidMarker(latlng, points1)) {
-    //   print("  ");
-    //   print("  ");
-    //   print("LE POINT EST DANS UN POLYGONE");
-    //   print("  ");
-    //   print("  ");
-    // } else {
-    //   print("  ");
-    //   print("  ");
-    //   print("LE POINT N'EST PAS DANS UN POLYGONE");
-    //   print("  ");
-    //   print("  ");
-    // }
     if (res.length > 0) {
       return SizedBox(
-        height: 500,
+        height: MediaQuery.of(context).size.height * 0.87,
         child: new FlutterMap(
           options: new MapOptions(
             center: new LatLng(/* 48.6309538, 6.1067854 */ _location.latitude,
@@ -276,12 +281,7 @@ class _MapPageState extends State<MapPage> {
                 maxZoom: 19,
                 maxNativeZoom: 19),
             PolygonLayerOptions(
-              polygons:
-                  /* [
-                Polygon(points: points),
-                Polygon(points: points1),
-              ], */
-                  res,
+              polygons: res,
             ),
             MarkerLayerOptions(
               markers: [
