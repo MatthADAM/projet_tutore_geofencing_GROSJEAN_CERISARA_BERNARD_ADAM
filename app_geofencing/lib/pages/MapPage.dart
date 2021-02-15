@@ -4,6 +4,7 @@ import "package:latlong/latlong.dart";
 import 'package:location/location.dart';
 import 'dart:async';
 import 'package:http/http.dart' as http;
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import '../models/Point.dart';
 import '../models/Zone.dart';
@@ -157,17 +158,6 @@ class _MapPageState extends State<MapPage> {
 
   Future<void> stopListen() async {
     _locationSubscription.cancel();
-  }
-
-  void createPolygons() {
-    listeZone.forEach((element) {
-      fetchPoints(http.Client(), element.id)
-          .then((value) => listePoint = value);
-      listePoint.forEach((element2) {
-        pts.add(LatLng(element2.lat, element2.lon));
-      });
-      res.add(Polygon(points: pts));
-    });
   }
 
   List<Point> sort(tab) {
