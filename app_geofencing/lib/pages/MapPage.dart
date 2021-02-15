@@ -4,6 +4,8 @@ import "package:latlong/latlong.dart";
 import 'package:location/location.dart';
 import 'dart:async';
 import 'package:http/http.dart' as http;
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter/cupertino.dart';
 
 import '../models/Point.dart';
 import '../models/Zone.dart';
@@ -23,6 +25,36 @@ class _MapPageState extends State<MapPage> {
   List<Point> listePoint = [];
   List<Polygon> res = [];
   List<LatLng> pts = [];
+  bool estDansZone = false;
+  int indexCurrentZone;
+  bool check = false;
+  List<LatLng> pointsCurrentZone = [];
+  List<String> nomZone = [];
+
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      new FlutterLocalNotificationsPlugin();
+  var initializationSettingsAndroid;
+  var initializationSettingsIOS;
+  var initializationSettings;
+
+  void _showNotification() async {
+    await _demoNotification();
+  }
+
+  Future<void> _demoNotification() async {
+    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+        'channel_ID', 'channel name', 'channel description',
+        importance: Importance.max,
+        priority: Priority.high,
+        ticker: 'test ticker');
+
+    var iOSChannelSpecifics = IOSNotificationDetails();
+    var platformChannelSpecifics = NotificationDetails();
+
+    await flutterLocalNotificationsPlugin.show(0, 'Hello, buddy',
+        'A message from flutter buddy', platformChannelSpecifics,
+        payload: 'test oayload');
+  }
 
   List<LatLng> points = [
     LatLng(48.6871871948, 5.8719520569),
@@ -81,6 +113,58 @@ class _MapPageState extends State<MapPage> {
         error = null;
 
         _location = currentLocation;
+
+        int i = 0;
+
+        res.forEach((e) {
+          if (indexCurrentZone == null) {
+            indexCurrentZone = i;
+          }
+
+          if (i == 4) {
+            i = 0;
+          }
+
+          if (!_checkIfValidMarker(
+              LatLng(_location.latitude, _location.longitude),
+              res[indexCurrentZone].points)) {
+            check = _checkIfValidMarker(
+                LatLng(_location.latitude, _location.longitude), res[i].points);
+          } else {
+            check = _checkIfValidMarker(
+                LatLng(_location.latitude, _location.longitude),
+                res[indexCurrentZone].points);
+          }
+
+          if (check && !estDansZone) {
+            _showNotification();
+            print("  ");
+            print(check);
+            print("  ");
+            print("  ");
+            print("VOUS ETES DANS UNE ZONE");
+            print("  ");
+            print("  ");
+            estDansZone = true;
+            pointsCurrentZone = res[i].points;
+            indexCurrentZone = i;
+            print("NOM ZONE ACTUELLE" + nomZone[indexCurrentZone]);
+          }
+
+          if (!check && estDansZone) {
+            _showNotification();
+            print("  ");
+            print(check);
+            print("  ");
+            print("  ");
+            print("VOUS N'ETES PAS DANS UNE ZONE");
+            print("  ");
+            print("  ");
+            estDansZone = false;
+            pointsCurrentZone = [];
+          }
+          i++;
+        });
       });
     });
   }
@@ -89,20 +173,48 @@ class _MapPageState extends State<MapPage> {
     _locationSubscription.cancel();
   }
 
-  void createPolygons() {
-    listeZone.forEach((element) {
-      fetchPoints(http.Client(), element.id)
-          .then((value) => listePoint = value);
-      listePoint.forEach((element2) {
-        pts.add(LatLng(element2.lat, element2.lon));
-      });
-      res.add(Polygon(points: pts));
-    });
-  }
-
   @override
   void initState() {
     super.initState();
+
+    //   const AndroidInitializationSettings initializationSettingsAndroid =
+    //       AndroidInitializationSettings("@mipmap/ic_launcher");
+    //   final IOSInitializationSettings initializationSettingsIOS =
+    //       IOSInitializationSettings(
+    //           onDidReceiveLocalNotification: onDidReceiveLocalNotification);
+    //   final InitializationSettings initializationSettings =
+    //       InitializationSettings(
+    //           android: initializationSettingsAndroid,
+    //           iOS: initializationSettingsIOS);
+    //   flutterLocalNotificationsPlugin.initialize(initializationSettings,
+    //       onSelectNotification: onSelectNotification);
+    // }
+
+    // Future onSelectNotification(String payload) async {
+    //   if (payload != null) {
+    //     debugPrint('Notification payload: $payload');
+    //   }
+    //   await print('clicked');
+    // }
+
+    // Future onDidReceiveLocalNotification(
+    //     int id, String title, String body, String payload) async {
+    //   await showDialog(
+    //       context: context,
+    //       builder: (BuildContext context) => CupertinoAlertDialog(
+    //             title: Text(title),
+    //             content: Text(body),
+    //             actions: <Widget>[
+    //               CupertinoDialogAction(
+    //                 isDefaultAction: true,
+    //                 child: Text('Ok'),
+    //                 onPressed: () async {
+    //                   Navigator.of(context, rootNavigator: true).pop();
+    //                 },
+    //               )
+    //             ],
+    //           ));
+
     fetchZones(http.Client()).then(
       (lZone) => {
         lZone.forEach(
@@ -114,19 +226,13 @@ class _MapPageState extends State<MapPage> {
           (zoneFE) {
             fetchPoints(http.Client(), zoneFE.id).then(
               (lPoint) => {
-                res.forEach((element) {}),
                 pts = [],
-                listePoint = [],
                 lPoint.forEach(
-                  (pointApi) {
-                    listePoint.add(pointApi);
-                  },
-                ),
-                listePoint.forEach(
                   (pointFE) {
                     pts.add(LatLng(pointFE.lat, pointFE.lon));
                   },
                 ),
+                nomZone.add(zoneFE.name),
                 res.add(new Polygon(points: pts)),
               },
             );
@@ -139,20 +245,20 @@ class _MapPageState extends State<MapPage> {
   @override
   Widget build(BuildContext context) {
     _listenLocation();
-    LatLng latlng = LatLng(48.659114, 6.193596);
-    if (_checkIfValidMarker(latlng, points1)) {
-      print("  ");
-      print("  ");
-      print("LE POINT EST DANS UN POLYGONE");
-      print("  ");
-      print("  ");
-    } else {
-      print("  ");
-      print("  ");
-      print("LE POINT N'EST PAS DANS UN POLYGONE");
-      print("  ");
-      print("  ");
-    }
+    // LatLng latlng = LatLng(48.659114, 6.193596);
+    // if (_checkIfValidMarker(latlng, points1)) {
+    //   print("  ");
+    //   print("  ");
+    //   print("LE POINT EST DANS UN POLYGONE");
+    //   print("  ");
+    //   print("  ");
+    // } else {
+    //   print("  ");
+    //   print("  ");
+    //   print("LE POINT N'EST PAS DANS UN POLYGONE");
+    //   print("  ");
+    //   print("  ");
+    // }
     if (res.length > 0) {
       return SizedBox(
         height: 500,
@@ -169,6 +275,14 @@ class _MapPageState extends State<MapPage> {
                 subdomains: ['a', 'b', 'c'],
                 maxZoom: 19,
                 maxNativeZoom: 19),
+            PolygonLayerOptions(
+              polygons:
+                  /* [
+                Polygon(points: points),
+                Polygon(points: points1),
+              ], */
+                  res,
+            ),
             MarkerLayerOptions(
               markers: [
                 Marker(
@@ -181,14 +295,6 @@ class _MapPageState extends State<MapPage> {
                   ),
                 )
               ],
-            ),
-            PolygonLayerOptions(
-              polygons:
-                  /* [
-                Polygon(points: points),
-                Polygon(points: points1),
-              ], */
-                  res,
             ),
           ],
         ),

@@ -10,9 +10,11 @@ Future<List<Point>> fetchPoints(http.Client client, int idZone) async {
 
   var obj = jsonDecode(response.body);
   List<Point> lP = [];
+
   for (var item in obj['data']) {
     lP.add(new Point(item['id_point'], item['id_zone'], item['x'], item['y']));
   }
+
   return lP;
 }
 
