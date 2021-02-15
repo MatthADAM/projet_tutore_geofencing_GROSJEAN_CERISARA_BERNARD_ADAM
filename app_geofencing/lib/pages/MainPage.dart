@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import './MapPage.dart';
-import './listen_location.dart';
 
 class MainPage extends StatefulWidget {
   @override
