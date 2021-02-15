@@ -138,6 +138,23 @@ class _MapPageState extends State<MapPage> {
 
           if (check && !estDansZone) {
             _showNotification();
+            showDialog(
+              context: context,
+              builder: (BuildContext context) => CupertinoAlertDialog(
+                title: Text("Test"),
+                content: Text(
+                    "Vous entrez dans la zone " + nomZone[indexCurrentZone]),
+                actions: <Widget>[
+                  CupertinoDialogAction(
+                    isDefaultAction: true,
+                    child: Text('Ok'),
+                    onPressed: () async {
+                      Navigator.of(context, rootNavigator: true).pop();
+                    },
+                  )
+                ],
+              ),
+            );
             print("  ");
             print(check);
             print("  ");
@@ -153,6 +170,23 @@ class _MapPageState extends State<MapPage> {
 
           if (!check && estDansZone) {
             _showNotification();
+            showDialog(
+              context: context,
+              builder: (BuildContext context) => CupertinoAlertDialog(
+                title: Text("Test"),
+                content:
+                    Text("Vous sortez de la zone " + nomZone[indexCurrentZone]),
+                actions: <Widget>[
+                  CupertinoDialogAction(
+                    isDefaultAction: true,
+                    child: Text('Ok'),
+                    onPressed: () async {
+                      Navigator.of(context, rootNavigator: true).pop();
+                    },
+                  )
+                ],
+              ),
+            );
             print("  ");
             print(check);
             print("  ");
