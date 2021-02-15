@@ -266,7 +266,7 @@ class _MapPageState extends State<MapPage> {
     _listenLocation();
     if (res.length > 0) {
       return SizedBox(
-        height: 500,
+        height: MediaQuery.of(context).size.height * 0.87,
         child: new FlutterMap(
           options: new MapOptions(
             center: new LatLng(/* 48.6309538, 6.1067854 */ _location.latitude,
