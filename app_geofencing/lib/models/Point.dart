@@ -8,8 +8,6 @@ Future<List<Point>> fetchPoints(http.Client client, int idZone) async {
       'https://projet-tutore-ciasie.herokuapp.com/api/points/zone/' +
           idZone.toString());
 
-  print("RESPONSE.BODY : " + response.body);
-
   var obj = jsonDecode(response.body);
   List<Point> lP = [];
 

@@ -86,43 +86,28 @@ class _MapPageState extends State<MapPage> {
         error = null;
 
         _location = currentLocation;
-        print("res.length : " + res.length.toString());
 
         int i = 0;
 
         res.forEach((e) {
-          print("1ER POINT : " + res[0].points.toString());
           if (indexCurrentZone == null) {
             indexCurrentZone = i;
-            // print("SI LE I EST NUL");
           }
 
           if (i == 4) {
             i = 0;
           }
-          print("indexCurrent debut for : " + indexCurrentZone.toString());
-          print("START FOR : " + nomZone[indexCurrentZone]);
-
-          // print("i entre les deux if: ");
-          // print(i);
 
           if (!_checkIfValidMarker(
               LatLng(_location.latitude, _location.longitude),
               res[indexCurrentZone].points)) {
             check = _checkIfValidMarker(
                 LatLng(_location.latitude, _location.longitude), res[i].points);
-            // print("check  ");
-            // print(check);
-            // print("i : ");
-            // print(i);
           } else {
             check = _checkIfValidMarker(
                 LatLng(_location.latitude, _location.longitude),
                 res[indexCurrentZone].points);
           }
-
-          // print("check  ");
-          // print(check);
 
           if (check && !estDansZone) {
             print("  ");
@@ -170,24 +155,6 @@ class _MapPageState extends State<MapPage> {
     });
   }
 
-  List<Point> sort(tab) {
-    print("TRI");
-    for (int i = 0; i < tab.length; i++) {
-      //stocker l'index de l'élément minimum
-      int min = i;
-      for (int j = i + 1; j < tab.length; j++) {
-        if (tab[j].idZone < tab[min].idZone) {
-          // mettre à jour l'index de l'élément minimum
-          min = j;
-        }
-      }
-      Point tmp = tab[i];
-      tab[i] = tab[min];
-      tab[min] = tmp;
-    }
-    return tab;
-  }
-
   @override
   void initState() {
     super.initState();
@@ -196,45 +163,20 @@ class _MapPageState extends State<MapPage> {
         lZone.forEach(
           (zoneApi) {
             listeZone.add(zoneApi);
-            print("START INITSTATE : " + zoneApi.name);
-            nomZone.add(zoneApi.name);
           },
         ),
         listeZone.forEach(
           (zoneFE) {
             fetchPoints(http.Client(), zoneFE.id).then(
               (lPoint) => {
-                // lPoint = sort(lPoint),
-
-                // print("ÇA CASSE LES *****"),
-                // lPoint.forEach((element) {
-                //   print(element.idZone.toString());
-                // }),
-
                 pts = [],
-                // listePoint = [],
-                // lPoint.forEach(
-                //   (pointApi) {
-                //     listePoint.add(pointApi);
-                //   },
-                // ),
                 lPoint.forEach(
                   (pointFE) {
                     pts.add(LatLng(pointFE.lat, pointFE.lon));
-                    print("lpoint foreach : " + pointFE.lat.toString());
                   },
                 ),
+                nomZone.add(zoneFE.name),
                 res.add(new Polygon(points: pts)),
-                print("  "),
-                print("  "),
-                print("  "),
-                print("  "),
-                res.forEach((el) {
-                  print("REMPLISSAGE DE RES : " + el.points.toString());
-                }),
-                print("  "),
-                print("  "),
-                print("  "),
               },
             );
           },
