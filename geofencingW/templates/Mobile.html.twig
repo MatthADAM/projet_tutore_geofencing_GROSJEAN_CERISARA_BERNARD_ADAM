@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+		<link href="../css/index.css" rel="stylesheet" type="text/css">
+		<title>Affichage Mobile</title>
+	</head>
+
+	<body>
+		<div class="navi">
+			<nav>
+				<ul>
+					{% for url in nav %}
+						{% if url.method == "GET" %}
+							<li>
+								<a href="{{url.route}}">{{url.name}}</a>
+							</li>
+						{% elseif url.method == "POST" %}
+							<li>
+								<form method="POST" action="{{url.route}}">
+									<button type="submit">{{url.name}}</button>
+								</form>
+							</li>
+						{% endif %}
+					{% endfor %}
+				</ul>
+			</nav>
+		</div>
+		<div id="container">
+		</div>
+	</body>
+</html>

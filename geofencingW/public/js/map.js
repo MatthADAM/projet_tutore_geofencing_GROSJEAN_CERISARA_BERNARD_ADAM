@@ -46,15 +46,17 @@ function initialize() {
             $.get(api + "/api/zone/" + idZ).then((e) => {
                 let nom = e.data.nom;
                 let desc = e.data.description;
-                let res = affiListZone(nom, desc);
+                let res ="</br>";
+                let text = affiListZone(nom, desc);
                 $.get(api + "/api/infos/zone/" + idZ).then((results) => {
                     results.data.forEach(el => {
-                        res += affiInfoZone(el.contenu);
+                        text += affiInfoZone(el.contenu,el.type);
                     })
-                    res += "</div>";
                     res += affiModifZone();
                     res += affiAddInfoZone();
-                    document.getElementById("listZone").innerHTML = res;
+                    res += affiMobile(idZ);
+                    document.getElementById("listZone").innerHTML = text;
+                    document.getElementById("formulaire2").innerHTML = res;
                     document.getElementById("submit3").addEventListener("click", modifZone);
                     document.getElementById("submit4").addEventListener("click", deleteZone);
                     document.getElementById("submit5").addEventListener("click", updateInfoZone);
@@ -66,7 +68,11 @@ function initialize() {
     function onMapClick(e) {
         if (!zone) {
             if (polygon != [])
-                clickable();
+                if (finish) {
+                    polygon.forEach(element => {
+                        element.on('click', onPolyClick);
+                    });
+                }
         }
         else {
             console.log("New Point")
@@ -78,16 +84,9 @@ function initialize() {
             mapMarkers.push(marker);
         }
     }
-    //Function qui détermine quelle polygon est sélectionné
-    function clickable() {
-        if (finish) {
-            polygon.forEach(element => {
-                element.on('click', onPolyClick);
-            });
-        }
-    }
     //Function affichage liste de toutes les zones
     function affiAllZone() {
+        document.getElementById("formulaire2").innerHTML="";
         for (i in map._layers) {
             if (map._layers[i]._path != undefined) {
                 try {
@@ -133,15 +132,16 @@ function initialize() {
         return res;
     }
     //Function affichage informations de la zone sélectionné
-    function affiInfoZone(info) {
+    function affiInfoZone(info,type) {
         let res = `<p>
+        Type:  ${type};
         Information: ${info}
         </br></p>`;
         return res;
     }
     //Function affichage formulaire Modification zone
     function affiModifZone() {
-        let res = `
+        let res = `</br>
         <form onsubmit="return false">
                 <div>
                     <input type="text" id="nom2" placeholder="Nom...">
@@ -151,19 +151,33 @@ function initialize() {
                 </div>
                 <input id="submit3" type="submit" value="modifier zone">
                 </form>
-                <input id="submit4" type="submit" value="supprimer zone">`
+                <input id="submit4" type="submit" value="supprimer zone">
+                </br>`
             ;
         return res;
     }
     //Function affichage formulaire ajout d'information a une zone
     function affiAddInfoZone() {
-        let res = `
+        let res = `</br>
         <form onsubmit="return false">
+                <label for="type-select"> type d'information?:</label>
+                <select name="type" id="type-select">
+                    <option value="text">Texte</option>
+                    <option value="image">Image</option>
+                    <option value="video">Vidéo</option>
+                </select>
                 <div>
                     <input type="text" id="contenu" placeholder="Information..." required>
                 </div>
+                </br>
                 <input id="submit5" type="submit" value="Ajouter information">
-                </form>`
+                </form></br>`
+            ;
+        return res;
+    }
+    function affiMobile(idZone) {
+        let res = `
+        <button onClick="window.open('/mobile/${idZone}','_blank')">Aperçu mobile</button></br>`
             ;
         return res;
     }
@@ -212,11 +226,26 @@ function initialize() {
     }
     //Function modification information zone
     function updateInfoZone() {
+        let type=document.getElementById("type-select").value;
         let info = document.getElementById("contenu").value;
-        info = mdToHtml(info);
+        switch (type) {
+            case 'image':
+                info=`<img src='${info}'width="150">`
+                break;
+            case 'video':
+                info=`<iframe width="150" height="150"
+                src="${info}">
+                </iframe>`
+                break;
+            case 'text':
+                info = mdToHtml(info);
+              break;
+            default:
+              console.log(`Sorry, we are out of ${expr}.`);
+          }
         document.getElementById("contenu").value = "";
-        $.post(api + "/api/infos", { id_zone: idZ, type: "text", contenu: info })
-        res = affiInfoZone(info);
+        $.post(api + "/api/infos", { id_zone: idZ, type: type, contenu: info })
+        res = affiInfoZone(info,type);
         document.getElementById("informationZone").innerHTML += res;
     }
     //Function modification zone
@@ -255,7 +284,7 @@ function initialize() {
                                 type: 'DELETE',
                                 success: function (result) {
                                     console.log("Delete Zone");
-                                    map.removeLayer(polyg);
+                                    affiAllZone();
                                 }
                             });
                         }
@@ -264,7 +293,7 @@ function initialize() {
                 });
 
             });
-            console.log(results.data.length);
+
         });
     }
     //Function fin de la création de la zone

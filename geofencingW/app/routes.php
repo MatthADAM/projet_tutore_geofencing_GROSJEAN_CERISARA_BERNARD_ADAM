@@ -8,6 +8,7 @@ use \App\Application\Actions\User\ComptesInscriptionAction as ComptesInscription
 use \App\Application\Actions\User\MonCompteAction as MonCompteAction;
 use \App\Application\Actions\User\ModifierInfosUtilisateurAction as ModifierInfosUtilisateurAction;
 use \App\Application\Actions\MapAction as MapAction;
+use \App\Application\Actions\Mobile as Mobile;
 
 // Import for users
 use \App\Application\Actions\Api\Users\ListUsersAction;
@@ -72,6 +73,7 @@ return function (App $app) {
     
     //afficher la carte
     $app->get('/map',MapAction::class)->setName("getMap");
+    $app->get('/mobile/{id}',Mobile::class)->setName("getMobile");
     
     // Routes users
     $app->group('/api/users', function (Group $group) {
