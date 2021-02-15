@@ -88,12 +88,12 @@ function initialize() {
     }
     //Function affichage liste de toutes les zones
     function affiAllZone() {
-        for(i in map._layers) {
-            if(map._layers[i]._path != undefined) {
+        for (i in map._layers) {
+            if (map._layers[i]._path != undefined) {
                 try {
                     map.removeLayer(map._layers[i]);
                 }
-                catch(e) {
+                catch (e) {
                     console.log("problem with " + e + map._layers[i]);
                 }
             }
@@ -167,6 +167,34 @@ function initialize() {
             ;
         return res;
     }
+    function mdToHtml(str) {
+        var tempStr = str;
+        while (tempStr.indexOf("**") !== -1) {
+            var firstPos = tempStr.indexOf("**");
+            var nextPos = tempStr.indexOf("**", firstPos + 2);
+            if (nextPos !== -1) {
+                var innerTxt = tempStr.substring(firstPos + 2, nextPos);
+                var strongified = '<strong>' + innerTxt + '</strong>';
+                tempStr = tempStr.substring(0, firstPos) + strongified + tempStr.substring(nextPos + 2, tempStr.length);
+                //get rid of unclosed '**'
+            } else {
+                tempStr = tempStr.replace('**', '');
+            }
+        }
+        while (tempStr.indexOf("*") !== -1) {
+            var firstPos = tempStr.indexOf("*");
+            var nextPos = tempStr.indexOf("*", firstPos + 1);
+            if (nextPos !== -1) {
+                var innerTxt = tempStr.substring(firstPos + 1, nextPos);
+                var italicized = '<i>' + innerTxt + '</i>';
+                tempStr = tempStr.substring(0, firstPos) + italicized + tempStr.substring(nextPos + 2, tempStr.length);
+                //get rid of unclosed '*'
+            } else {
+                tempStr = tempStr.replace('*', '');
+            }
+        }
+        return tempStr;
+    }
 
     //Function ajout de zone
     function addZone() {
@@ -185,6 +213,7 @@ function initialize() {
     //Function modification information zone
     function updateInfoZone() {
         let info = document.getElementById("contenu").value;
+        info = mdToHtml(info);
         document.getElementById("contenu").value = "";
         $.post(api + "/api/infos", { id_zone: idZ, type: "text", contenu: info })
         res = affiInfoZone(info);
@@ -201,6 +230,18 @@ function initialize() {
     //Function suppression zone
     function deleteZone() {
         let index = 0;
+        $.get(api + "/api/infos/zone/" + idZ).then((results) => {
+            results.data.forEach(el => {
+                $.ajax({
+                    url: api + "/api/infos/" + el.id_info,
+                    type: 'DELETE',
+                    success: function (result) {
+                        console.log("Delete Informations");
+                    }
+                });
+
+            });
+        });
         $.get(api + "/api/points/zone/" + idZ).then((results) => {
             results.data.forEach(el => {
                 $.ajax({
@@ -236,7 +277,7 @@ function initialize() {
             }
             tabPts = [];
             zone = false;
-            
+
             affiAllZone();
         }
     }
