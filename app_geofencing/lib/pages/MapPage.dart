@@ -207,47 +207,47 @@ class _MapPageState extends State<MapPage> {
     _locationSubscription.cancel();
   }
 
+  Future onSelectNotification(String payload) async {
+    if (payload != null) {
+      debugPrint('Notification payload: $payload');
+    }
+    await print('clicked');
+  }
+
+  Future onDidReceiveLocalNotification(
+      int id, String title, String body, String payload) async {
+    await showDialog(
+        context: context,
+        builder: (BuildContext context) => CupertinoAlertDialog(
+              title: Text(title),
+              content: Text(body),
+              actions: <Widget>[
+                CupertinoDialogAction(
+                  isDefaultAction: true,
+                  child: Text('Ok'),
+                  onPressed: () async {
+                    Navigator.of(context, rootNavigator: true).pop();
+                  },
+                )
+              ],
+            ));
+  }
+
   @override
   void initState() {
     super.initState();
 
-    //   const AndroidInitializationSettings initializationSettingsAndroid =
-    //       AndroidInitializationSettings("@mipmap/ic_launcher");
-    //   final IOSInitializationSettings initializationSettingsIOS =
-    //       IOSInitializationSettings(
-    //           onDidReceiveLocalNotification: onDidReceiveLocalNotification);
-    //   final InitializationSettings initializationSettings =
-    //       InitializationSettings(
-    //           android: initializationSettingsAndroid,
-    //           iOS: initializationSettingsIOS);
-    //   flutterLocalNotificationsPlugin.initialize(initializationSettings,
-    //       onSelectNotification: onSelectNotification);
-    // }
-
-    // Future onSelectNotification(String payload) async {
-    //   if (payload != null) {
-    //     debugPrint('Notification payload: $payload');
-    //   }
-    //   await print('clicked');
-    // }
-
-    // Future onDidReceiveLocalNotification(
-    //     int id, String title, String body, String payload) async {
-    //   await showDialog(
-    //       context: context,
-    //       builder: (BuildContext context) => CupertinoAlertDialog(
-    //             title: Text(title),
-    //             content: Text(body),
-    //             actions: <Widget>[
-    //               CupertinoDialogAction(
-    //                 isDefaultAction: true,
-    //                 child: Text('Ok'),
-    //                 onPressed: () async {
-    //                   Navigator.of(context, rootNavigator: true).pop();
-    //                 },
-    //               )
-    //             ],
-    //           ));
+    const AndroidInitializationSettings initializationSettingsAndroid =
+        AndroidInitializationSettings("@mipmap/ic_launcher");
+    final IOSInitializationSettings initializationSettingsIOS =
+        IOSInitializationSettings(
+            onDidReceiveLocalNotification: onDidReceiveLocalNotification);
+    final InitializationSettings initializationSettings =
+        InitializationSettings(
+            android: initializationSettingsAndroid,
+            iOS: initializationSettingsIOS);
+    flutterLocalNotificationsPlugin.initialize(initializationSettings,
+        onSelectNotification: onSelectNotification);
 
     fetchZones(http.Client()).then(
       (lZone) => {
