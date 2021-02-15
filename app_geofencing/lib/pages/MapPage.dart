@@ -153,6 +153,7 @@ class _MapPageState extends State<MapPage> {
           // print(check);
 
           if (check && !estDansZone) {
+            _showNotification();
             print("  ");
             print(check);
             print("  ");
@@ -167,6 +168,7 @@ class _MapPageState extends State<MapPage> {
           }
 
           if (!check && estDansZone) {
+            _showNotification();
             print("  ");
             print(check);
             print("  ");
