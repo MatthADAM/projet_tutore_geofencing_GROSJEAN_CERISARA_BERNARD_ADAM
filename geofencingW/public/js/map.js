@@ -43,25 +43,7 @@ function initialize() {
             event.target.setStyle({
                 color: "blue"
             })
-            $.get(api + "/api/zone/" + idZ).then((e) => {
-                let nom = e.data.nom;
-                let desc = e.data.description;
-                let res ="</br>";
-                let text = affiListZone(nom, desc);
-                $.get(api + "/api/infos/zone/" + idZ).then((results) => {
-                    results.data.forEach(el => {
-                        text += affiInfoZone(el.contenu,el.type);
-                    })
-                    res += affiModifZone();
-                    res += affiAddInfoZone();
-                    res += affiMobile(idZ);
-                    document.getElementById("listZone").innerHTML = text;
-                    document.getElementById("formulaire2").innerHTML = res;
-                    document.getElementById("submit3").addEventListener("click", modifZone);
-                    document.getElementById("submit4").addEventListener("click", deleteZone);
-                    document.getElementById("submit5").addEventListener("click", updateInfoZone);
-                });
-            });
+            affiDetaille()
         }
     };
     //Fonction clique sur la map
@@ -86,7 +68,7 @@ function initialize() {
     }
     //Function affichage liste de toutes les zones
     function affiAllZone() {
-        document.getElementById("formulaire2").innerHTML="";
+        document.getElementById("formulaire2").innerHTML = "";
         for (i in map._layers) {
             if (map._layers[i]._path != undefined) {
                 try {
@@ -123,6 +105,32 @@ function initialize() {
             tabPts2 = [];
         });
     }
+    function affiDetaille() {
+        $.get(api + "/api/zone/" + idZ).then((e) => {
+            let nom = e.data.nom;
+            let desc = e.data.description;
+            let res = "</br>";
+            let text = affiListZone(nom, desc);
+            $.get(api + "/api/infos/zone/" + idZ).then((results) => {
+                results.data.forEach(el => {
+                    text += affiInfoZone(el.contenu, el.type, el.id_info);
+                })
+                res += affiModifZone();
+                res += affiAddInfoZone();
+                res += affiMobile(idZ);
+                document.getElementById("listZone").innerHTML = text;
+                document.getElementById("formulaire2").innerHTML = res;
+                document.getElementById("submit3").addEventListener("click", modifZone);
+                document.getElementById("submit4").addEventListener("click", deleteZone);
+                document.getElementById("submit5").addEventListener("click", updateInfoZone);
+                results.data.forEach(el => {
+                    document.getElementById(`${el.id_info}`).addEventListener("click", function () {
+                        deleteInfo(el.id_info)
+                    });
+                })
+            });
+        });
+    }
     //Function affichage de la zone sélectionné
     function affiListZone(nom, desc) {
         let res = `<div id="info"><p>
@@ -132,10 +140,11 @@ function initialize() {
         return res;
     }
     //Function affichage informations de la zone sélectionné
-    function affiInfoZone(info,type) {
+    function affiInfoZone(info, type, id) {
         let res = `<p>
-        Type:  ${type};
+        Type:  ${type}
         Information: ${info}
+        <input id="${id}" type="submit" value="supprimer Information">
         </br></p>`;
         return res;
     }
@@ -226,27 +235,29 @@ function initialize() {
     }
     //Function modification information zone
     function updateInfoZone() {
-        let type=document.getElementById("type-select").value;
+        let type = document.getElementById("type-select").value;
         let info = document.getElementById("contenu").value;
-        switch (type) {
-            case 'image':
-                info=`<img src='${info}'width="150">`
-                break;
-            case 'video':
-                info=`<iframe width="150" height="150"
+        if (info != "" && info != " ") {
+            switch (type) {
+                case 'image':
+                    info = `<img src='${info}'width="150">`
+                    break;
+                case 'video':
+                    info = `<iframe width="150" height="150"
                 src="${info}">
                 </iframe>`
-                break;
-            case 'text':
-                info = mdToHtml(info);
-              break;
-            default:
-              console.log(`Sorry, we are out of ${expr}.`);
-          }
-        document.getElementById("contenu").value = "";
-        $.post(api + "/api/infos", { id_zone: idZ, type: type, contenu: info })
-        res = affiInfoZone(info,type);
-        document.getElementById("informationZone").innerHTML += res;
+                    break;
+                case 'text':
+                    info = mdToHtml(info);
+                    break;
+                default:
+                    console.log(`Sorry, we are out of ${expr}.`);
+            }
+            document.getElementById("contenu").value = "";
+            $.post(api + "/api/infos", { id_zone: idZ, type: type, contenu: info })
+            res = affiInfoZone(info, type);
+            document.getElementById("informationZone").innerHTML += res;
+        }
     }
     //Function modification zone
     function modifZone() {
@@ -256,6 +267,17 @@ function initialize() {
         res = affiListZone(nom, desc);
         document.getElementById("info").innerHTML = res;
     }
+    //Function suppression information
+    function deleteInfo(idInfo) {
+        $.ajax({
+            url: api + "/api/infos/" + idInfo,
+            type: 'DELETE',
+            success: function (result) {
+                console.log("Delete Information");
+            }
+        })
+        affiDetaille()
+    };
     //Function suppression zone
     function deleteZone() {
         let index = 0;

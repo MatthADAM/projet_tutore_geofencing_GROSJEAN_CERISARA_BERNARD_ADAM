@@ -5,8 +5,8 @@ import "package:latlong/latlong.dart";
 import 'package:location/location.dart';
 import 'dart:async';
 import 'package:http/http.dart' as http;
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:locally/locally.dart';
 
 import '../models/Point.dart';
 import '../models/Zone.dart';
@@ -16,9 +16,6 @@ import '../models/Informations.dart';
 class MapPage extends StatefulWidget {
   @override
   _MapPageState createState() => _MapPageState();
-  void _showNotification() {
-    _MapPageState()._showNotification();
-  }
 }
 
 class _MapPageState extends State<MapPage> {
@@ -41,21 +38,11 @@ class _MapPageState extends State<MapPage> {
   int zoneId;
   String zoneInfos;
 
+  Locally locally;
+
   @override
   void initState() {
     super.initState();
-
-    // const AndroidInitializationSettings initializationSettingsAndroid =
-    //     AndroidInitializationSettings("@mipmap/ic_launcher");
-    // final IOSInitializationSettings initializationSettingsIOS =
-    //     IOSInitializationSettings(
-    //         onDidReceiveLocalNotification: onDidReceiveLocalNotification);
-    // final InitializationSettings initializationSettings =
-    //     InitializationSettings(
-    //         android: initializationSettingsAndroid,
-    //         iOS: initializationSettingsIOS);
-    // flutterLocalNotificationsPlugin.initialize(initializationSettings,
-    //     onSelectNotification: onSelectNotification);
 
     fetchZones(http.Client()).then(
       (lZone) => {
@@ -83,31 +70,6 @@ class _MapPageState extends State<MapPage> {
         ),
       },
     );
-  }
-
-  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-      new FlutterLocalNotificationsPlugin();
-  var initializationSettingsAndroid;
-  var initializationSettingsIOS;
-  var initializationSettings;
-
-  void _showNotification() async {
-    await _demoNotification();
-  }
-
-  Future<void> _demoNotification() async {
-    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
-        'channel_ID', 'channel name', 'channel description',
-        importance: Importance.max,
-        priority: Priority.high,
-        ticker: 'test ticker');
-
-    var iOSChannelSpecifics = IOSNotificationDetails();
-    var platformChannelSpecifics = NotificationDetails();
-
-    await flutterLocalNotificationsPlugin.show(0, 'Hello, buddy',
-        'A message from flutter buddy', platformChannelSpecifics,
-        payload: 'test oayload');
   }
 
   bool _checkIfValidMarker(LatLng tap, List<LatLng> vertices) {
@@ -179,84 +141,45 @@ class _MapPageState extends State<MapPage> {
             listInfos = [];
             zoneId = listIds[i];
 
-            fetchInfos(http.Client(), zoneId).then((infos) => {
-                  listInfos = infos,
-                  print(
-                      "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"),
-                });
+            // fetchInfos(http.Client(), zoneId).then((infos) => {
+            //       listInfos = infos,
+            //       print(
+            //           "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"),
+            //     });
 
-            if (listInfos.length > 0 && !estDansZone) {
-              // _showNotification();
-              showDialog(
-                context: context,
-                builder: (BuildContext context) => CupertinoAlertDialog(
-                  title: Text("Test"),
-                  content: Text(
-                      "Vous entrez dans la zone " + nomZone[indexCurrentZone]),
-                  actions: <Widget>[
-                    CupertinoDialogAction(
-                      isDefaultAction: true,
-                      child: Text('Ok'),
-                      onPressed: () async {
-                        Navigator.of(context, rootNavigator: true).pop();
-                      },
-                    ),
-                    CupertinoDialogAction(
-                      isDefaultAction: false,
-                      child: Text('Infos zone'),
-                      onPressed: () {
-                        Navigator.of(context, rootNavigator: true).pop();
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => DetailsPage(
-                              text: nomZone[indexCurrentZone],
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ],
-                ),
-              );
+            // if (listInfos.length > 0 && !estDansZone) {
+            print("  ");
+            print("  ");
+            // print(listInfos[0].contenu);
+            // listInfos.forEach((element) {
+            //   print(element.contenu);
+            // });
+            print("  ");
+            print("  ");
+            print("VOUS ETES DANS UNE ZONE");
+            print("  ");
+            print("  ");
+            estDansZone = true;
+            pointsCurrentZone = res[i].points;
+            indexCurrentZone = i;
+            print("NOM ZONE ACTUELLE" + nomZone[indexCurrentZone]);
 
-              print("  ");
-              print("  ");
-              print(listInfos[0].contenu);
-              // listInfos.forEach((element) {
-              //   print(element.contenu);
-              // });
-              print("  ");
-              print("  ");
-              print("VOUS ETES DANS UNE ZONE");
-              print("  ");
-              print("  ");
-              estDansZone = true;
-              pointsCurrentZone = res[i].points;
-              indexCurrentZone = i;
-              print("NOM ZONE ACTUELLE" + nomZone[indexCurrentZone]);
-            }
+            locally = Locally(
+              context: context,
+              payload: 'test',
+              pageRoute: MaterialPageRoute(
+                  builder: (context) =>
+                      DetailsPage(text: nomZone[indexCurrentZone])),
+              appIcon: 'mipmap/ic_launcher',
+            );
+
+            locally.show(
+                title: "Changement de zone",
+                message: "Entrée dans " + nomZone[indexCurrentZone]);
+            // }
           }
 
           if (!check && estDansZone) {
-            /* _showNotification();
-            showDialog(
-              context: context,
-              builder: (BuildContext context) => CupertinoAlertDialog(
-                title: Text("Test"),
-                content:
-                    Text("Vous sortez de la zone " + nomZone[indexCurrentZone]),
-                actions: <Widget>[
-                  CupertinoDialogAction(
-                    isDefaultAction: true,
-                    child: Text('Ok'),
-                    onPressed: () async {
-                      Navigator.of(context, rootNavigator: true).pop();
-                    },
-                  )
-                ],
-              ),
-            ); */
             print("  ");
             print(check);
             print("  ");
@@ -275,32 +198,6 @@ class _MapPageState extends State<MapPage> {
 
   Future<void> stopListen() async {
     _locationSubscription.cancel();
-  }
-
-  Future onSelectNotification(String payload) async {
-    if (payload != null) {
-      debugPrint('Notification payload: $payload');
-    }
-    await print('clicked');
-  }
-
-  Future onDidReceiveLocalNotification(
-      int id, String title, String body, String payload) async {
-    await showDialog(
-        context: context,
-        builder: (BuildContext context) => CupertinoAlertDialog(
-              title: Text(title),
-              content: Text(body),
-              actions: <Widget>[
-                CupertinoDialogAction(
-                  isDefaultAction: true,
-                  child: Text('Ok'),
-                  onPressed: () async {
-                    Navigator.of(context, rootNavigator: true).pop();
-                  },
-                )
-              ],
-            ));
   }
 
   @override
