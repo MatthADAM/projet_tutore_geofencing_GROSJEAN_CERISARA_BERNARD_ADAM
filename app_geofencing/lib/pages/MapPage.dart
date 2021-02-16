@@ -11,7 +11,6 @@ import 'package:flutter/cupertino.dart';
 import '../models/Point.dart';
 import '../models/Zone.dart';
 import './DetailsPage.dart';
-import '../models/Informations.dart';
 
 class MapPage extends StatefulWidget {
   @override
@@ -36,50 +35,6 @@ class _MapPageState extends State<MapPage> {
   bool check = false;
   List<LatLng> pointsCurrentZone = [];
   List<String> nomZone = [];
-  List<Informations> listInfos = [];
-
-  @override
-  void initState() {
-    super.initState();
-
-    // const AndroidInitializationSettings initializationSettingsAndroid =
-    //     AndroidInitializationSettings("@mipmap/ic_launcher");
-    // final IOSInitializationSettings initializationSettingsIOS =
-    //     IOSInitializationSettings(
-    //         onDidReceiveLocalNotification: onDidReceiveLocalNotification);
-    // final InitializationSettings initializationSettings =
-    //     InitializationSettings(
-    //         android: initializationSettingsAndroid,
-    //         iOS: initializationSettingsIOS);
-    // flutterLocalNotificationsPlugin.initialize(initializationSettings,
-    //     onSelectNotification: onSelectNotification);
-
-    fetchZones(http.Client()).then(
-      (lZone) => {
-        lZone.forEach(
-          (zoneApi) {
-            listeZone.add(zoneApi);
-          },
-        ),
-        listeZone.forEach(
-          (zoneFE) {
-            fetchPoints(http.Client(), zoneFE.id).then(
-              (lPoint) => {
-                pts = [],
-                lPoint.forEach(
-                  (pointFE) {
-                    pts.add(LatLng(pointFE.lat, pointFE.lon));
-                  },
-                ),
-                nomZone.add(zoneFE.name),
-                res.add(new Polygon(points: pts)),
-              },
-            );
-          },
-        ),
-      },
-    );
-  }
 
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       new FlutterLocalNotificationsPlugin();
@@ -172,11 +127,6 @@ class _MapPageState extends State<MapPage> {
           }
 
           if (check && !estDansZone) {
-            indexCurrentZone = i;
-
-            fetchInfos(http.Client(), i).then((lInfos) => {
-                  listInfos = lInfos,
-                });
             // _showNotification();
             showDialog(
               context: context,
@@ -211,7 +161,7 @@ class _MapPageState extends State<MapPage> {
               ),
             );
             print("  ");
-            print(listInfos[0].contenu);
+            print(check);
             print("  ");
             print("  ");
             print("VOUS ETES DANS UNE ZONE");
@@ -219,6 +169,7 @@ class _MapPageState extends State<MapPage> {
             print("  ");
             estDansZone = true;
             pointsCurrentZone = res[i].points;
+            indexCurrentZone = i;
             print("NOM ZONE ACTUELLE" + nomZone[indexCurrentZone]);
           }
 
@@ -261,31 +212,74 @@ class _MapPageState extends State<MapPage> {
     _locationSubscription.cancel();
   }
 
-  // Future onSelectNotification(String payload) async {
-  //   if (payload != null) {
-  //     debugPrint('Notification payload: $payload');
-  //   }
-  //   await print('clicked');
-  // }
+  Future onSelectNotification(String payload) async {
+    if (payload != null) {
+      debugPrint('Notification payload: $payload');
+    }
+    await print('clicked');
+  }
 
-  // Future onDidReceiveLocalNotification(
-  //     int id, String title, String body, String payload) async {
-  //   await showDialog(
-  //       context: context,
-  //       builder: (BuildContext context) => CupertinoAlertDialog(
-  //             title: Text(title),
-  //             content: Text(body),
-  //             actions: <Widget>[
-  //               CupertinoDialogAction(
-  //                 isDefaultAction: true,
-  //                 child: Text('Ok'),
-  //                 onPressed: () async {
-  //                   Navigator.of(context, rootNavigator: true).pop();
-  //                 },
-  //               )
-  //             ],
-  //           ));
-  // }
+  Future onDidReceiveLocalNotification(
+      int id, String title, String body, String payload) async {
+    await showDialog(
+        context: context,
+        builder: (BuildContext context) => CupertinoAlertDialog(
+              title: Text(title),
+              content: Text(body),
+              actions: <Widget>[
+                CupertinoDialogAction(
+                  isDefaultAction: true,
+                  child: Text('Ok'),
+                  onPressed: () async {
+                    Navigator.of(context, rootNavigator: true).pop();
+                  },
+                )
+              ],
+            ));
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    const AndroidInitializationSettings initializationSettingsAndroid =
+        AndroidInitializationSettings("@mipmap/ic_launcher");
+    final IOSInitializationSettings initializationSettingsIOS =
+        IOSInitializationSettings(
+            onDidReceiveLocalNotification: onDidReceiveLocalNotification);
+    final InitializationSettings initializationSettings =
+        InitializationSettings(
+            android: initializationSettingsAndroid,
+            iOS: initializationSettingsIOS);
+    flutterLocalNotificationsPlugin.initialize(initializationSettings,
+        onSelectNotification: onSelectNotification);
+
+    fetchZones(http.Client()).then(
+      (lZone) => {
+        lZone.forEach(
+          (zoneApi) {
+            listeZone.add(zoneApi);
+          },
+        ),
+        listeZone.forEach(
+          (zoneFE) {
+            fetchPoints(http.Client(), zoneFE.id).then(
+              (lPoint) => {
+                pts = [],
+                lPoint.forEach(
+                  (pointFE) {
+                    pts.add(LatLng(pointFE.lat, pointFE.lon));
+                  },
+                ),
+                nomZone.add(zoneFE.name),
+                res.add(new Polygon(points: pts)),
+              },
+            );
+          },
+        ),
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
