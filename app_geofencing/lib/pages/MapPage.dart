@@ -5,8 +5,8 @@ import "package:latlong/latlong.dart";
 import 'package:location/location.dart';
 import 'dart:async';
 import 'package:http/http.dart' as http;
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:locally/locally.dart';
 
 import '../models/Point.dart';
 import '../models/Zone.dart';
@@ -15,9 +15,6 @@ import './DetailsPage.dart';
 class MapPage extends StatefulWidget {
   @override
   _MapPageState createState() => _MapPageState();
-  void _showNotification() {
-    _MapPageState()._showNotification();
-  }
 }
 
 class _MapPageState extends State<MapPage> {
@@ -35,31 +32,6 @@ class _MapPageState extends State<MapPage> {
   bool check = false;
   List<LatLng> pointsCurrentZone = [];
   List<String> nomZone = [];
-
-  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-      new FlutterLocalNotificationsPlugin();
-  var initializationSettingsAndroid;
-  var initializationSettingsIOS;
-  var initializationSettings;
-
-  void _showNotification() async {
-    await _demoNotification();
-  }
-
-  Future<void> _demoNotification() async {
-    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
-        'channel_ID', 'channel name', 'channel description',
-        importance: Importance.max,
-        priority: Priority.high,
-        ticker: 'test ticker');
-
-    var iOSChannelSpecifics = IOSNotificationDetails();
-    var platformChannelSpecifics = NotificationDetails();
-
-    await flutterLocalNotificationsPlugin.show(0, 'Hello, buddy',
-        'A message from flutter buddy', platformChannelSpecifics,
-        payload: 'test oayload');
-  }
 
   bool _checkIfValidMarker(LatLng tap, List<LatLng> vertices) {
     int intersectCount = 0;
@@ -127,8 +99,19 @@ class _MapPageState extends State<MapPage> {
           }
 
           if (check && !estDansZone) {
-            // _showNotification();
-            showDialog(
+            Locally locally = Locally(
+              context: context,
+              payload: 'test',
+              pageRoute: MaterialPageRoute(
+                  builder: (context) =>
+                      DetailsPage(text: nomZone[indexCurrentZone])),
+              appIcon: 'mipmap/ic_launcher',
+            );
+
+            locally.show(
+                title: "Changement de zone",
+                message: "Entrée dans " + nomZone[indexCurrentZone]);
+            /* showDialog(
               context: context,
               builder: (BuildContext context) => CupertinoAlertDialog(
                 title: Text("Test"),
@@ -159,7 +142,7 @@ class _MapPageState extends State<MapPage> {
                   ),
                 ],
               ),
-            );
+            ); */
             print("  ");
             print(check);
             print("  ");
@@ -212,47 +195,9 @@ class _MapPageState extends State<MapPage> {
     _locationSubscription.cancel();
   }
 
-  Future onSelectNotification(String payload) async {
-    if (payload != null) {
-      debugPrint('Notification payload: $payload');
-    }
-    await print('clicked');
-  }
-
-  Future onDidReceiveLocalNotification(
-      int id, String title, String body, String payload) async {
-    await showDialog(
-        context: context,
-        builder: (BuildContext context) => CupertinoAlertDialog(
-              title: Text(title),
-              content: Text(body),
-              actions: <Widget>[
-                CupertinoDialogAction(
-                  isDefaultAction: true,
-                  child: Text('Ok'),
-                  onPressed: () async {
-                    Navigator.of(context, rootNavigator: true).pop();
-                  },
-                )
-              ],
-            ));
-  }
-
   @override
   void initState() {
     super.initState();
-
-    const AndroidInitializationSettings initializationSettingsAndroid =
-        AndroidInitializationSettings("@mipmap/ic_launcher");
-    final IOSInitializationSettings initializationSettingsIOS =
-        IOSInitializationSettings(
-            onDidReceiveLocalNotification: onDidReceiveLocalNotification);
-    final InitializationSettings initializationSettings =
-        InitializationSettings(
-            android: initializationSettingsAndroid,
-            iOS: initializationSettingsIOS);
-    flutterLocalNotificationsPlugin.initialize(initializationSettings,
-        onSelectNotification: onSelectNotification);
 
     fetchZones(http.Client()).then(
       (lZone) => {
