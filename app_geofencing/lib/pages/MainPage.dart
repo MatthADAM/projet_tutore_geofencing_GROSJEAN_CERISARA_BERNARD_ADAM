@@ -17,6 +17,12 @@ class _MainPageState extends State<MainPage> {
             Text("⛏ - Carte"),
           ],
         ),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.info),
+            onPressed: () {},
+          ),
+        ],
       ),
       body: Center(
         child: Container(
