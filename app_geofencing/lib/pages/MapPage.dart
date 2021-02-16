@@ -142,7 +142,8 @@ class _MapPageState extends State<MapPage> {
                   CupertinoDialogAction(
                     isDefaultAction: false,
                     child: Text('Infos zone'),
-                    onPressed: () async {
+                    onPressed: () {
+                      Navigator.of(context, rootNavigator: true).pop();
                       Navigator.push(
                         context,
                         MaterialPageRoute(
