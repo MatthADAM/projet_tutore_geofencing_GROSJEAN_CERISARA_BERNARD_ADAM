@@ -11,6 +11,7 @@ import 'package:flutter/cupertino.dart';
 import '../models/Point.dart';
 import '../models/Zone.dart';
 import './DetailsPage.dart';
+import '../models/Informations.dart';
 
 class MapPage extends StatefulWidget {
   @override
@@ -35,6 +36,54 @@ class _MapPageState extends State<MapPage> {
   bool check = false;
   List<LatLng> pointsCurrentZone = [];
   List<String> nomZone = [];
+  List<Informations> listInfos = [];
+  List<int> listIds = [];
+  int zoneId;
+  String zoneInfos;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // const AndroidInitializationSettings initializationSettingsAndroid =
+    //     AndroidInitializationSettings("@mipmap/ic_launcher");
+    // final IOSInitializationSettings initializationSettingsIOS =
+    //     IOSInitializationSettings(
+    //         onDidReceiveLocalNotification: onDidReceiveLocalNotification);
+    // final InitializationSettings initializationSettings =
+    //     InitializationSettings(
+    //         android: initializationSettingsAndroid,
+    //         iOS: initializationSettingsIOS);
+    // flutterLocalNotificationsPlugin.initialize(initializationSettings,
+    //     onSelectNotification: onSelectNotification);
+
+    fetchZones(http.Client()).then(
+      (lZone) => {
+        lZone.forEach(
+          (zoneApi) {
+            listeZone.add(zoneApi);
+          },
+        ),
+        listeZone.forEach(
+          (zoneFE) {
+            fetchPoints(http.Client(), zoneFE.id).then(
+              (lPoint) => {
+                pts = [],
+                lPoint.forEach(
+                  (pointFE) {
+                    pts.add(LatLng(pointFE.lat, pointFE.lon));
+                  },
+                ),
+                nomZone.add(zoneFE.name),
+                res.add(new Polygon(points: pts)),
+                listIds.add(zoneFE.id),
+              },
+            );
+          },
+        ),
+      },
+    );
+  }
 
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       new FlutterLocalNotificationsPlugin();
@@ -111,7 +160,7 @@ class _MapPageState extends State<MapPage> {
             indexCurrentZone = i;
           }
 
-          if (i == 4) {
+          if (i == res.length) {
             i = 0;
           }
 
@@ -127,50 +176,66 @@ class _MapPageState extends State<MapPage> {
           }
 
           if (check && !estDansZone) {
-            // _showNotification();
-            showDialog(
-              context: context,
-              builder: (BuildContext context) => CupertinoAlertDialog(
-                title: Text("Test"),
-                content: Text(
-                    "Vous entrez dans la zone " + nomZone[indexCurrentZone]),
-                actions: <Widget>[
-                  CupertinoDialogAction(
-                    isDefaultAction: true,
-                    child: Text('Ok'),
-                    onPressed: () async {
-                      Navigator.of(context, rootNavigator: true).pop();
-                    },
-                  ),
-                  CupertinoDialogAction(
-                    isDefaultAction: false,
-                    child: Text('Infos zone'),
-                    onPressed: () {
-                      Navigator.of(context, rootNavigator: true).pop();
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => DetailsPage(
-                            text: nomZone[indexCurrentZone],
+            listInfos = [];
+            zoneId = listIds[i];
+
+            fetchInfos(http.Client(), zoneId).then((infos) => {
+                  listInfos = infos,
+                  print(
+                      "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"),
+                });
+
+            if (listInfos.length > 0 && !estDansZone) {
+              // _showNotification();
+              showDialog(
+                context: context,
+                builder: (BuildContext context) => CupertinoAlertDialog(
+                  title: Text("Test"),
+                  content: Text(
+                      "Vous entrez dans la zone " + nomZone[indexCurrentZone]),
+                  actions: <Widget>[
+                    CupertinoDialogAction(
+                      isDefaultAction: true,
+                      child: Text('Ok'),
+                      onPressed: () async {
+                        Navigator.of(context, rootNavigator: true).pop();
+                      },
+                    ),
+                    CupertinoDialogAction(
+                      isDefaultAction: false,
+                      child: Text('Infos zone'),
+                      onPressed: () {
+                        Navigator.of(context, rootNavigator: true).pop();
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => DetailsPage(
+                              text: nomZone[indexCurrentZone],
+                            ),
                           ),
-                        ),
-                      );
-                    },
-                  ),
-                ],
-              ),
-            );
-            print("  ");
-            print(check);
-            print("  ");
-            print("  ");
-            print("VOUS ETES DANS UNE ZONE");
-            print("  ");
-            print("  ");
-            estDansZone = true;
-            pointsCurrentZone = res[i].points;
-            indexCurrentZone = i;
-            print("NOM ZONE ACTUELLE" + nomZone[indexCurrentZone]);
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              );
+
+              print("  ");
+              print("  ");
+              print(listInfos[0].contenu);
+              // listInfos.forEach((element) {
+              //   print(element.contenu);
+              // });
+              print("  ");
+              print("  ");
+              print("VOUS ETES DANS UNE ZONE");
+              print("  ");
+              print("  ");
+              estDansZone = true;
+              pointsCurrentZone = res[i].points;
+              indexCurrentZone = i;
+              print("NOM ZONE ACTUELLE" + nomZone[indexCurrentZone]);
+            }
           }
 
           if (!check && estDansZone) {
@@ -236,49 +301,6 @@ class _MapPageState extends State<MapPage> {
                 )
               ],
             ));
-  }
-
-  @override
-  void initState() {
-    super.initState();
-
-    const AndroidInitializationSettings initializationSettingsAndroid =
-        AndroidInitializationSettings("@mipmap/ic_launcher");
-    final IOSInitializationSettings initializationSettingsIOS =
-        IOSInitializationSettings(
-            onDidReceiveLocalNotification: onDidReceiveLocalNotification);
-    final InitializationSettings initializationSettings =
-        InitializationSettings(
-            android: initializationSettingsAndroid,
-            iOS: initializationSettingsIOS);
-    flutterLocalNotificationsPlugin.initialize(initializationSettings,
-        onSelectNotification: onSelectNotification);
-
-    fetchZones(http.Client()).then(
-      (lZone) => {
-        lZone.forEach(
-          (zoneApi) {
-            listeZone.add(zoneApi);
-          },
-        ),
-        listeZone.forEach(
-          (zoneFE) {
-            fetchPoints(http.Client(), zoneFE.id).then(
-              (lPoint) => {
-                pts = [],
-                lPoint.forEach(
-                  (pointFE) {
-                    pts.add(LatLng(pointFE.lat, pointFE.lon));
-                  },
-                ),
-                nomZone.add(zoneFE.name),
-                res.add(new Polygon(points: pts)),
-              },
-            );
-          },
-        ),
-      },
-    );
   }
 
   @override
