@@ -1,21 +1,43 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_map/flutter_map.dart';
-import "package:latlong/latlong.dart";
-import 'package:location/location.dart';
-import 'dart:async';
-import 'package:http/http.dart' as http;
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter/cupertino.dart';
 
-import '../models/Point.dart';
-import '../models/Zone.dart';
-
 class DetailsPage extends StatefulWidget {
+  String text;
+  DetailsPage({Key key, @required this.text}) : super(key: key);
   @override
   _DetailsPageState createState() => _DetailsPageState();
 }
 
 class _DetailsPageState extends State<DetailsPage> {
   @override
-  Widget build(BuildContext context) {}
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Text("⛏ - Details"),
+          ],
+        ),
+      ),
+      body: Center(
+        child: Container(
+          constraints: BoxConstraints.expand(),
+          decoration: BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage('assets/images/bgMine.jpg'),
+                  fit: BoxFit.cover)),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                "Infos de la zone : " + widget.text,
+                style: TextStyle(color: Colors.white, fontFamily: 'Minecraft'),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 }

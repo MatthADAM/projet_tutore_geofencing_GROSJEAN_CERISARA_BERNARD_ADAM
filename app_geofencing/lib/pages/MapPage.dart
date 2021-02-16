@@ -1,3 +1,4 @@
+import 'package:app_geofencing/pages/DetailsPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import "package:latlong/latlong.dart";
@@ -9,6 +10,7 @@ import 'package:flutter/cupertino.dart';
 
 import '../models/Point.dart';
 import '../models/Zone.dart';
+import './DetailsPage.dart';
 
 class MapPage extends StatefulWidget {
   @override
@@ -122,7 +124,7 @@ class _MapPageState extends State<MapPage> {
           }
 
           if (check && !estDansZone) {
-            _showNotification();
+            // _showNotification();
             showDialog(
               context: context,
               builder: (BuildContext context) => CupertinoAlertDialog(
@@ -136,7 +138,21 @@ class _MapPageState extends State<MapPage> {
                     onPressed: () async {
                       Navigator.of(context, rootNavigator: true).pop();
                     },
-                  )
+                  ),
+                  CupertinoDialogAction(
+                    isDefaultAction: false,
+                    child: Text('Infos zone'),
+                    onPressed: () async {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => DetailsPage(
+                            text: nomZone[indexCurrentZone],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
                 ],
               ),
             );
@@ -154,7 +170,7 @@ class _MapPageState extends State<MapPage> {
           }
 
           if (!check && estDansZone) {
-            _showNotification();
+            /* _showNotification();
             showDialog(
               context: context,
               builder: (BuildContext context) => CupertinoAlertDialog(
@@ -171,7 +187,7 @@ class _MapPageState extends State<MapPage> {
                   )
                 ],
               ),
-            );
+            ); */
             print("  ");
             print(check);
             print("  ");
