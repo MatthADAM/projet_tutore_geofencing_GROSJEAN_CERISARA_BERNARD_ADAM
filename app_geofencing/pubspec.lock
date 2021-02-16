@@ -199,14 +199,14 @@ packages:
       name: flutter_local_notifications
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.0.1"
+    version: "1.5.0+1"
   flutter_local_notifications_platform_interface:
     dependency: transitive
     description:
       name: flutter_local_notifications_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.0+1"
+    version: "1.0.1"
   flutter_map:
     dependency: "direct main"
     description:
@@ -311,6 +311,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.6"
+  locally:
+    dependency: "direct main"
+    description:
+      name: locally
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.6+9"
   location:
     dependency: "direct main"
     description:
@@ -610,13 +617,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.3.12-nullsafety.9"
-  timezone:
-    dependency: transitive
-    description:
-      name: timezone
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.6.1"
   transparent_image:
     dependency: transitive
     description:
