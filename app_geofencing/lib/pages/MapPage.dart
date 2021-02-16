@@ -15,6 +15,9 @@ import './DetailsPage.dart';
 class MapPage extends StatefulWidget {
   @override
   _MapPageState createState() => _MapPageState();
+  void _showNotification() {
+    _MapPageState()._showNotification();
+  }
 }
 
 class _MapPageState extends State<MapPage> {
