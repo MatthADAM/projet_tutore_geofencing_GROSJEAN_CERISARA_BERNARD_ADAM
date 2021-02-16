@@ -32,6 +32,7 @@ class _MapPageState extends State<MapPage> {
   bool check = false;
   List<LatLng> pointsCurrentZone = [];
   List<String> nomZone = [];
+  Locally locally;
 
   bool _checkIfValidMarker(LatLng tap, List<LatLng> vertices) {
     int intersectCount = 0;
@@ -99,18 +100,6 @@ class _MapPageState extends State<MapPage> {
           }
 
           if (check && !estDansZone) {
-            Locally locally = Locally(
-              context: context,
-              payload: 'test',
-              pageRoute: MaterialPageRoute(
-                  builder: (context) =>
-                      DetailsPage(text: nomZone[indexCurrentZone])),
-              appIcon: 'mipmap/ic_launcher',
-            );
-
-            locally.show(
-                title: "Changement de zone",
-                message: "Entrée dans " + nomZone[indexCurrentZone]);
             /* showDialog(
               context: context,
               builder: (BuildContext context) => CupertinoAlertDialog(
@@ -154,6 +143,18 @@ class _MapPageState extends State<MapPage> {
             pointsCurrentZone = res[i].points;
             indexCurrentZone = i;
             print("NOM ZONE ACTUELLE" + nomZone[indexCurrentZone]);
+            locally = Locally(
+              context: context,
+              payload: 'test',
+              pageRoute: MaterialPageRoute(
+                  builder: (context) =>
+                      DetailsPage(text: nomZone[indexCurrentZone])),
+              appIcon: 'mipmap/ic_launcher',
+            );
+
+            locally.show(
+                title: "Changement de zone",
+                message: "Entrée dans " + nomZone[indexCurrentZone]);
           }
 
           if (!check && estDansZone) {
@@ -186,6 +187,7 @@ class _MapPageState extends State<MapPage> {
             pointsCurrentZone = [];
           }
           i++;
+          locally.cancelAll();
         });
       });
     });
