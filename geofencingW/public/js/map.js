@@ -1,5 +1,4 @@
-
-function initialize() {
+ function initialize() {
     let api = "http://localhost:8001";
     var map = L.map('map').setView([48.6309538, 6.1067854], 16); // LIGNE 18
 
@@ -113,7 +112,7 @@ function initialize() {
             let text = affiListZone(nom, desc);
             $.get(api + "/api/infos/zone/" + idZ).then((results) => {
                 results.data.forEach(el => {
-                    text += affiInfoZone(el.contenu, el.type, el.id_info);
+                    text += affiInfoZone(el.contenu, el.id_info);
                 })
                 res += affiModifZone();
                 res += affiAddInfoZone();
@@ -140,9 +139,8 @@ function initialize() {
         return res;
     }
     //Function affichage informations de la zone sélectionné
-    function affiInfoZone(info, type, id) {
+    function affiInfoZone(info, id) {
         let res = `<p>
-        Type:  ${type}
         Information: ${info}
         <input id="${id}" type="submit" value="supprimer Information">
         </br></p>`;
@@ -169,19 +167,13 @@ function initialize() {
     function affiAddInfoZone() {
         let res = `</br>
         <form onsubmit="return false">
-                <label for="type-select"> type d'information?:</label>
-                <select name="type" id="type-select">
-                    <option value="text">Texte</option>
-                    <option value="image">Image</option>
-                    <option value="video">Vidéo</option>
-                </select>
                 <div>
-                    <input type="text" id="contenu" placeholder="Information..." required>
+                    <input type="textarea" id="contenu" placeholder="Information..." required>
                 </div>
                 </br>
                 <input id="submit5" type="submit" value="Ajouter information">
-                </form></br>`
-            ;
+                </form></br>`;
+
         return res;
     }
     function affiMobile(idZone) {
@@ -189,34 +181,6 @@ function initialize() {
         <button onClick="window.open('/mobile/${idZone}','_blank')">Aperçu mobile</button></br>`
             ;
         return res;
-    }
-    function mdToHtml(str) {
-        var tempStr = str;
-        while (tempStr.indexOf("**") !== -1) {
-            var firstPos = tempStr.indexOf("**");
-            var nextPos = tempStr.indexOf("**", firstPos + 2);
-            if (nextPos !== -1) {
-                var innerTxt = tempStr.substring(firstPos + 2, nextPos);
-                var strongified = '<strong>' + innerTxt + '</strong>';
-                tempStr = tempStr.substring(0, firstPos) + strongified + tempStr.substring(nextPos + 2, tempStr.length);
-                //get rid of unclosed '**'
-            } else {
-                tempStr = tempStr.replace('**', '');
-            }
-        }
-        while (tempStr.indexOf("*") !== -1) {
-            var firstPos = tempStr.indexOf("*");
-            var nextPos = tempStr.indexOf("*", firstPos + 1);
-            if (nextPos !== -1) {
-                var innerTxt = tempStr.substring(firstPos + 1, nextPos);
-                var italicized = '<i>' + innerTxt + '</i>';
-                tempStr = tempStr.substring(0, firstPos) + italicized + tempStr.substring(nextPos + 2, tempStr.length);
-                //get rid of unclosed '*'
-            } else {
-                tempStr = tempStr.replace('*', '');
-            }
-        }
-        return tempStr;
     }
 
     //Function ajout de zone
@@ -235,27 +199,11 @@ function initialize() {
     }
     //Function modification information zone
     function updateInfoZone() {
-        let type = document.getElementById("type-select").value;
         let info = document.getElementById("contenu").value;
         if (info != "" && info != " ") {
-            switch (type) {
-                case 'image':
-                    info = `<img src='${info}'width="150">`
-                    break;
-                case 'video':
-                    info = `<iframe width="150" height="150"
-                src="${info}">
-                </iframe>`
-                    break;
-                case 'text':
-                    info = mdToHtml(info);
-                    break;
-                default:
-                    console.log(`Sorry, we are out of ${expr}.`);
-            }
             document.getElementById("contenu").value = "";
-            $.post(api + "/api/infos", { id_zone: idZ, type: type, contenu: info })
-            res = affiInfoZone(info, type);
+            $.post(api + "/api/infos", { id_zone: idZ, type: "MarkDown", contenu: info })
+            res = affiInfoZone(info);
             document.getElementById("informationZone").innerHTML += res;
         }
     }
