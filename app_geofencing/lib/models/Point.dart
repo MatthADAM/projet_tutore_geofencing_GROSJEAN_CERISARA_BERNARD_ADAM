@@ -3,10 +3,13 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
+String uriHeroku =
+    'https://projet-tutore-ciasie.herokuapp.com/api/points/zone/';
+String uriDocker = 'http://localhost:8001/api/points/zone/';
+String uriIp = 'http://projet-tutore-ciasie.herokuapp.com/api/points/zone/';
+
 Future<List<Point>> fetchPoints(http.Client client, int idZone) async {
-  final response = await client.get(
-      'https://projet-tutore-ciasie.herokuapp.com/api/points/zone/' +
-          idZone.toString());
+  final response = await client.get(uriDocker + idZone.toString());
 
   var obj = jsonDecode(response.body);
   List<Point> lP = [];
