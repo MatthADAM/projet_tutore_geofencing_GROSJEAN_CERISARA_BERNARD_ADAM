@@ -189,7 +189,10 @@ class _MapPageState extends State<MapPage> {
                   message: "Entrée dans " + nomZone[indexCurrentZone]);
             }
 
-            queueInfos.clear();
+            // queueInfos.clear();
+            queueInfos.forEach((element) {
+              queueInfos.remove(element);
+            });
           }
 
           if (!check && estDansZone) {
