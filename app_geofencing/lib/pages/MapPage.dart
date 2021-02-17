@@ -23,6 +23,7 @@ class _MapPageState extends State<MapPage> {
   final Location location = Location();
 
   LocationData _location;
+  bool processingZone = false;
   StreamSubscription<LocationData> _locationSubscription;
   String error;
   List<Zone> listeZone = [];
@@ -30,7 +31,7 @@ class _MapPageState extends State<MapPage> {
   List<Polygon> res = [];
   List<LatLng> pts = [];
   bool estDansZone = false;
-  int indexCurrentZone;
+  int etaitDansZone = -1;
   bool check = false;
   List<LatLng> pointsCurrentZone = [];
   List<String> nomZone = [];
@@ -39,7 +40,6 @@ class _MapPageState extends State<MapPage> {
   int zoneId;
   String zoneInfos;
 
-  Queue<Informations> queueInfos = new Queue<Informations>();
   List<Informations> listInfos = [];
 
   Locally locally;
@@ -115,87 +115,102 @@ class _MapPageState extends State<MapPage> {
       _locationSubscription.cancel();
     }).listen((LocationData currentLocation) {
       setState(() {
-        error = null;
+        if (!processingZone) {
+          print("nouvelle coord geo");
+          processingZone = true;
 
-        _location = currentLocation;
+          error = null;
 
-        int i = 0;
+          _location = currentLocation;
 
-        res.forEach((e) {
-          if (indexCurrentZone == null) {
-            indexCurrentZone = i;
-          }
+          int i = 0;
+          bool estDansUneZone = false;
+          bool commenceProcessing = false;
 
-          if (i == res.length) {
-            i = 0;
-          }
-
-          if (!_checkIfValidMarker(
-              LatLng(_location.latitude, _location.longitude),
-              res[indexCurrentZone].points)) {
-            check = _checkIfValidMarker(
-                LatLng(_location.latitude, _location.longitude), res[i].points);
-          } else {
-            check = _checkIfValidMarker(
-                LatLng(_location.latitude, _location.longitude),
-                res[indexCurrentZone].points);
-          }
-
-          if (check && !estDansZone) {
-            // listInfos = [];
-            zoneId = listIds[i];
-
-            fetchInfos(http.Client(), zoneId).then((infos) => {
-                  infos.forEach(
-                    (element) {
-                      // listInfos.add(element);
-                      queueInfos.add(element);
-                    },
-                  ),
-                  // listInfos = infos,
-                  print(
-                      "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"),
-                });
-
-            // if (listInfos.length > 0 && !estDansZone) {
-            if (queueInfos.isNotEmpty) {
-              print("  ");
-              print("  ");
-              // print(listInfos[0].contenu);
-              queueInfos.forEach((element) {
-                print(element.contenu);
-              });
-              print("  ");
-              print("  ");
-              print("VOUS ETES DANS UNE ZONE");
-              print("  ");
-              print("  ");
-              estDansZone = true;
-              pointsCurrentZone = res[i].points;
-              indexCurrentZone = i;
-              print("NOM ZONE ACTUELLE" + nomZone[indexCurrentZone]);
-
-              locally = Locally(
-                context: context,
-                payload: 'test',
-                pageRoute: MaterialPageRoute(
-                    builder: (context) =>
-                        DetailsPage(text: nomZone[indexCurrentZone])),
-                appIcon: 'mipmap/ic_launcher',
-              );
-
-              locally.show(
-                  title: "Changement de zone",
-                  message: "Entrée dans " + nomZone[indexCurrentZone]);
+          res.forEach((e) {
+            if (i == res.length) {
+              i = 0;
             }
 
-            queueInfos.clear();
-          }
+            if (!_checkIfValidMarker(
+                LatLng(_location.latitude, _location.longitude),
+                res[i].points)) {
+              check = _checkIfValidMarker(
+                  LatLng(_location.latitude, _location.longitude),
+                  res[i].points);
+            } else {
+              check = _checkIfValidMarker(
+                  LatLng(_location.latitude, _location.longitude),
+                  res[i].points);
+            }
 
-          if (!check && estDansZone) {
-            print("  ");
-            print(check);
-            print("  ");
+            if (check) estDansUneZone = true;
+
+            // entree dans une nouvelle zone: commence le processing
+            if (check && etaitDansZone != i) {
+              print("inzone detectee " +
+                  i.toString() +
+                  " " +
+                  etaitDansZone.toString());
+              zoneId = listIds[i];
+              etaitDansZone = i;
+              commenceProcessing = true;
+
+              fetchInfos(http.Client(), zoneId).then((infos) => {
+                    listInfos = [],
+                    infos.forEach(
+                      (element) {
+                        listInfos.add(element);
+                      },
+                    ),
+                    // listInfos = infos,
+                    print(
+                        "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee "),
+
+                    print("  "),
+                    print("  "),
+                    print(listInfos[0].contenu),
+                    print("  "),
+                    print("  "),
+                    print("VOUS ETES DANS UNE ZONE"),
+                    print("  "),
+                    print("  "),
+                    estDansZone = true,
+                    pointsCurrentZone = res[etaitDansZone].points,
+                    print("NOM ZONE ACTUELLE" + nomZone[etaitDansZone]),
+
+                    locally = Locally(
+                      context: context,
+                      payload: 'test',
+                      pageRoute: MaterialPageRoute(
+                          builder: (context) =>
+                              DetailsPage(text: nomZone[etaitDansZone])),
+                      appIcon: 'mipmap/ic_launcher',
+                    ),
+
+                    locally.show(
+                        title: "Changement de zone",
+                        message: "Entrée dans " + nomZone[etaitDansZone]),
+
+                    processingZone = false,
+                  });
+            }
+
+            // if (false && !check && estDansZone) {
+            //   print("  ");
+            //   print(check);
+            //   print("  ");
+            //   print("  ");
+            //   print("VOUS N'ETES PAS DANS UNE ZONE");
+            //   print("  ");
+            //   print("  ");
+            //   estDansZone = false;
+            //   pointsCurrentZone = [];
+            // }
+            i++;
+          });
+          if (!estDansUneZone && etaitDansZone >= 0) {
+            etaitDansZone = -1;
             print("  ");
             print("VOUS N'ETES PAS DANS UNE ZONE");
             print("  ");
@@ -203,8 +218,8 @@ class _MapPageState extends State<MapPage> {
             estDansZone = false;
             pointsCurrentZone = [];
           }
-          i++;
-        });
+          if (!commenceProcessing) processingZone = false;
+        }
       });
     });
   }
