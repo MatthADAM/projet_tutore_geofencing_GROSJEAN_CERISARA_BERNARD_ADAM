@@ -141,42 +141,47 @@ class _MapPageState extends State<MapPage> {
             listInfos = [];
             zoneId = listIds[i];
 
-            // fetchInfos(http.Client(), zoneId).then((infos) => {
-            //       listInfos = infos,
-            //       print(
-            //           "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"),
-            //     });
+            fetchInfos(http.Client(), zoneId).then((infos) => {
+                  infos.forEach(
+                    (element) {
+                      listInfos.add(element);
+                    },
+                  ),
+                  // listInfos = infos,
+                  print(
+                      "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"),
+                });
 
-            // if (listInfos.length > 0 && !estDansZone) {
-            print("  ");
-            print("  ");
-            // print(listInfos[0].contenu);
-            // listInfos.forEach((element) {
-            //   print(element.contenu);
-            // });
-            print("  ");
-            print("  ");
-            print("VOUS ETES DANS UNE ZONE");
-            print("  ");
-            print("  ");
-            estDansZone = true;
-            pointsCurrentZone = res[i].points;
-            indexCurrentZone = i;
-            print("NOM ZONE ACTUELLE" + nomZone[indexCurrentZone]);
+            if (listInfos.length > 0 && !estDansZone) {
+              print("  ");
+              print("  ");
+              print(listInfos[0].contenu);
+              listInfos.forEach((element) {
+                print(element.contenu);
+              });
+              print("  ");
+              print("  ");
+              print("VOUS ETES DANS UNE ZONE");
+              print("  ");
+              print("  ");
+              estDansZone = true;
+              pointsCurrentZone = res[i].points;
+              indexCurrentZone = i;
+              print("NOM ZONE ACTUELLE" + nomZone[indexCurrentZone]);
 
-            locally = Locally(
-              context: context,
-              payload: 'test',
-              pageRoute: MaterialPageRoute(
-                  builder: (context) =>
-                      DetailsPage(text: nomZone[indexCurrentZone])),
-              appIcon: 'mipmap/ic_launcher',
-            );
+              locally = Locally(
+                context: context,
+                payload: 'test',
+                pageRoute: MaterialPageRoute(
+                    builder: (context) =>
+                        DetailsPage(text: nomZone[indexCurrentZone])),
+                appIcon: 'mipmap/ic_launcher',
+              );
 
-            locally.show(
-                title: "Changement de zone",
-                message: "Entrée dans " + nomZone[indexCurrentZone]);
-            // }
+              locally.show(
+                  title: "Changement de zone",
+                  message: "Entrée dans " + nomZone[indexCurrentZone]);
+            }
           }
 
           if (!check && estDansZone) {
