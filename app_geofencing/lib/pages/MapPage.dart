@@ -7,8 +7,7 @@ import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'package:locally/locally.dart';
-import 'package:queue/queue.dart';
-import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
+import 'dart:collection';
 
 import '../models/Point.dart';
 import '../models/Zone.dart';
@@ -35,10 +34,13 @@ class _MapPageState extends State<MapPage> {
   bool check = false;
   List<LatLng> pointsCurrentZone = [];
   List<String> nomZone = [];
-  List<Informations> listInfos = [];
+
   List<int> listIds = [];
   int zoneId;
   String zoneInfos;
+
+  Queue<Informations> queueInfos = new Queue<Informations>();
+  List<Informations> listInfos = [];
 
   Locally locally;
 
@@ -140,50 +142,54 @@ class _MapPageState extends State<MapPage> {
           }
 
           if (check && !estDansZone) {
-            listInfos = [];
+            // listInfos = [];
             zoneId = listIds[i];
 
             fetchInfos(http.Client(), zoneId).then((infos) => {
-                  // infos.forEach(
-                  //   (element) {
-                  //     listInfos.add(element);
-                  //   },
-                  // ),
-                  listInfos = infos,
+                  infos.forEach(
+                    (element) {
+                      // listInfos.add(element);
+                      queueInfos.add(element);
+                    },
+                  ),
+                  // listInfos = infos,
                   print(
                       "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"),
                 });
 
             // if (listInfos.length > 0 && !estDansZone) {
-            print("  ");
-            print("  ");
-            // print(listInfos[0].contenu);
-            listInfos.forEach((element) {
-              print(element.contenu);
-            });
-            print("  ");
-            print("  ");
-            print("VOUS ETES DANS UNE ZONE");
-            print("  ");
-            print("  ");
-            estDansZone = true;
-            pointsCurrentZone = res[i].points;
-            indexCurrentZone = i;
-            print("NOM ZONE ACTUELLE" + nomZone[indexCurrentZone]);
+            if (queueInfos.isNotEmpty) {
+              print("  ");
+              print("  ");
+              // print(listInfos[0].contenu);
+              queueInfos.forEach((element) {
+                print(element.contenu);
+              });
+              print("  ");
+              print("  ");
+              print("VOUS ETES DANS UNE ZONE");
+              print("  ");
+              print("  ");
+              estDansZone = true;
+              pointsCurrentZone = res[i].points;
+              indexCurrentZone = i;
+              print("NOM ZONE ACTUELLE" + nomZone[indexCurrentZone]);
 
-            locally = Locally(
-              context: context,
-              payload: 'test',
-              pageRoute: MaterialPageRoute(
-                  builder: (context) =>
-                      DetailsPage(text: nomZone[indexCurrentZone])),
-              appIcon: 'mipmap/ic_launcher',
-            );
+              locally = Locally(
+                context: context,
+                payload: 'test',
+                pageRoute: MaterialPageRoute(
+                    builder: (context) =>
+                        DetailsPage(text: nomZone[indexCurrentZone])),
+                appIcon: 'mipmap/ic_launcher',
+              );
 
-            locally.show(
-                title: "Changement de zone",
-                message: "Entrée dans " + nomZone[indexCurrentZone]);
-            // }
+              locally.show(
+                  title: "Changement de zone",
+                  message: "Entrée dans " + nomZone[indexCurrentZone]);
+            }
+
+            queueInfos.clear();
           }
 
           if (!check && estDansZone) {
