@@ -180,8 +180,10 @@ class _MapPageState extends State<MapPage> {
                       context: context,
                       payload: 'test',
                       pageRoute: MaterialPageRoute(
-                          builder: (context) =>
-                              DetailsPage(text: nomZone[etaitDansZone])),
+                          builder: (context) => DetailsPage(
+                                text: nomZone[etaitDansZone],
+                                infos: listInfos,
+                              )),
                       appIcon: 'mipmap/ic_launcher',
                     ),
                     locally.show(
