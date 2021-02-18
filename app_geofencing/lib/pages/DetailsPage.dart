@@ -26,7 +26,10 @@ class _DetailsPageState extends State<DetailsPage> {
     );
     widget.infos.forEach((element) {
       l.add(
-        HtmlWidget(element.contenu),
+        HtmlWidget(
+          element.contenu,
+          textStyle: TextStyle(color: Colors.white),
+        ),
       );
     });
     return Scaffold(
