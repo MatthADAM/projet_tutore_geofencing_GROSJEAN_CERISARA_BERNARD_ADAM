@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 
 import '../models/Informations.dart';
 
@@ -25,10 +26,7 @@ class _DetailsPageState extends State<DetailsPage> {
     );
     widget.infos.forEach((element) {
       l.add(
-        Text(
-          "Infos de la zone : " + element.contenu,
-          style: TextStyle(color: Colors.white, fontFamily: 'Minecraft'),
-        ),
+        HtmlWidget(element.contenu),
       );
     });
     return Scaffold(
