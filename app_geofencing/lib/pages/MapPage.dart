@@ -163,10 +163,8 @@ class _MapPageState extends State<MapPage> {
                         listInfos.add(element);
                       },
                     ),
-                    // listInfos = infos,
                     print(
                         "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee "),
-
                     print("  "),
                     print("  "),
                     print(listInfos[0].contenu),
@@ -178,7 +176,6 @@ class _MapPageState extends State<MapPage> {
                     estDansZone = true,
                     pointsCurrentZone = res[etaitDansZone].points,
                     print("NOM ZONE ACTUELLE" + nomZone[etaitDansZone]),
-
                     locally = Locally(
                       context: context,
                       payload: 'test',
@@ -187,26 +184,12 @@ class _MapPageState extends State<MapPage> {
                               DetailsPage(text: nomZone[etaitDansZone])),
                       appIcon: 'mipmap/ic_launcher',
                     ),
-
                     locally.show(
                         title: "Changement de zone",
                         message: "Entrée dans " + nomZone[etaitDansZone]),
-
                     processingZone = false,
                   });
             }
-
-            // if (false && !check && estDansZone) {
-            //   print("  ");
-            //   print(check);
-            //   print("  ");
-            //   print("  ");
-            //   print("VOUS N'ETES PAS DANS UNE ZONE");
-            //   print("  ");
-            //   print("  ");
-            //   estDansZone = false;
-            //   pointsCurrentZone = [];
-            // }
             i++;
           });
           if (!estDansUneZone && etaitDansZone >= 0) {
