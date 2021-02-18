@@ -126,7 +126,6 @@
                 document.getElementById("submit5").addEventListener("click", updateInfoZone);
                 results.data.forEach(el => {
                     document.getElementById(`${el.id_info}`).addEventListener("click", function () {
-                        console.log("ici");
                         deleteInfo(el.id_info)
                     });
                 })
@@ -206,8 +205,9 @@
         let info = simplemde.markdown(simplemde.value())
         if (info != "" && info != " ") {
             $.post(api + "/api/infos", { id_zone: idZ, type: "MarkDown", contenu: info })
-            res = affiInfoZone(info);
-            document.getElementById("informationZone").innerHTML += res;
+            // res = affiInfoZone(info);
+            // document.getElementById("informationZone").innerHTML += res;
+            affiDetaille();
         }
     }
     //Function modification zone
