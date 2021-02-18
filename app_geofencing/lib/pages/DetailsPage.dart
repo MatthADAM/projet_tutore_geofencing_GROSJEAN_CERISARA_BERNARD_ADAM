@@ -13,7 +13,7 @@ class DetailsPage extends StatefulWidget {
 }
 
 class _DetailsPageState extends State<DetailsPage> {
-  List<Widget> l;
+  List<Widget> l = [];
 
   @override
   Widget build(BuildContext context) {
