@@ -19,6 +19,7 @@
     let idZ;
     let zone = false;
     let finish = false;
+    let simplemde;
 
 
     //Function quand on clique sur un polygon
@@ -119,11 +120,13 @@
                 res += affiMobile(idZ);
                 document.getElementById("listZone").innerHTML = text;
                 document.getElementById("formulaire2").innerHTML = res;
+                simplemde = new SimpleMDE({ element: document.getElementById("contenu") });
                 document.getElementById("submit3").addEventListener("click", modifZone);
                 document.getElementById("submit4").addEventListener("click", deleteZone);
                 document.getElementById("submit5").addEventListener("click", updateInfoZone);
                 results.data.forEach(el => {
                     document.getElementById(`${el.id_info}`).addEventListener("click", function () {
+                        console.log("ici");
                         deleteInfo(el.id_info)
                     });
                 })
@@ -168,7 +171,7 @@
         let res = `</br>
         <form onsubmit="return false">
                 <div>
-                    <input type="textarea" id="contenu" placeholder="Information..." required>
+                    <input type="textarea" id="contenu" placeholder="Information...">
                 </div>
                 </br>
                 <input id="submit5" type="submit" value="Ajouter information">
@@ -199,9 +202,9 @@
     }
     //Function modification information zone
     function updateInfoZone() {
-        let info = document.getElementById("contenu").value;
+        let res;
+        let info = simplemde.markdown(simplemde.value())
         if (info != "" && info != " ") {
-            document.getElementById("contenu").value = "";
             $.post(api + "/api/infos", { id_zone: idZ, type: "MarkDown", contenu: info })
             res = affiInfoZone(info);
             document.getElementById("informationZone").innerHTML += res;
@@ -209,6 +212,7 @@
     }
     //Function modification zone
     function modifZone() {
+        let res;
         let nom = document.getElementById("nom2").value;
         let desc = document.getElementById("description2").value;
         $.post(api + "/api/zone/" + idZ, { nom: nom, description: desc })
