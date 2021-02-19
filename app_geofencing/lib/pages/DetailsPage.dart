@@ -30,7 +30,7 @@ class _DetailsPageState extends State<DetailsPage> {
           margin: EdgeInsets.only(top: 10),
           child: HtmlWidget(
             element.contenu,
-            textStyle: TextStyle(color: Colors.black),
+            textStyle: TextStyle(color: Colors.white),
           ),
         ),
       );
@@ -51,7 +51,7 @@ class _DetailsPageState extends State<DetailsPage> {
         // padding: EdgeInsets.only(top: 30),
       ),
       backgroundColor: Color(
-          0xFF45341A), /* Center(
+          0xFF2D241C), /* Center(
         child: Container(
           constraints: BoxConstraints.expand(),
           decoration: BoxDecoration(
