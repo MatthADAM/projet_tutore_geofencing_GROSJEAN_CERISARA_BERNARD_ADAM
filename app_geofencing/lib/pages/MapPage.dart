@@ -116,7 +116,6 @@ class _MapPageState extends State<MapPage> {
     }).listen((LocationData currentLocation) {
       setState(() {
         if (!processingZone) {
-          print("nouvelle coord geo");
           processingZone = true;
 
           error = null;
@@ -148,10 +147,6 @@ class _MapPageState extends State<MapPage> {
 
             // entree dans une nouvelle zone: commence le processing
             if (check && etaitDansZone != i) {
-              print("inzone detectee " +
-                  i.toString() +
-                  " " +
-                  etaitDansZone.toString());
               zoneId = listIds[i];
               etaitDansZone = i;
               commenceProcessing = true;
@@ -163,11 +158,6 @@ class _MapPageState extends State<MapPage> {
                         listInfos.add(element);
                       },
                     ),
-                    print(
-                        "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee "),
-                    print("  "),
-                    print("  "),
-                    print(listInfos[0].contenu),
                     print("  "),
                     print("  "),
                     print("VOUS ETES DANS UNE ZONE"),
