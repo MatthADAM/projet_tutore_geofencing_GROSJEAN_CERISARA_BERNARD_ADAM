@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 
 import '../models/Informations.dart';
 
@@ -25,9 +26,19 @@ class _DetailsPageState extends State<DetailsPage> {
     );
     widget.infos.forEach((element) {
       l.add(
-        Text(
-          "Infos de la zone : " + element.contenu,
-          style: TextStyle(color: Colors.white, fontFamily: 'Minecraft'),
+        Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage('assets/images/bgMine.jpg'),
+                fit: BoxFit.cover),
+          ),
+          child: HtmlWidget(
+            element.contenu,
+            textStyle: TextStyle(color: Colors.white),
+            customStylesBuilder: (element) {
+              return {"padding-top": "16px"};
+            },
+          ),
         ),
       );
     });
@@ -40,7 +51,14 @@ class _DetailsPageState extends State<DetailsPage> {
           ],
         ),
       ),
-      body: Center(
+      body: SingleChildScrollView(
+        child: Column(
+          children: l,
+        ),
+        // padding: EdgeInsets.only(top: 30),
+      ),
+      backgroundColor: Colors
+          .black87, /* Center(
         child: Container(
           constraints: BoxConstraints.expand(),
           decoration: BoxDecoration(
@@ -52,7 +70,7 @@ class _DetailsPageState extends State<DetailsPage> {
             children: l,
           ),
         ),
-      ),
+      ), */
     );
   }
 }
