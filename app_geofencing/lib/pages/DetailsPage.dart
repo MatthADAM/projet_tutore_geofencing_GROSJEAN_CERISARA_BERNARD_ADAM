@@ -27,17 +27,10 @@ class _DetailsPageState extends State<DetailsPage> {
     widget.infos.forEach((element) {
       l.add(
         Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage('assets/images/bgMine.jpg'),
-                fit: BoxFit.cover),
-          ),
+          margin: EdgeInsets.only(top: 10),
           child: HtmlWidget(
             element.contenu,
-            textStyle: TextStyle(color: Colors.white),
-            customStylesBuilder: (element) {
-              return {"padding-top": "16px"};
-            },
+            textStyle: TextStyle(color: Colors.black),
           ),
         ),
       );
@@ -57,8 +50,8 @@ class _DetailsPageState extends State<DetailsPage> {
         ),
         // padding: EdgeInsets.only(top: 30),
       ),
-      backgroundColor: Colors
-          .black87, /* Center(
+      backgroundColor: Color(
+          0xFF45341A), /* Center(
         child: Container(
           constraints: BoxConstraints.expand(),
           decoration: BoxDecoration(
