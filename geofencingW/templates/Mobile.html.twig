@@ -3,10 +3,12 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
 		<link href="../css/index.css" rel="stylesheet" type="text/css">
+		<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+		<script src="../js/mobile.js"></script>
 		<title>Affichage Mobile</title>
 	</head>
 
-	<body>
+	<body onload="initialize()">
 		<div class="navi">
 			<nav>
 				<ul>
@@ -27,6 +29,10 @@
 			</nav>
 		</div>
 		<div id="container">
+		<div class="js-id" data-is-Id="{{idM.idMo}}"></div>
+		<div id="listZone">
+				<div id="informationZone"></div>
+			</div>
 		</div>
 	</body>
 </html>

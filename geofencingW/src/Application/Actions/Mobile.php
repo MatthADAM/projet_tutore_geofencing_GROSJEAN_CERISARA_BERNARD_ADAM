@@ -10,7 +10,7 @@ use App\Domain\User;
 class Mobile
 {
 
-    public function __invoke(Request $request, Response $response): Response
+    public function __invoke(Request $request, Response $response, $args): Response
     {
         if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             $view = Twig::fromRequest($request);
@@ -29,8 +29,9 @@ class Mobile
 				$url['deconnexionPost'] = ['route' => '../deconnexion', 'name' => 'Deconnexion', 'method' => 'POST'];
                 $data['connecte'] = 'true';
             }
+            $id = intval($args['id']);
+            $data['idM'] =  ['idMo' => $id];
             $data['nav'] = $url;
-
             $data['urls'] = $url;
             return $view->render($response, 'Mobile.html.twig', $data);
         }

@@ -111,14 +111,16 @@
             let desc = e.data.description;
             let res = "</br>";
             let text = affiListZone(nom, desc);
+            let inf="";
             $.get(api + "/api/infos/zone/" + idZ).then((results) => {
                 results.data.forEach(el => {
-                    text += affiInfoZone(el.contenu, el.id_info);
+                    inf += affiInfoZone(el.contenu, el.id_info);
                 })
                 res += affiModifZone();
                 res += affiAddInfoZone();
                 res += affiMobile(idZ);
                 document.getElementById("listZone").innerHTML = text;
+                document.getElementById("informationZone").innerHTML = inf;
                 document.getElementById("formulaire2").innerHTML = res;
                 simplemde = new SimpleMDE({ element: document.getElementById("contenu") });
                 document.getElementById("submit3").addEventListener("click", modifZone);
@@ -137,8 +139,7 @@
     function affiListZone(nom, desc) {
         let res = `<div id="info"><p>
         Nom: ${nom}</br>
-        Description: ${desc}</br></br></p></div>
-        <div id="informationZone">`;
+        Description: ${desc}</br></br></p></div>`;
         return res;
     }
     //Function affichage informations de la zone sélectionné
