@@ -25,23 +25,7 @@
         </nav>
     </div>
     <div>
-    <ul>
-        {% for galPu in galeriesPu %}
-            
-        
-                <li class="content">
-                    <a href="{{urls.getGalerie}}/{{ galPu.id }}">
-                        <div class="ConvItem">
-                            <h3>{{ galPu.name }}</h3>
-                            <img src="{{galPu.imageUrl.imageUrl}}" alt="photo">
-                            </p>
-                        </div>
-                    </a>
-                </li>
-           
-                   
-        {% endfor %}
-    </ul>
+
 </div>
 </body>
 </html>

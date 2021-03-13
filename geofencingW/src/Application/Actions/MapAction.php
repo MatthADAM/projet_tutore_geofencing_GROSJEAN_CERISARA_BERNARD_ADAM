@@ -28,6 +28,7 @@ class MapAction
 				$url['getMonCompte'] = ['route' => "../monCompte/$id_user", 'name' => 'mon compte', 'method' => 'GET'];
 				$url['deconnexionPost'] = ['route' => './deconnexion', 'name' => 'Deconnexion', 'method' => 'POST'];
                 $data['connecte'] = 'true';
+                $data['idusr'] = $id_user;
             }
             $data['nav'] = $url;
 

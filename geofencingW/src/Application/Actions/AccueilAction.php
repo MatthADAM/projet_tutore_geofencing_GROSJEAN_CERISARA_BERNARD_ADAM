@@ -19,7 +19,6 @@ class AccueilAction
             $view = Twig::fromRequest($request);
             $url['getAccueil'] = ['route' => '/', 'name' => 'Accueil', 'method' => 'GET'];
             if(!isset($_SESSION['user']) || is_null($_SESSION['user'])) {
-                $url['getMap'] = ['route' => './map', 'name' => 'Map', 'method' => 'GET'];
                 $url['inscriptionGet'] = ['route' => './inscription', 'name' => 'Inscription', 'method' => 'GET'];
                 $url['connexionGet'] = ['route' => './connexion', 'name' => 'Connexion', 'method' => 'GET'];
                 $data['connecte'] = 'false';

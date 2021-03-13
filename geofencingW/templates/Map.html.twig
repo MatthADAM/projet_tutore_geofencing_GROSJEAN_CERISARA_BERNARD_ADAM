@@ -35,22 +35,25 @@
 			</nav>
 		</div>
 		<div id="container">
-			<div id="map"></div>
-			<div id="listZone"></div>
-			<div id="formulaire">
-				<form class="addZone" onsubmit="return false">
-					<div>
-						<input type="text" id="nom" placeholder="Nom..." required>
-					</div>
-					<div>
-						<input type="text" id="description" placeholder="Description..." required>
-					</div>
-					<input id="submit" type="submit" value="créer zone">
-				</form>
-				<input id="submit2" type="submit" value="fin zone">
-			</div>
-			<div id="formulaire2"></div>
-			<div id="informationZone"></div>
+		<p id="usr">{{idusr}}</p>
+			{% if connecte == true %}
+				<div id="map"></div>
+				<div id="listZone"></div>
+				<div id="formulaire">
+					<form class="addZone" onsubmit="return false">
+						<div>
+							<input type="text" id="nom" placeholder="Nom..." required>
+						</div>
+						<div>
+							<input type="text" id="description" placeholder="Description..." required>
+						</div>
+						<input id="submit" type="submit" value="créer zone">
+					</form>
+					<input id="submit2" type="submit" value="fin zone">
+				</div>
+				<div id="formulaire2"></div>
+				<div id="informationZone"></div>
+			{% endif %}
 		</div>
 	</body>
 </html>
