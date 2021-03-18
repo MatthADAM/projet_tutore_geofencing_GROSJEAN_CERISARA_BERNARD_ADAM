@@ -68,7 +68,8 @@ CREATE TABLE `user` (
 CREATE TABLE `zone` (
   `id_zone` int NOT NULL,
   `nom` varchar(100) NOT NULL,
-  `description` varchar(300) NOT NULL
+  `description` varchar(300) NOT NULL,
+  `id_user` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
@@ -144,6 +145,12 @@ ALTER TABLE `informations`
 --
 ALTER TABLE `point`
   ADD CONSTRAINT `FK_id_zone` FOREIGN KEY (`id_zone`) REFERENCES `zone` (`id_zone`);
+
+--
+-- Contraintes pour la table `zone`
+--
+ALTER TABLE `zone`
+  ADD CONSTRAINT `FK_id_user` FOREIGN KEY (`id_user`) REFERENCES `user` (`id_user`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

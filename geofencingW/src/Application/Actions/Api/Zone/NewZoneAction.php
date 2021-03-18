@@ -15,6 +15,7 @@ class NewZoneAction extends ZoneAction
         $zoneN = new Zone;
         $zoneN->nom = $data["nom"];
         $zoneN->description = $data["description"];
+        $zoneN->id_user = $data["id_user"];
         $zoneN->save();
         return $this->respondWithData($zoneN);
     }
