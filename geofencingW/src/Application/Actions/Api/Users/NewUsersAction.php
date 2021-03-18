@@ -15,6 +15,7 @@ class NewUsersAction extends UsersAction
         $user = new User;
         $user->email = $data["email"];
         $user->password = $data["password"];
+        $user->admin = $data["admin"];
         $user->save();
         return $this->respondWithData($user);
     }
