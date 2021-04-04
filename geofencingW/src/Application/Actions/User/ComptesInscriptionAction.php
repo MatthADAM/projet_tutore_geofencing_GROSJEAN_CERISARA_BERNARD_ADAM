@@ -27,12 +27,13 @@ class ComptesInscriptionAction
                 $email = htmlentities($_POST['email']);
                 $password = htmlentities($_POST['password']);
                 $confpassword = htmlentities($_POST['confpassword']);
+                $typeAdmin = htmlentities($_POST['typeAdmin']);
 
                 if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
                     $compteEmail = User::where('email', '=', $email)->first();
                     if (is_null($compteEmail)) {
                         if ($confpassword == $password) {
-                            User::create($email, password_hash($password, PASSWORD_DEFAULT));
+                            User::create($email, password_hash($password, PASSWORD_DEFAULT),$typeAdmin);
                             header('Location: ./connexion');
                             exit;
                         } else {
