@@ -31,6 +31,7 @@ class _DetailsPageState extends State<DetailsPage> {
           child: HtmlWidget(
             element.contenu,
             textStyle: TextStyle(color: Colors.white),
+            webView: true,
           ),
         ),
       );
