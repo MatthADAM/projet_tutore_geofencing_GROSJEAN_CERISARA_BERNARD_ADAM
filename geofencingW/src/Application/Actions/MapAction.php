@@ -25,6 +25,9 @@ class MapAction
                 $user = User::where('email', '=', $_SESSION['user'])->first();
                 $id_user = $user->id_user;
                 $url['getMap'] = ['route' => './map', 'name' => 'Map', 'method' => 'GET'];
+                if ($user->admin==1) {
+                    $url['inscriptionGet'] = ['route' => './inscription', 'name' => 'Inscription', 'method' => 'GET'];
+                }
 				$url['getMonCompte'] = ['route' => "../monCompte/$id_user", 'name' => 'mon compte', 'method' => 'GET'];
 				$url['deconnexionPost'] = ['route' => './deconnexion', 'name' => 'Deconnexion', 'method' => 'POST'];
                 $data['connecte'] = 'true';

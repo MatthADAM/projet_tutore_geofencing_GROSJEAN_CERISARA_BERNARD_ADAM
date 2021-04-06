@@ -1,55 +1,71 @@
 <!DOCTYPE html>
 <html lang="fr">
 
-<head>
-    <meta charset="UTF-8">
-    <title>Inscription</title>
-    <link href='https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css' rel='stylesheet'>
-    <link href='https://use.fontawesome.com/releases/v5.7.2/css/all.css' rel='stylesheet'>
-    <script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
-    <script type='text/javascript' src='https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js'></script>
-    <script type='text/javascript' src='https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js'></script>
-    <script type='text/javascript'></script>
-    <link href="css/index.css" rel="stylesheet" type="text/css">
-</head>
-<body oncontextmenu='return false' class='snippet-body'>
-<div class="navi">
-    <nav>
-        <ul>
-            {% for url in nav %}
-                {% if url.method == "GET" %}
-                    <li><a href="{{url.route}}">{{url.name}}</a></li>
-                {% elseif url.method == "POST" %}
-                    <li>
-                        <form method="POST" action="{{url.route}}">
-                            <button type="submit">{{url.name}}</button>
-                        </form>
-                    </li>
-                {% endif %}
-            {% endfor %}
-        </ul>
-    </nav>
-</div>
-<div class="container d-flex justify-content-center">
-    <div class="d-flex flex-column justify-content-between">
-        <div class="card mt-3 p-5">
-            <div>
-                <h1 class="mb-5 text-white">Signup</h1>
-            </div>
-        </div>
-        <div class="card two bg-white px-5 py-4 mb-3">
-            <form class="form-group" action="{{urls.inscriptionPost}}" method="post">
-                <div class="form-group"><input class="form-control" id="email" name="email" type="text" required><label class="form-control-placeholder" for="email">Email : </label><br></div>
-                <div class="form-group"><input class="form-control" id="password" name="password" type="password" required><label class="form-control-placeholder" for="password">Password : </label><br></div>
-                <div class="form-group"><input class="form-control" id="confpassword" name="confpassword" type="password" required><label class="form-control-placeholder" for="confpassword">Confirm Password : </label><br></div>
-                <input class="form-control" id="admin" name="typeAdmin" type="hidden" value="1">
-                <input class="btn btn-primary btn-block btn-lg mt-1 mb-2" style='margin-bottom: 9px;' type="submit" value="Inscription">
-            </form>
-            <br>
-            <p class="message">Vous avez déja un compte ? <a class="connect" href="{{urls.connexionGet}}">Se connecter</a></p>
-        </div>
-    </div>
-</div>
+	<head>
+		<meta charset="UTF-8">
+		<title>Inscription</title>
+		<link href='https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css' rel='stylesheet'>
+		<link href='https://use.fontawesome.com/releases/v5.7.2/css/all.css' rel='stylesheet'>
+		<script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
+		<script type='text/javascript' src='https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js'></script>
+		<script type='text/javascript' src='https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js'></script>
+		<script type='text/javascript'></script>
+		<link href="css/index.css" rel="stylesheet" type="text/css">
+	</head>
+	<body oncontextmenu='return false' class='snippet-body'>
+		<div class="navi">
+			<nav>
+				<ul>
+					{% for url in nav %}
+						{% if url.method == "GET" %}
+							<li>
+								<a href="{{url.route}}">{{url.name}}</a>
+							</li>
+						{% elseif url.method == "POST" %}
+							<li>
+								<form method="POST" action="{{url.route}}">
+									<button type="submit">{{url.name}}</button>
+								</form>
+							</li>
+						{% endif %}
+					{% endfor %}
+				</ul>
+			</nav>
+		</div>
+		<div class="container d-flex justify-content-center">
+			<div class="d-flex flex-column justify-content-between">
+				<div class="card mt-3 p-5">
+					<div>
+						<h1 class="mb-5 text-white">Signup</h1>
+					</div>
+				</div>
+				<div class="card two bg-white px-5 py-4 mb-3">
+					<form class="form-group" action="{{urls.inscriptionPost}}" method="post">
+						<div class="form-group"><input class="form-control" id="email" name="email" type="text" required><label class="form-control-placeholder" for="email">Email :
+							</label><br></div>
+						<div class="form-group"><input class="form-control" id="password" name="password" type="password" required><label class="form-control-placeholder" for="password">Password :
+							</label><br></div>
+						<div class="form-group"><input class="form-control" id="confpassword" name="confpassword" type="password" required><label class="form-control-placeholder" for="confpassword">Confirm Password :
+							</label><br></div>
+						<div class="btnRadio">
+							<div class="btnRadio">
+								<input type="radio" id="admin" class="radio" name="typeAdmin" value="1" checked>
+								<label for="admin">Admin</label>
+							</div>
+							<div class="btnRadio">
+								<input type="radio" id="user" class="radio" name="typeAdmin" value="0">
+								<label for="user">User</label>
+							</div>
+						</div>
+						<input class="btn btn-primary btn-block btn-lg mt-1 mb-2" style='margin-bottom: 9px;' type="submit" value="Inscription">
+					</form>
+					<br>
+					<p class="message">Vous avez déja un compte ?
+						<a class="connect" href="{{urls.connexionGet}}">Se connecter</a>
+					</p>
+				</div>
+			</div>
+		</div>
 
-</body>
+	</body>
 </html>

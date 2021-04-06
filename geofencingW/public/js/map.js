@@ -20,6 +20,7 @@
     let zone = false;
     let finish = false;
     let simplemde;
+    let idUser = $('.js-id').data('isId');
 
 
     //Function quand on clique sur un polygon
@@ -79,7 +80,7 @@
                 }
             }
         }
-        $.get(api + "/api/zone").then((result) => {
+        $.get(api + "/api/zone/user/"+idUser).then((result) => {
             document.getElementById("listZone").innerHTML = "";
             result.data.forEach(e => {
                 let id = e.id_zone
@@ -191,7 +192,8 @@
         if (!zone && document.getElementById("nom").value != "" && document.getElementById("description").value != "") {
             let nom = document.getElementById("nom").value;
             let desc = document.getElementById("description").value;
-            $.post("http://localhost:8001/api/zone", { nom: nom, description: desc })
+            
+            $.post("http://localhost:8001/api/zone", { nom: nom, description: desc,id_user:idUser })
                 .done(function (data) {
                     zoneId = data.data.id_zone;
                     tabPts = [];

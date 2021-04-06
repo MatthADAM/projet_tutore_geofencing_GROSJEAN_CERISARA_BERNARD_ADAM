@@ -27,6 +27,7 @@ use \App\Application\Actions\Api\Points\GetPointZoneAction;
 
 // Import for zones
 use \App\Application\Actions\Api\Zone\ListZoneAction;
+use \App\Application\Actions\Api\Zone\ListZoneActionUser;
 use \App\Application\Actions\Api\Zone\GetZoneAction;
 use \App\Application\Actions\Api\Zone\NewZoneAction;
 use \App\Application\Actions\Api\Zone\PutZoneAction;
@@ -97,6 +98,7 @@ return function (App $app) {
     // Routes zones
     $app->group('/api/zone', function (Group $group) {
         $group->get('', ListZoneAction::class);
+        $group->get('/user/{id}', ListZoneActionUser::class);
         $group->get('/{id}', GetZoneAction::class);
         $group->post('', NewZoneAction::class);
         $group->post('/{id}', PutZoneAction::class);
