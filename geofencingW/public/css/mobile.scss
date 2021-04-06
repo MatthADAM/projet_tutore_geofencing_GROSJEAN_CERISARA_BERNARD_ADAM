@@ -1,0 +1,20 @@
+@font-face {
+    font-family: Minecraft;
+    src: url(css/fonts/minecraft_font.ttf);
+   }
+
+#infosZone img {
+    width: 560px;
+    height: auto;
+}
+
+#infosZone {
+    background-color: #2D241C;
+    color: white;
+    width: 560px;
+    font-family: "Minecraft";
+}
+
+#top {
+    text-align: center;
+}
