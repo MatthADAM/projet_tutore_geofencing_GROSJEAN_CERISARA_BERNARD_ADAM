@@ -35,6 +35,7 @@ class _MapPageState extends State<MapPage> {
   bool check = false;
   List<LatLng> pointsCurrentZone = [];
   List<String> nomZone = [];
+  List<String> descZone = [];
 
   List<int> listIds = [];
   int zoneId;
@@ -66,6 +67,7 @@ class _MapPageState extends State<MapPage> {
                   },
                 ),
                 nomZone.add(zoneFE.name),
+                descZone.add(zoneFE.desc),
                 res.add(new Polygon(points: pts)),
                 listIds.add(zoneFE.id),
               },
@@ -172,6 +174,7 @@ class _MapPageState extends State<MapPage> {
                       pageRoute: MaterialPageRoute(
                           builder: (context) => DetailsPage(
                                 text: nomZone[etaitDansZone],
+                                desc: descZone[etaitDansZone],
                                 infos: listInfos,
                               )),
                       appIcon: 'mipmap/ic_launcher',

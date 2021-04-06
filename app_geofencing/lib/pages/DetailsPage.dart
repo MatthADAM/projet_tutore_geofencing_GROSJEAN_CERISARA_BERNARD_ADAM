@@ -6,8 +6,10 @@ import '../models/Informations.dart';
 
 class DetailsPage extends StatefulWidget {
   String text;
+  String desc;
   List<Informations> infos;
-  DetailsPage({Key key, @required this.text, @required this.infos})
+  DetailsPage(
+      {Key key, @required this.text, @required this.desc, @required this.infos})
       : super(key: key);
   @override
   _DetailsPageState createState() => _DetailsPageState();
@@ -21,6 +23,12 @@ class _DetailsPageState extends State<DetailsPage> {
     l.add(
       Text(
         "Nom de la zone : " + widget.text,
+        style: TextStyle(color: Colors.white, fontFamily: 'Minecraft'),
+      ),
+    );
+    l.add(
+      Text(
+        "description : " + widget.desc,
         style: TextStyle(color: Colors.white, fontFamily: 'Minecraft'),
       ),
     );
