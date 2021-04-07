@@ -193,7 +193,7 @@
             let nom = document.getElementById("nom").value;
             let desc = document.getElementById("description").value;
             
-            $.post("http://localhost:8001/api/zone", { nom: nom, description: desc,id_user:idUser })
+            $.post(api + "/api/zone", { nom: nom, description: desc,id_user:idUser })
                 .done(function (data) {
                     zoneId = data.data.id_zone;
                     tabPts = [];
