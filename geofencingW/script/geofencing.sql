@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : db
--- Généré le : ven. 19 fév. 2021 à 10:13
+-- Généré le : mer. 07 avr. 2021 à 08:15
 -- Version du serveur :  8.0.23
 -- Version de PHP : 7.4.15
 
@@ -57,8 +57,15 @@ CREATE TABLE `user` (
   `id_user` int NOT NULL,
   `email` varchar(100) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `admin` TINYINT NOT NULL
+  `admin` tinyint NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Déchargement des données de la table `user`
+--
+
+INSERT INTO `user` (`id_user`, `email`, `password`, `admin`) VALUES
+(1, 'manupatron@gouv.fr', '$2y$10$l9mCCEQlsSw/8wfUq1Q.u.G2MCp/6EQI.swJho3IzgvA3dQk1kL1e', 1);
 
 -- --------------------------------------------------------
 
@@ -101,7 +108,8 @@ ALTER TABLE `user`
 -- Index pour la table `zone`
 --
 ALTER TABLE `zone`
-  ADD PRIMARY KEY (`id_zone`);
+  ADD PRIMARY KEY (`id_zone`),
+  ADD KEY `FK_id_user` (`id_user`);
 
 --
 -- AUTO_INCREMENT pour les tables déchargées
@@ -111,7 +119,7 @@ ALTER TABLE `zone`
 -- AUTO_INCREMENT pour la table `informations`
 --
 ALTER TABLE `informations`
-  MODIFY `id_info` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_info` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 
 --
 -- AUTO_INCREMENT pour la table `point`
@@ -123,13 +131,13 @@ ALTER TABLE `point`
 -- AUTO_INCREMENT pour la table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id_user` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id_user` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT pour la table `zone`
 --
 ALTER TABLE `zone`
-  MODIFY `id_zone` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_zone` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 
 --
 -- Contraintes pour les tables déchargées
