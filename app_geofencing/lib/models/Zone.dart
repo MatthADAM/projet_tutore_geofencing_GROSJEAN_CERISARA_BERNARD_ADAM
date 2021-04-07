@@ -13,7 +13,8 @@ Future<List<Zone>> fetchZones(http.Client client) async {
   var obj = jsonDecode(response.body);
   List<Zone> lZ = [];
   for (var item in obj['data']) {
-    lZ.add(new Zone(item['id_zone'], item['nom'], item['description']));
+    lZ.add(new Zone(
+        item['id_zone'], item['nom'], item['description'], item['id_user']));
   }
   return lZ;
 }
@@ -22,6 +23,7 @@ class Zone {
   final int id;
   final String name;
   final String desc;
+  final int id_user;
 
-  Zone(this.id, this.name, this.desc);
+  Zone(this.id, this.name, this.desc, this.id_user);
 }
