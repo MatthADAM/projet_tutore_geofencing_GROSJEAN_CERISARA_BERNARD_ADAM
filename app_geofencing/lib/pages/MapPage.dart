@@ -209,40 +209,42 @@ class _MapPageState extends State<MapPage> {
   @override
   Widget build(BuildContext context) {
     _listenLocation();
-    // if (res.length > 0) {
-    return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.8675,
-      child: new FlutterMap(
-        options: new MapOptions(
-          center: new LatLng(/* 48.6309538, 6.1067854 */ _location.latitude,
-              _location.longitude),
-          zoom: 19,
+    if (res.length > 0) {
+      return SizedBox(
+        height: MediaQuery.of(context).size.height * 0.8675,
+        child: new FlutterMap(
+          options: new MapOptions(
+            center: new LatLng(/* 48.6309538, 6.1067854 */ _location.latitude,
+                _location.longitude),
+            zoom: 19,
+          ),
+          layers: [
+            new TileLayerOptions(
+                urlTemplate:
+                    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                subdomains: ['a', 'b', 'c'],
+                maxZoom: 19,
+                maxNativeZoom: 19),
+            PolygonLayerOptions(
+              polygons: res,
+            ),
+            MarkerLayerOptions(
+              markers: [
+                Marker(
+                  width: 20,
+                  height: 20,
+                  point: LatLng(_location.latitude, _location.longitude),
+                  builder: (ctx) => Container(
+                    child:
+                        Image(image: new AssetImage("assets/images/user.png")),
+                  ),
+                )
+              ],
+            ),
+          ],
         ),
-        layers: [
-          new TileLayerOptions(
-              urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-              subdomains: ['a', 'b', 'c'],
-              maxZoom: 19,
-              maxNativeZoom: 19),
-          PolygonLayerOptions(
-            polygons: res,
-          ),
-          MarkerLayerOptions(
-            markers: [
-              Marker(
-                width: 20,
-                height: 20,
-                point: LatLng(_location.latitude, _location.longitude),
-                builder: (ctx) => Container(
-                  child: Image(image: new AssetImage("assets/images/user.png")),
-                ),
-              )
-            ],
-          ),
-        ],
-      ),
-    );
-    // }
+      );
+    }
 
     // return CircularProgressIndicator();
     return Center(
