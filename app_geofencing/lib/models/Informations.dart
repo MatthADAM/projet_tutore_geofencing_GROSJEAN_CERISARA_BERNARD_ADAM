@@ -8,7 +8,7 @@ String uriDocker = 'http://localhost:8001/api/infos/zone/';
 String uriIp = 'http://projet-tutore-ciasie.herokuapp.com/api/infos/zone/';
 
 Future<List<Informations>> fetchInfos(http.Client client, int idZone) async {
-  final response = await client.get(uriDocker + idZone.toString());
+  final response = await client.get(uriHeroku + idZone.toString());
 
   var obj = jsonDecode(response.body);
   List<Informations> lP = [];
