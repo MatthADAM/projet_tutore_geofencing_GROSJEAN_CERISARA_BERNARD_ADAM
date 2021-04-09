@@ -80,6 +80,7 @@
                 }
             }
         }
+        document.getElementById("informationZone").innerHTML = "";
         $.get(api + "/api/zone/user/"+idUser).then((result) => {
             document.getElementById("listZone").innerHTML = "";
             result.data.forEach(e => {
